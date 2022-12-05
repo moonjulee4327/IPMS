@@ -58,6 +58,24 @@
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	
+	<!-- 이메일 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="smtp.naver.com"/>
+	<property name="port" value="465"/>
+	<property name="username" value="charon4167@naver.com"/>
+	<property name="password" value="xxxx"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtps.checkserveridentity">true</prop>
+				<prop key="mail.smtps.ssl.trust">*</prop>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory
+				</prop>
+			</props>
+		</property>
+	</bean>
 	
 	<!-- 애너테이션 기반의 트랜잭션 제어를 활성화함 -->
 	<tx:annotation-driven/>
