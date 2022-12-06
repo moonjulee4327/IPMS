@@ -192,6 +192,11 @@
                                             </div>
                                         </fieldset>
                                         <fieldset>
+                                            <select onchange="showValue(this)">
+                                                <option value="SPRING">spring</option>
+                                                <option value="JS">JS</option>
+                                                <option value="Vue">Vue</option>
+                                            </select>
 
                                         </fieldset>
                                         <div>
@@ -263,13 +268,13 @@
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
 <!-- END: Page Vendor JS-->
-<script src="../../../app-assets/vendors/js/vendors.min.js"></script>
-<script src="../../../app-assets/vendors/js/ui/jquery.sticky.js"></script>
-<script src="../../../app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
-<script src="../../../app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-<script src="../../../app-assets/js/core/app-menu.min.js"></script>
-<script src="../../../app-assets/js/core/app.min.js"></script>
-<script src="../../../app-assets/js/scripts/customizer.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.min.js"></script>
+<script src="/resources/stack-admin-v4.0/app-assets/js/scripts/customizer.min.js"></script>
 <script src="/resources/stack-admin-v4.0/app-assets/js/scripts/ui/breadcrumbs-with-stats.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/select/form-select2.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>

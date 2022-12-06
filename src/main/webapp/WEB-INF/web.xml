@@ -23,6 +23,12 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
+	    <!-- 404에러 페이지 추가 시작-->
+		<init-param>
+			<param-name>throwExceptionIfNoHandlerFound</param-name>
+			<param-value>true</param-value>
+		</init-param>
+   	 	<!-- 404에러 페이지 추가 끝-->
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 

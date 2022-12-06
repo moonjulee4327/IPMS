@@ -35,7 +35,7 @@
                         <div class="card border-grey border-lighten-3 m-0">
                             <div class="card-header border-0">
                                <div class="card-title text-center">
-									<img src="/resources/logoImage/logo.jpg" alt="branding logo" style="width: 100px; height: auto;">
+									<img src="/resources/logoImage/logo.jpg" href="" alt="branding logo" style="width: 100px; height: auto;">
 								</div>
                                 <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Login with
                                         IPMS</span></h6>

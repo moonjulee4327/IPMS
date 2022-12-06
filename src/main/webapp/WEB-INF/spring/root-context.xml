@@ -85,7 +85,7 @@
 	자동으로 Mapper 인터페이스를 활용하는 객체를 생성하게 됨
 	-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.imps.mapper" />
+		<property name="basePackage" value="com.ipms.mapper" />
 	</bean>
 	
 	<!-- 스프링 AOP 활성화 -->
