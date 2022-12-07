@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
@@ -16,9 +18,37 @@
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script>
 
+
+    function registerCheck(){
+        var email =$("#email").val();
+        if(email==""){
+            $("#passMessage").html("이메일을 다시 입력하세요.");
+            $("#passMessage").css("color", "red");
+            return false;
+        }
+        $.ajax({
+            url:"/main/memRegisterCheck",
+            type:"get",
+            data: {"email": email},
+            success: function (result) {
+                if (result == 0) {
+                    $("#passMessage").html("이메일 사용이 가능합니다.");
+                    $("#passMessage").css("color", "blue");
+                    console.log(result)
+                    $("#btn").css('display', 'block');
+                    $("#chgBtn").css('display', 'none');
+                } else {
+                    $("#passMessage").html("이메일을 다시 입력하세요.");
+                    $("#passMessage").css("color", "red");
+                    console.log(result);
+                    $("#email").val("");
+                }
+            }
+        });
+    }
     $(document).ready(function () {
-        $("#emailId").change(function () {
-            var to = $("#emailId").val();
+        $("#email").change(function () {
+            var to = $("#email").val();
             $("#to").attr("value", to);
             console.log(to);
         })
@@ -30,10 +60,9 @@
         const randomNumber = Math.floor(Math.random() * 8888) + 1;
         $('input[name=text]').attr('value', randomNumber);
         let text1 = $("#text").val();
-        let emailId;
+        let email;
         let text2;
         $("#btn").on("click", function () {
-
             alert("Click");
             console.log("to::" + to);
             let fData = $("#frm").serialize();
@@ -74,8 +103,8 @@
     });
 
     function passwordCheck() {
-        var password = $("#memPasswd").val();
-        var password2 = $("#memPasswd2").val();
+        var password = $("#paswd").val();
+        var password2 = $("#paswd2").val();
         if (password != password2) {
             $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
             $("#passMessage").css("color", "red");
@@ -89,27 +118,23 @@
             return true;
         }
     }
-
+$(function (){
+    $("#chgBtn")
+})
 
 </script>
 <!-- END: Custom CSS-->
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+
 <!-- BEGIN: Content-->
 
 <div class="app-content container center-layout mt-2">
-    <div class="content-overlay"></div>
     <div class="content-wrapper">
         <div class="content-header row"></div>
         <div class="content-body">
             <section class="row flexbox-container">
                 <div class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0">
+                    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0" style="margin-top:auto">
                         <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
                             <div class="card-header border-0">
                                 <div class="card-title text-center">
@@ -121,14 +146,14 @@
                                     <span>Create Account</span>
                                 </h6>
                             </div>
-                            <div class="card-content">
+                            <div class="card-content" >
                                 <div class="card-body">
-                                    <form class="form-horizontal form-simple" action="index.html"
+                                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post"
                                           novalidate>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
                                             <input type="text" class="form-control form-control-lg"
-                                                   id="user-name" placeholder="이름" required="required">
+                                                   id="name" name="name" placeholder="이름" required="required">
                                             <div class="form-control-position">
                                                 <i class="feather icon-user"></i>
                                             </div>
@@ -136,16 +161,12 @@
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
 
-                                            <div style="display: inline-block;">
-                                                <input type="text" class="form-control form-control-lg"
-                                                       style="float: left; width: 60%"
-                                                       id="emailId" placeholder="이메일" required="required">
+                                            <div >
+                                                <input type="text" class="form-control form-control-lg"  id="email"  name="email" placeholder="이메일" required="required">
 
+                                            <button type="button" id="chgBtn"  class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"  style="float: right;width: 30px;display: block">중복체크</button>
+                                           <button type="button" id="btn"  class="btn btn-info btn-min-width mr-1 mb-1"  style="float: right;width: 30px;display: none">인증번호 전송</button>
 
-                                                <button type="button" id="btn"
-                                                        class="btn btn-success btn-min-width mr-1 mb-1"
-                                                        style="float: right;width: 30px;">인증번호 전송
-                                                </button>
 
                                             </div>
                                             <div class="form-control-position">
@@ -156,7 +177,7 @@
                                                   style="display: none">
 
                                             <input type="password" class="form-control form-control-lg"
-                                                   style="float: left; width: 60%" id="emailNum1" name="emailId"
+                                                   style="float: left; width: 60%" id="emailNum1" name="emailNum1"
                                                    placeholder="이메일 인증번호" required="required">
                                             <button type="button" id="btn2"
                                                     class="btn btn-success btn-min-width mr-1 mb-1"
@@ -169,8 +190,8 @@
                                         </fieldset>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg" id="memPasswd"
-                                                   name="memPasswd" placeholder="비밀번호" onkeyup="passwordCheck()"
+                                            <input type="text" class="form-control form-control-lg" id="paswd"
+                                                   name="paswd" placeholder="비밀번호" onkeyup="passwordCheck()"
                                                    required="required">
                                             <div class="form-control-position">
                                                 <i class="fa fa-key"></i>
@@ -178,8 +199,8 @@
                                         </fieldset>
                                         <fieldset
                                                 class="form-group position-relative has-icon-left mb-1">
-                                            <input type="password" class="form-control form-control-lg" id="memPasswd2"
-                                                   name="memPasswd2" placeholder="비밀번호 확인" onkeyup="passwordCheck()"
+                                            <input type="password" class="form-control form-control-lg" id="paswd2"
+                                                   name="paswd2" placeholder="비밀번호 확인" onkeyup="passwordCheck()"
                                                    required="required">
                                             <div class="form-control-position">
                                                 <i class="fa fa-key"></i>
@@ -192,11 +213,7 @@
                                             </div>
                                         </fieldset>
                                         <fieldset>
-                                            <select onchange="showValue(this)">
-                                                <option value="SPRING">spring</option>
-                                                <option value="JS">JS</option>
-                                                <option value="Vue">Vue</option>
-                                            </select>
+
 
                                         </fieldset>
                                         <div>
@@ -258,6 +275,10 @@
 
 
 <!-- BEGIN: Page JS-->
+<script>
+    $('select').select2();
+
+</script>
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
 <script
