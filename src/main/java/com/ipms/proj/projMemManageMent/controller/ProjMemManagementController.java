@@ -10,7 +10,7 @@ public class ProjMemManagementController {
 	
 	@GetMapping("/memManagement")
 		public String projmemManagement() {
-			return "proj/memmanagement/adminMemberManagement";
+			return "proj/memmanagement/projMemberManagement";
 		}
 }
 

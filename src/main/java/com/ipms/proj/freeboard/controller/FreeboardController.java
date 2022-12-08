@@ -13,10 +13,18 @@ public class FreeboardController {
 		return "proj/freeboard/freeBoard";
 	}
 	
+	@GetMapping("/freeBoardPL")
+	public String freeBoardPL() {
+		return "proj/freeboard/freeBoardPL";
+	}
+	
 	@GetMapping("/freeBoardInsert")
 	public String freeInsert() {
 		return "proj/freeboard/freeBoardInsert";
 	}
 		
-	
+	@GetMapping("/freeBoardDetail")
+	public String freeDetail() {
+		return "proj/freeboard/freeBoardDetail";
+	}
 }

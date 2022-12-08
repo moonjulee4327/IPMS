@@ -62,13 +62,13 @@
 							<tbody>
 								<tr>
 									<td>1</td>
-									<td><a href="/proj/issueDetail">title test</a></td>
+									<td><a href="/proj/noticeDetail">title test</a></td>
 									<td>writer</td>
 									<td>2022-12-05</td>
 								</tr>
 								<tr>
 									<td>2</td>
-									<td><a href="#">title test</a></td>
+									<td><a href="/proj/noticeBoardPL">title test</a></td>
 									<td>writer</td>
 									<td>2022-12-05</td>
 								</tr>

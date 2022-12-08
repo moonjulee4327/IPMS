@@ -74,7 +74,7 @@
 								</tr>
 								<tr>
 									<td>2</td>
-									<td><a href="#">title test</a></td>
+									<td><a href="/proj/issueBoardPL">title test</a></td>
 									<td>writer</td>
 									<td><span class="badge badge-warning">미해결</span></td>
 									<td>2022-12-05</td>
