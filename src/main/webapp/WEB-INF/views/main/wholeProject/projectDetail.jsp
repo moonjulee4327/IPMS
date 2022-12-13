@@ -162,21 +162,21 @@ background-color: #448AFF;
 					<br />
 					<div class="form-group">
 						<label for="userinput8">Project Introduce</label>
-						<textarea id="userinput8" rows="5"
+						<textarea style="width:500px; resize: none;" id="userinput8" rows="5"
 							class="form-control border-primary"
 							placeholder="Project Introduce"></textarea>
 					</div>
 
 			
 
-					<div class="border-primary" style="border-radius: 0.2em;">
-						<div id="gdiv" >
+					<div style="width:501px;" class="border-primary" style="border-radius: 0.2em;">
+						<div  id="gdiv" >
 							<label for="userinput8">댓글 목록</label>
 							<hr/>
 						</div>
 						<div  class="form-group" style=" position: relative; top: 55px;" >
-							<textarea id="gtt" rows="5" class="form-control border-primary" placeholder="댓글작성" ></textarea>
-							<button id="rgbtn" style="text-align:center; position: relative; bottom: 50px; left: 825px;"  class="btn btn-primary"  >등록</button>
+							<textarea style="width:500px; resize: none;" id="gtt" rows="5" class="form-control border-primary" placeholder="댓글작성" ></textarea>
+							<button id="rgbtn" style="text-align:center; position: relative; bottom: 50px; left: 435px;"  class="btn btn-primary"  >등록</button>
 						</div>
 					</div>
 				</div>

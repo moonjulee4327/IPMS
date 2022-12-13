@@ -153,14 +153,21 @@ background-color: #448AFF;
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="userinput3">Project Period</label> <input type="date" id="userinput3" class="form-control border-primary" placeholder="Project period" name="username" />
+							<div style="float: left">
+								<label for="userinput3">Project Start Date</label> 
+									<input type="date" id="userinput3" class="form-control border-primary" placeholder="Start Date" name="username" />
+							</div>
+							<div style="float:right;">
+								<label for="userinput3">Project End Date</label> 
+									<input type="date" id="userinput3" class="form-control border-primary" placeholder="End Date" name="username" />
+							</div>
 							</div>
 						</div>
 					</div>
 					<br />
 					<div class="form-group">
 						<label for="userinput8">Project Introduce</label>
-						<textarea id="userinput8" rows="9" class="form-control border-primary" placeholder="Project Introduce"></textarea>
+						<textarea style="width:500px; resize: none;" id="userinput8" rows="9" class="form-control border-primary" placeholder="Project Introduce"></textarea>
 					</div>
 							<button class="btn btn-primary">등록</button>
 							<button class="btn btn-primary">목록</button>

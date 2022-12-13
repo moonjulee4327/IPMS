@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,10 @@ public class MailController {
         return "main/login/sendMail";
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/sendMailProcess")
     public  @ResponseBody  String sendMailProcess(@RequestParam Map<String, String> map  , Model model)  throws MessagingException {
-        log.info("map : " + map); // lombok을 사용한 부분
+        log.info("map : " + map);
         String subject = map.get("subject");
         String text = map.get("text");
         String from = map.get("from");
@@ -51,6 +53,6 @@ public class MailController {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        return "redirect:/main/login/sendMail";
+        return "redirect:/main/page";
     }
 }

@@ -30,7 +30,7 @@
 		value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" 
 		value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="jspexam" />
+		<property name="username" value="testdb" />
 		<property name="password" value="java" />
 	</bean>
 	<!-- 데이터베이스와 연결을 맺고 끊어질 때까지의 
@@ -43,6 +43,7 @@
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="mapperLocations"
 		value="classpath:/sqlmap/**/*_SQL.xml" />
+		<property name="configLocation" value="/WEB-INF/mybatisAlias/mybatisAlias.xml"/>
 	</bean>
 	<!-- 데이터베이스에 개별적으로 쿼리를 실행시키는 객체.
 		이 객체를 통해 query를 실행함
@@ -62,7 +63,7 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 	<property name="host" value="smtp.naver.com"/>
 	<property name="port" value="465"/>
-	<property name="username" value="charon4167@naver.com"/>
+	<property name="username" value="pos04167@naver.com"/>
 	<property name="password" value="xxxx"/>
 		<property name="javaMailProperties">
 			<props>
@@ -85,7 +86,7 @@
 	자동으로 Mapper 인터페이스를 활용하는 객체를 생성하게 됨
 	-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.ipms.mapper" />
+		<property name="basePackage" value="com.ipms.**.mapper" />
 	</bean>
 	
 	<!-- 스프링 AOP 활성화 -->

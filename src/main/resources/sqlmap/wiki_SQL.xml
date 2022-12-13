@@ -60,7 +60,7 @@
         WIKI_ID, 
         HIGH_WIKI_ID
 		FROM wiki
-		WHERE DELETE_WHTH = 'n'
+		WHERE DELETE_YN = 'n'
 		
 		<if test="wikiId == null">
 		START WITH HIGH_WIKI_ID IS NULL
@@ -84,7 +84,7 @@
 		    high_wiki_id,
 		    low_rgst_seq,
 		    wiki_write_date,
-		    delete_whth
+		    delete_YN
 		FROM
 		    wiki 
 		where
@@ -105,7 +105,7 @@
 	<update id="deleteWiki" parameterType="string">
 	
 		update wiki set
-            DELETE_WHTH = 'y'
+            DELETE_YN = 'y'
 		  WHERE WIKI_ID IN(
 	  SELECT
 	    WIKI_ID
