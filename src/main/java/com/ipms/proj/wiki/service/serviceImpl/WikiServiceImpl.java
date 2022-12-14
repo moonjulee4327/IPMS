@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ipms.mapper.WikiMapper;
+import com.ipms.proj.wiki.mapper.WikiMapper;
 import com.ipms.proj.wiki.service.WikiService;
-import com.ipms.vo.WikiVO;
+import com.ipms.proj.wiki.vo.WikiVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,13 +25,13 @@ public class WikiServiceImpl implements WikiService{
 	}
 	
 	@Override
-	public List<WikiVO> selectHighWikiId(){
-		return wikiMapper.selectHighWikiId();
+	public List<WikiVO> selectHighWikiId(String projId){
+		return wikiMapper.selectHighWikiId(projId);
 	}
 	
 	@Override
-	public List<WikiVO> selectWiki(String wikiId){
-		return wikiMapper.selectWiki(wikiId);
+	public List<WikiVO> selectWiki(WikiVO wikiVO){
+		return wikiMapper.selectWiki(wikiVO);
 	}
 	
 	@Override

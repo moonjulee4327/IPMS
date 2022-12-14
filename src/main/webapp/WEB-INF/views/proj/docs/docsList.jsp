@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 
@@ -49,6 +50,7 @@
 															class="d-none d-lg-block"></span>
 												</fieldset>
 											</div>
+											<sec:csrfInput/>
 										</form>
 										<!-- </form> -->
 									</section>
@@ -62,7 +64,7 @@
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<section class="contact-form">
-										<form id="form-add-contact" class="contact-input">
+										<form id="fileUploadForm" class="contact-input" action="/proj/docsFileUpload" method="post" enctype="multipart/form-data">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">파일 업로드</h5>
 												<button type="button" class="close" data-dismiss="modal"
@@ -72,10 +74,11 @@
 											</div>
 											<div class="modal-body">
 												<fieldset class="form-group col-12">
-													<input type="file" class="form-control-file"
+													<input type="file" name="docsFile" class="form-control-file"
 														id="user-image">
 												</fieldset>
 											</div>
+											<sec:csrfInput/>
 										</form>
 									</section>
 								</div>

@@ -3,7 +3,7 @@ package com.ipms.security.domain;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import com.ipms.main.vo.MemVO;
+import com.ipms.main.login.vo.MemVO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -23,9 +23,8 @@ public class CustomUser extends User {
 
 	public CustomUser(MemVO vo) {
 
-		super(vo.getEmail(), vo.getPaswd(), vo.getMemAuthList().stream()
-				.map(auth -> new SimpleGrantedAuthority(auth.getAthrty())).collect(Collectors.toList()));
-
+		super(vo.getMemEmail(), vo.getMemPasswd(), vo.getMemAuthList().stream()
+				.map(auth -> new SimpleGrantedAuthority(auth.getMemAuth())).collect(Collectors.toList()));
 		this.member = vo;
 	}
 }

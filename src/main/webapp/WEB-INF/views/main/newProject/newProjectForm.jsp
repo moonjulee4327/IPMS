@@ -1,5 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -81,6 +87,18 @@ background-color: #448AFF;
 	text-align: left;
 }
 </style>
+
+<script>
+	$(document).ready(function () {
+		$("#projName").change(function () {
+			var to = $("#projName").val();
+			$("#to").attr("value", to);
+			console.log(to);
+			$("#teamId").val(to);
+		})
+
+	})
+</script>
 </head>
 <div class="row">
 <div class="col-md-6" style="display: flex; float: left; width: 1000px;">
@@ -116,10 +134,16 @@ background-color: #448AFF;
 											<a href="#">View more</a>
 										</figcaption>
 									</figure><br/><br/>
-									
+
 									<div style=" text-align: center; padding-left:20px; ">
 										<button  type="button" class="btn btn-secondary ml-5" style="padding:11px 60px; background-color: #448AFF; color: white;"> <i class="feather icon-settings">&nbsp;&nbsp;</i>대표이미지 설정</button><br/><br/>
 									</div>
+									<form action="/main/uploadFormAction" method="post" enctype="multipart/form-data">
+<%--										?${_csrf.parameterName}=${_csrf.token}--%>
+										<input type='hidden' name='uploadFile' multiple />
+										<input type='hidden' value="전송" />
+										<sec:csrfInput />
+									</form>
 								</div>
 							</div>
 						</div>
@@ -131,6 +155,7 @@ background-color: #448AFF;
 <!-- 			zzz---------------------------------------------------------------------------------------------------------------- -->
 <div class="col-md-6"
 	style=" float: right; width: 1000px;">
+	<form action="/main/newProjectPost" method="post">
 	<div class="card-content collapse show">
 		<div class="card-body">
 			<div>
@@ -138,14 +163,14 @@ background-color: #448AFF;
 					<h4 class="form-section" style="padding-bottom: 5px;">
 						<i class="fa fa-file-text"></i> information
 					</h4>
-					<hr />
+
 					<br/><br/><br/>
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="userinput1">Project Name</label> <input type="text"
-									id="userinput1" class="form-control border-primary"
-									placeholder="Project Name" name="name" />
+								<label for="projName">Project Name</label>
+								<input type="text" id="projName"   class="form-control border-primary" placeholder="Project Name" name="projName" />
+								<input type="hidden" id="teamId"  name="teamId" />
 							</div>
 						</div>
 					</div>
@@ -154,27 +179,35 @@ background-color: #448AFF;
 						<div class="col-md-6">
 							<div class="form-group">
 							<div style="float: left">
-								<label for="userinput3">Project Start Date</label> 
-									<input type="date" id="userinput3" class="form-control border-primary" placeholder="Start Date" name="username" />
+								<label for="projStrtDate">Project Start Date</label>
+									<input type="date" id="projStrtDate" class="form-control border-primary" placeholder="Start Date" name="projStrtDate" />
 							</div>
 							<div style="float:right;">
-								<label for="userinput3">Project End Date</label> 
-									<input type="date" id="userinput3" class="form-control border-primary" placeholder="End Date" name="username" />
+								<label for="projEndDate">Project End Date</label>
+									<input type="date" id="projEndDate" class="form-control border-primary" placeholder="End Date" name="projEndDate" />
 							</div>
 							</div>
 						</div>
 					</div>
 					<br />
 					<div class="form-group">
-						<label for="userinput8">Project Introduce</label>
-						<textarea style="width:500px; resize: none;" id="userinput8" rows="9" class="form-control border-primary" placeholder="Project Introduce"></textarea>
+						<label for="projSmry">Project Introduce</label>
+						<textarea style="width:500px; resize: none;" id="projSmry" rows="9" name="projSmry" class="form-control border-primary" placeholder="Project Introduce"></textarea>
 					</div>
-							<button class="btn btn-primary">등록</button>
-							<button class="btn btn-primary">목록</button>
+							<input type="submit" class="btn btn-primary" value="등록"/>
+							<input type="button" class="btn btn-primary"  value="목록" onclick="location.href='/main/wholeProject'" />
 				</div>
 			</div>
 		</div>
 	</div>
+		<input type="hidden" name="memAuthList[0].memAuth" value="ROLE_PROJPL"/>
+		<sec:authorize access="isAuthenticated()">
+		<input type="hidden" name="memEmail" value="<sec:authentication property="principal.username"/>"/>
+		<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
+
+		</sec:authorize>
+		<sec:csrfInput/>
+	</form>
 </div>
 </div>
 

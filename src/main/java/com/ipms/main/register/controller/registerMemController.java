@@ -1,12 +1,16 @@
 package com.ipms.main.register.controller;
 
 import com.ipms.main.register.service.MemService;
-import com.ipms.main.vo.MemVO;
+import com.ipms.main.login.vo.MemberAuth;
+import com.ipms.main.login.vo.MemVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -14,24 +18,42 @@ import org.springframework.web.bind.annotation.*;
 public class registerMemController {
     @Autowired
     MemService memService;
+    @Autowired
+    private BCryptPasswordEncoder bcryptPasswordEncoder;
     //회원가입
     @RequestMapping(value = "/signUpForm" , method = RequestMethod.GET)
-    public String signUpFormGet(){
+    public String signUpFormGet(MemVO m){
         return "main/login/signUpForm";
     }
 
-    //회원가입post
+    /**
+     * 회원가입 POST
+     * @author KMG
+     * @param memVO
+     * @return
+     */
     @PreAuthorize("permitAll()")
     @RequestMapping(value = "/signUpForm" , method = RequestMethod.POST)
-    public String signUpForm(@ModelAttribute MemVO memVO)
+    public String signUpForm(@ModelAttribute MemVO memVO )
     {
-        log.info("memvo:::::"+memVO.toString());
-        log.info("memvo:::::"+memVO.getMemNum());
-        log.info("memvo:::::"+memVO.getEmail());
-        log.info("memvo:::::"+memVO.getPaswd());
+        String rawPw="";
+        String encodePw="";
+
+//        rawPw=memVO.getMemPasswd();
+//        encodePw = bcryptPasswordEncoder.encode(rawPw);
+//        memVO.setMemPasswd(encodePw);
         int result = this.memService.registerMember(memVO);
         log.info("result::"+result);
         if(result==1){
+            List<MemberAuth>list = memVO.getMemAuthList();
+            for(MemberAuth authVO : list){
+                if(authVO.getMemAuth()!=null){
+                    MemberAuth memberAuth = new MemberAuth();
+                    memberAuth.setMemCode(memVO.getMemCode());
+                    memberAuth.setMemAuth(authVO.getMemAuth());
+                    this.memService.authInsert(memberAuth);
+                }
+            }
             log.info("============================="+result);
             return "redirect:/main/page";
         }else{
@@ -39,11 +61,17 @@ public class registerMemController {
         }
     }
     @GetMapping("/memRegisterCheck")
-    public @ResponseBody int registerCheck(@RequestParam String email){
-        int result = this.memService.registerCheck(email);
+    public @ResponseBody int registerCheck(@RequestParam String memEmail){
+        int result = this.memService.registerCheck(memEmail);
         log.info("중복체크:::"+result);
         return result;
     }
+
+    /**
+     * @author KMG
+     * @param memVO
+     * @return
+     */
     @PostMapping(value = "/UpdatePwd")
     public String UpdatePwd( @ModelAttribute  MemVO memVO){
         int result = this.memService.UpdatePwd(memVO);

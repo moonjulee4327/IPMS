@@ -1,7 +1,7 @@
 package com.ipms.security;
 
-import com.ipms.main.vo.MemVO;
-import com.ipms.mapper.MemMapper;
+import com.ipms.main.login.vo.MemVO;
+import com.ipms.main.login.mapper.MemMapper;
 import com.ipms.security.domain.CustomUser;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-		log.warn("Load User By UserName : " + userName);
+			 MemVO mvo = this.memberMapper.read(userName);
 
-		// userName means userid
-		MemVO vo = memberMapper.read(userName);
+			 if(mvo != null){
+				 return new CustomUser(mvo);
+			 }else{
+				 throw  new UsernameNotFoundException("user with username"+userName);
+			 }
 
-		log.warn("queried by member mapper: " + vo);
-
-		return vo == null ? null : new CustomUser(vo);
 	}
 
 }

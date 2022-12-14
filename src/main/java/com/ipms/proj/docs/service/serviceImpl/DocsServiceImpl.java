@@ -19,27 +19,16 @@ public class DocsServiceImpl implements DocsService{
 	@Autowired
 	private DocsMapper docsMapper;
 	
-	// 폴더 생성
-	@Override
-	public int insertFolder(DocsVO docsVO) {
-		
-		log.info("docsVO foldName : {}", docsVO.getFoldName());
-		
-		FtpUtil.docsMkdir(docsVO.getFoldName());
-		
-		int result = docsMapper.insertFolder(docsVO);
-		
-		return result;
-	}
-	
 	// 폴더 조회 
 	@Override
-	public List<DocsVO> selectDocs(String projId) {
+	public List<DocsVO> selectDocs(DocsVO docsVO) {
 		
-		List<DocsVO> docsList = docsMapper.selectDocs(projId);
+		List<DocsVO> docsList = docsMapper.selectDocs(docsVO);
+		
 		if(docsList == null) {
 			return null;
 		}
+		
 		if( !docsList.isEmpty() && docsList != null ) {
 			// 데이터 잘 불러왔을 때
 			log.debug( "DocsServiceImpl - selectDocs() : st -> {}", docsList.get(0).getFoldName() );
@@ -52,6 +41,19 @@ public class DocsServiceImpl implements DocsService{
 		
 		return docsList;
 	}
-
 	
+	// 폴더 생성
+	@Override
+	public int insertFolder(DocsVO docsVO) {
+		
+		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
+		
+		FtpUtil.ftpDocsMkdir(docsVO.getFoldName());
+		
+		int result = docsMapper.insertFolder(docsVO);
+		
+		return result;
+	}
+	
+
 }
