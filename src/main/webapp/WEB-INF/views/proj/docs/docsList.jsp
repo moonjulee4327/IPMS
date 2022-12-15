@@ -78,6 +78,14 @@
 														id="user-image">
 												</fieldset>
 											</div>
+											<div class="modal-footer">
+												<fieldset
+													class="form-group position-relative has-icon-left mb-0">
+													<input type="submit" id="docsFileUploadBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="업로드">
+														<i class="fa fa-paper-plane-o d-block d-lg-none"></i> <span
+															class="d-none d-lg-block"></span>
+												</fieldset>
+											</div>
 											<sec:csrfInput/>
 										</form>
 									</section>
@@ -237,5 +245,9 @@
 <script type="text/javascript">
 	$("#insertFolderBtn").on("click", function(){
 		$("#insertFolder").submit();
+	});
+	
+	$("#docsFileUploadBtn").on("click", function(){
+		$("#fileUploadForm").submit();
 	});
 </script>

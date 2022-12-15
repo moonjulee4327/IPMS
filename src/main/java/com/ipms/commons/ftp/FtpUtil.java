@@ -1,10 +1,17 @@
 package com.ipms.commons.ftp;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -18,11 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 public class FtpUtil {
 	
 	// FTP 서버의 아이피 주소
-	private static final String host = "192.168.36.62"; // 서버 컴 : 192.168.142.9
+	private static final String host = "192.168.42.54"; // 서버 컴 : 192.168.142.9
 	// FTP 포트번호 (기본값 21)
 	private static final int port = 21;
 	// user name
-	private static final String user = "IPMSFOLDER"; // 서버 컴 : finalproj
+	private static final String user = "mjmj"; // 서버 컴 : finalproj
 	// user password
 	private static final String pwd = "java";
 	
@@ -66,6 +73,8 @@ public class FtpUtil {
 		
 		try {
 			ftp.login(user, pwd);
+			ftp.setFileType(FTP.BINARY_FILE_TYPE);
+			ftp.enterLocalPassiveMode();
 		} catch (IOException e) {
 			log.error("FtpUtil - ftpServerConnect -> FTP 서버 로그인 에러");
 			e.printStackTrace();
@@ -79,10 +88,11 @@ public class FtpUtil {
 	
 	/**
 	 * 폴더 생성
+	 * 추후 폴더를 생성하는 경로 파라미터 추가
 	 * @param foldName
 	 * @return
 	 */
-	public static boolean ftpDocsMkdir(String foldName) {
+	public static boolean ftpDocsMkdir(String path, String foldName) {
 		
 		boolean flag = false;
 		
@@ -98,8 +108,11 @@ public class FtpUtil {
 				
 			}
 			
+			ftp.changeWorkingDirectory(path);
+			log.info("FtpUtil - ftpDocsMkdir -> 현재 작업디랙토리는 {}", ftp.printWorkingDirectory());
+			
 			// 나중에 프로젝트 아이디와 폴더함 번호 받아서 프로젝트 별 폴더 생성 구현하기
-			flag = ftp.makeDirectory("/" + foldName);
+			flag = ftp.makeDirectory(foldName);
 			
 		} catch (IOException e) {
 			log.error("FtpUtil - docsMkdir -> FTP 폴더 만들기 오류");
@@ -118,19 +131,28 @@ public class FtpUtil {
 	}
 	
 	
+	/**
+	 * 파일 업로드 메소드
+	 * 추후 파일을 업로드하는 경로를 파라미터로 추가
+	 * @param file : input 태그 파라미터
+	 */
 	public static void ftpFileUpload(MultipartFile file) {
 		
 		FTPClient ftp = ftpServerConnect();
 		
 		try(InputStream is = file.getInputStream();
-				OutputStream os = ftp.storeFileStream(file.getName());
+				OutputStream os = ftp.storeFileStream(file.getOriginalFilename());
+				BufferedInputStream bis = new BufferedInputStream(is);
+				BufferedOutputStream bos = new BufferedOutputStream(os);
 			) {
 			
+			// 나중에 경로를 바꾸자
+//			ftp.changeWorkingDirectory("/");
 			byte[] buffer = new byte[1024];
 			int length = -1;
 			
-			while( (length = is.read(buffer, 0, buffer.length)) != -1) {
-				os.write(buffer, 0, length);
+			while( (length = bis.read(buffer, 0, buffer.length)) != -1) {
+				bos.write(buffer, 0, length);
 			}
 			
 		} catch (IOException e) {
@@ -146,6 +168,32 @@ public class FtpUtil {
 			
 		}
 		
-		
 	}
+	
+	public static List<DocsVO> ftpGetDir(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<DocsVO> docsVOList = null;
+		
+		try {
+			ftp.changeWorkingDirectory(path);
+			FTPFile[] files = ftp.listFiles();
+			docsVOList = new ArrayList<DocsVO>();
+			
+			for(int i = 0; i < files.length; i++) {
+				DocsVO docsVO = new DocsVO();
+				docsVO.setFoldName(files[i].getName());
+				
+				docsVOList.add(docsVO);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return docsVOList;
+	}
+	
+	
 }

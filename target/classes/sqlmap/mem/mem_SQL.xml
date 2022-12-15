@@ -52,7 +52,7 @@
         <result property="memName" column="MEM_NAME" />
         <result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />
         <result property="memWhdrlWhth" column="MEM_WHDRL_YN" />
-        <result property="projImgRoute" column="PROJ_IMG_ROUTE" />
+        <result property="memImgRoute" column="proj_img_route" />
         <result property="memSgnupDate" column="MEM_SGNUP_DATE" />
         <collection property="memAuthList" resultMap="authMap"></collection>
     </resultMap>
@@ -70,7 +70,7 @@
         ,A.mem_name
         ,A.mem_phone_number
         ,A.mem_sgnup_date
-        ,A.mem_img_route
+        ,A.proj_img_route
         ,A.mem_whdrl_yn
         ,B.mem_auth
         FROM mem A
@@ -92,7 +92,7 @@
     <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
         INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
         values
-            (#{memCode},'1',#{memAuth})
+            (#{memCode},'0',#{memAuth})
     </insert>
 </mapper>
 

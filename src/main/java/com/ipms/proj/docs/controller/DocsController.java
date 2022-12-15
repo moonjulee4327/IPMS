@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.proj.docs.service.DocsService;
@@ -29,7 +30,7 @@ public class DocsController {
 	private DocsService docsService;
 	
 	/**
-	 * 문서함의 폴더 조회 
+	 * 문서함의 폴더 조회(DB만)
 	 * @param projId : 추후 프로젝트 구성원 ID 받을 것
 	 * @param model
 	 * @return 문서함 최상위
@@ -37,13 +38,24 @@ public class DocsController {
 	@GetMapping("/docs")
 	public String docs(@ModelAttribute DocsVO docsVO, Model model) {
 		
-		docsVO.setProjId("P001");
+		// DB로만 구현
+//		docsVO.setProjId("P001");
+//		
+//		
+//		List<DocsVO> docsList = docsService.selectDocs(docsVO);
+//		
+//		if( !docsList.isEmpty() && docsList != null ) {
+//			log.info("DocsController - docs() : st -> {}", docsList.get(0).getFoldName());
+//		}else {
+//			FtpUtil.ftpDocsMkdir("/", docsVO.getProjId());
+//			docsVO.setFoldName(docsVO.getProjId());
+//			docsService.insertFolder(docsVO);
+//		}
+//		
+//		model.addAttribute("docsList", docsList);
 		
-		List<DocsVO> docsList = docsService.selectDocs(docsVO);
-		
-		if( !docsList.isEmpty() && docsList != null ) {
-			log.info("DocsController - docs() : st -> {}", docsList.get(0).getFoldName());
-		}
+		// FTPClient 내장 메소드 사용
+		List<DocsVO> docsList = FtpUtil.ftpGetDir("/");
 		
 		model.addAttribute("docsList", docsList);
 		
@@ -59,6 +71,7 @@ public class DocsController {
 	@PostMapping("/docsMkdir")
 	public String insertFolder(@ModelAttribute DocsVO docsVO) {
 		
+		
 		if( docsVO != null ) {
 			log.info("DocsController - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
 		}
@@ -71,12 +84,27 @@ public class DocsController {
 			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
 		}
 		
+		
+		
 		return "redirect:/proj/docs";
 		
 	}
 	
-	
-	
+	/**
+	 * @param docsFile
+	 * @return
+	 */
+	@PostMapping("/docsFileUpload")
+	public String docsFileUpload(MultipartFile docsFile) {
+		
+		if( docsFile != null && !docsFile.isEmpty() ) {
+			log.info("DocsController - docsFileUpload() : uploadFile.getOriginalFilename() -> {}", docsFile.getOriginalFilename());
+		}
+		
+		FtpUtil.ftpFileUpload(docsFile);
+		
+		return "redirect:/proj/docs";
+	}
 	
 	
 }

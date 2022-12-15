@@ -48,7 +48,7 @@ public class DocsServiceImpl implements DocsService{
 		
 		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
 		
-		FtpUtil.ftpDocsMkdir(docsVO.getFoldName());
+		FtpUtil.ftpDocsMkdir("P001", docsVO.getFoldName());
 		
 		int result = docsMapper.insertFolder(docsVO);
 		
