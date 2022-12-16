@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.proj.docs.mapper.DocsMapper;
@@ -53,6 +54,13 @@ public class DocsServiceImpl implements DocsService{
 		int result = docsMapper.insertFolder(docsVO);
 		
 		return result;
+	}
+
+	@Override
+	public void fileUpload(MultipartFile docsFile) {
+		
+		FtpUtil.ftpFileUpload(docsFile);
+		
 	}
 	
 

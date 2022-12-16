@@ -3,6 +3,7 @@ package com.ipms.proj.docs.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.ipms.commons.ftp.FtpUtil;
+import com.ipms.commons.vo.IntgAttachFileVO;
 import com.ipms.proj.docs.service.DocsService;
 import com.ipms.proj.docs.vo.DocsVO;
 
@@ -36,11 +37,10 @@ public class DocsController {
 	 * @return 문서함 최상위
 	 */
 	@GetMapping("/docs")
-	public String docs(@ModelAttribute DocsVO docsVO, Model model) {
+	public String docs(@ModelAttribute DocsVO docsVO, Model model, @RequestParam(required = false) String foldName) {
 		
 		// DB로만 구현
 //		docsVO.setProjId("P001");
-//		
 //		
 //		List<DocsVO> docsList = docsService.selectDocs(docsVO);
 //		
@@ -55,9 +55,20 @@ public class DocsController {
 //		model.addAttribute("docsList", docsList);
 		
 		// FTPClient 내장 메소드 사용
-		List<DocsVO> docsList = FtpUtil.ftpGetDir("/");
+		List<DocsVO> docsList = null;
+		List<IntgAttachFileVO> fileList = null;
+		log.info("DocsController - docs -> foldName : {}", foldName);
 		
+		if(foldName != null) {
+			docsList = FtpUtil.ftpGetDir("/" + foldName);
+			fileList = FtpUtil.ftpGetFile("/" + foldName);
+		}else {
+			docsList = FtpUtil.ftpGetDir("/");
+			fileList = FtpUtil.ftpGetFile("/");
+		}
+		model.addAttribute("foldNm",foldName);
 		model.addAttribute("docsList", docsList);
+		model.addAttribute("fileList", fileList);
 		
 		return "proj/docs/docsList";
 	}
@@ -84,13 +95,12 @@ public class DocsController {
 			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
 		}
 		
-		
-		
 		return "redirect:/proj/docs";
 		
 	}
 	
 	/**
+	 * 파일 업로드
 	 * @param docsFile
 	 * @return
 	 */
@@ -101,7 +111,7 @@ public class DocsController {
 			log.info("DocsController - docsFileUpload() : uploadFile.getOriginalFilename() -> {}", docsFile.getOriginalFilename());
 		}
 		
-		FtpUtil.ftpFileUpload(docsFile);
+		docsService.fileUpload(docsFile);
 		
 		return "redirect:/proj/docs";
 	}

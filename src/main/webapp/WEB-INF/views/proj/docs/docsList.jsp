@@ -170,10 +170,11 @@
 													</a>
 												</td>
 											</tr>
+											<!-- 폴더 조회 -->
 											<c:forEach var="docsList" items="${docsList}">
 											<tr role="row" class="odd">
 												<!-- 구분 컬럼 -->
-												<td class=""><i class="feather icon-folder"></i><i class="feather icon-file"></i>폴더</td>
+												<td class=""><i class="feather icon-folder"></i>폴더</td>
 												<!-- 명 컬럼 -->
 												<td class="sorting_1">
 													<div class="media">
@@ -183,7 +184,7 @@
 															</span>
 														</div>
 														<div class="media-body media-middle mt-50">
-															<a class="media-heading name" href="#">${docsList.foldName}</a>
+															<a class="media-heading name" href="/proj/docs?foldName=${docsList.foldName}">${docsList.foldName}</a>
 														</div>
 													</div>
 												</td>
@@ -192,6 +193,43 @@
 												<a class="email">${docsList.foldName}</a></td>
 												<!-- 등록일자 컬럼 -->
 												<td class="date">+125-654-564</td>
+												<!-- 기능 컬럼 -->
+												<td>
+													&nbsp;
+													<a data-toggle="modal" data-target="#EditContactModal" class="primary edit mr-1">
+														<i class="feather icon-download"></i>
+													</a>
+													 
+													<a class="danger delete mr-1">
+														<i class="fa fa-trash-o"></i>
+													</a>
+												</td>
+											</tr>
+											</c:forEach>
+											
+											<!-- 파일 조회 -->
+											<c:forEach var="fileList" items="${fileList}">
+											<tr role="row" class="odd">
+												<!-- 구분 컬럼 -->
+												<td class=""><i class="feather icon-file"></i>파일</td>
+												<!-- 명 컬럼 -->
+												<td class="sorting_1">
+													<div class="media">
+														<div class="media-left pr-1">
+															<span>
+																<i></i>
+															</span>
+														</div>
+														<div class="media-body media-middle mt-50">
+															<a class="media-heading name" href="#">${fileList.fileName}</a>
+														</div>
+													</div>
+												</td>
+												<!-- 등록자 컬럼 -->
+												<td class="text-center">
+												<a class="email">${fileList.fileName}</a></td>
+												<!-- 등록일자 컬럼 -->
+												<td class="date">${fileList.rgstDate}</td>
 												<!-- 기능 컬럼 -->
 												<td>
 													&nbsp;

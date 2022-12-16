@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.net.ftp.FTP;
@@ -17,6 +19,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ipms.commons.vo.IntgAttachFileVO;
 import com.ipms.proj.docs.vo.DocsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -170,30 +173,85 @@ public class FtpUtil {
 		
 	}
 	
+	/**
+	 * 폴더만 조회 
+	 * @param path
+	 * @return
+	 */
 	public static List<DocsVO> ftpGetDir(String path) {
 		
 		FTPClient ftp = ftpServerConnect();
 		
 		List<DocsVO> docsVOList = null;
+		String temp = "";
+		
+		log.info("FtpUtil - ftpGetDir -> path : {}", path);
+		
+		if(!path.equals("/")) {
+			temp += "/" + path;
+		}
+		
+		log.info("FtpUtil - ftpGetDir -> temp : {}", temp);
 		
 		try {
-			ftp.changeWorkingDirectory(path);
+			ftp.changeWorkingDirectory(temp);
 			FTPFile[] files = ftp.listFiles();
 			docsVOList = new ArrayList<DocsVO>();
 			
-			for(int i = 0; i < files.length; i++) {
+			for(FTPFile file : files) {
 				DocsVO docsVO = new DocsVO();
-				docsVO.setFoldName(files[i].getName());
 				
-				docsVOList.add(docsVO);
+				if(file.isDirectory()) {
+					docsVO.setFoldName(file.getName());
+					docsVOList.add(docsVO);
+				}
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		
 		return docsVOList;
+		
 	}
 	
+	/**
+	 * 파일만 조회
+	 * @param path
+	 * @return
+	 */
+	public static List<IntgAttachFileVO> ftpGetFile(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<IntgAttachFileVO> intgAttachFileVOList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date regDate = null;
+		
+		try {
+			ftp.changeWorkingDirectory(path);
+			FTPFile[] files = ftp.listFiles();
+			intgAttachFileVOList = new ArrayList<IntgAttachFileVO>();
+			
+			for(FTPFile file : files) {
+				IntgAttachFileVO intgAttachFileVO = new IntgAttachFileVO();
+				
+				if(file.isFile()) {
+					intgAttachFileVO.setFileName(file.getName());
+					intgAttachFileVO.setFileSize(file.getSize());
+					
+					regDate = file.getTimestamp().getTime();
+					intgAttachFileVO.setRgstDate(regDate);
+					
+					intgAttachFileVOList.add(intgAttachFileVO);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return intgAttachFileVOList;
+	}
 	
 }
