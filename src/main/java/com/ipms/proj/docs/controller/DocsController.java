@@ -66,7 +66,7 @@ public class DocsController {
 			docsList = FtpUtil.ftpGetDir("/");
 			fileList = FtpUtil.ftpGetFile("/");
 		}
-		model.addAttribute("foldNm",foldName);
+		
 		model.addAttribute("docsList", docsList);
 		model.addAttribute("fileList", fileList);
 		
@@ -79,23 +79,30 @@ public class DocsController {
 	 * @param foldName : 추후 VO로 받을 것
 	 * @return 문서함 최상위로 리턴 추후, 폴더를 생성한 폴더로 바꿔주기
 	 */
+	@ResponseBody
 	@PostMapping("/docsMkdir")
-	public String insertFolder(@ModelAttribute DocsVO docsVO) {
+	public boolean insertFolder(String path, String newFoldName) {
 		
-		
-		if( docsVO != null ) {
-			log.info("DocsController - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
+		if( newFoldName != "" || newFoldName != null ) {
+			log.info("DocsController - insertFolder() : newFoldName -> {}", newFoldName);
 		}
 		
-		int result = docsService.insertFolder(docsVO);
-		
-		if(result > 0) {
-			log.info("DocsController - insertFolder() : 폴더 생성 완료");
-		}else {
-			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
+		if( path != "" || path != null ) {
+			log.info("DocsController - insertFolder() : path -> {}", path);
 		}
 		
-		return "redirect:/proj/docs";
+		boolean flag = FtpUtil.ftpDocsMkdir(path, newFoldName);
+		
+//		int result = docsService.insertFolder(docsVO);
+//		
+//		if(result > 0) {
+//			log.info("DocsController - insertFolder() : 폴더 생성 완료");
+//		}else {
+//			log.info("DocsController - insertFolder() : 폴더 생성 실패!!!");
+//		}
+		
+//		return "redirect:/proj/docs";
+		return flag;
 		
 	}
 	

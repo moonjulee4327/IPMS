@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FtpUtil {
 	
 	// FTP 서버의 아이피 주소
-	private static final String host = "192.168.42.54"; // 서버 컴 : 192.168.142.9
+	private static final String host = "192.168.42.50"; // 서버 컴 : 192.168.142.9
 	// FTP 포트번호 (기본값 21)
 	private static final int port = 21;
 	// user name

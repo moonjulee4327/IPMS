@@ -1,14 +1,14 @@
-package com.ipms.main.serviceCenter.svcQaA.service;
+package com.ipms.main.serviceCenter.svcQaA.mapper;
 
 import java.util.List;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 
-public interface SvcQaAService {
+public interface SvcQaAMapper {
 	
-	// Q&A 조회
 	public List<SvcQaAVO> svcQaASelect(Criteria criteria);
 	
 	public int total(String memCode);
+	
 }

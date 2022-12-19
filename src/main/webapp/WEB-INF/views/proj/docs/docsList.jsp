@@ -2,7 +2,52 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
+<link rel="apple-touch-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
+<link rel="shortcut icon" type="image/x-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/favicon.ico">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/animate/animate.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/sweetalert2.min.css">
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/vertical-menu.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
+<!-- END: Page CSS-->
+
+<link rel="apple-touch-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
+<link rel="shortcut icon" type="image/x-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/favicon.ico">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
+
+<!-- BEGIN: Vendor CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/nestable.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/jstree/themes/default/style.css">
+<!-- <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/bootstrap-treeview.min.css"> -->
+<!-- END: Vendor CSS-->
+
+<!-- BEGIN: Theme CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap-extended.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/colors.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/components.css">
+<!-- END: Theme CSS-->
+
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/extensions/ex-component-treeview.css">
+<!-- END: Page CSS-->
+
+<!-- BEGIN: Custom CSS-->
+<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
+<!-- END: Custom CSS-->
+
 <script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
 	h5 {
@@ -28,8 +73,6 @@
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<section class="contact-form">
-										<!-- <form id="form-add-contact" class="contact-input"> -->
-										<form id="insertFolder" action="/proj/docsMkdir" method="post" >
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">폴더 만들기</h5>
 												<button type="button" class="close" data-dismiss="modal"
@@ -45,14 +88,11 @@
 											<div class="modal-footer">
 												<fieldset
 													class="form-group position-relative has-icon-left mb-0">
-													<input type="submit" id="insertFolderBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="생성하기">
+													<input type="button" id="makeFolderBtn" class="btn btn-info add-contact-item" value="생성하기">
 														<i class="fa fa-paper-plane-o d-block d-lg-none"></i> <span
 															class="d-none d-lg-block"></span>
 												</fieldset>
 											</div>
-											<sec:csrfInput/>
-										</form>
-										<!-- </form> -->
 									</section>
 								</div>
 							</div>
@@ -102,6 +142,7 @@
 				</div>
 			</div>
 			<div class="card-content">
+				<div class="card-body border rounded jstree jstree-2 jstree-default" id="jstree-example-2" role="tree" aria-multiselectable="true" tabindex="0" aria-activedescendant="j2_1" aria-busy="false"><ul class="jstree-container-ul jstree-children" role="group"><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_1_anchor" aria-expanded="false" id="j2_1" class="jstree-node  jstree-closed"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_1_anchor"><i class="jstree-icon jstree-themeicon feather icon-folder jstree-themeicon-custom" role="presentation"></i>css</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_4_anchor" aria-expanded="true" id="j2_4" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_4_anchor"><i class="jstree-icon jstree-themeicon feather icon-folder jstree-themeicon-custom" role="presentation"></i>img</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_5_anchor" id="j2_5" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_5_anchor"><i class="jstree-icon jstree-themeicon feather icon-image text-success jstree-themeicon-custom" role="presentation"></i>bg.jpg</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_6_anchor" id="j2_6" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_6_anchor"><i class="jstree-icon jstree-themeicon feather icon-image text-success jstree-themeicon-custom" role="presentation"></i>logo.png</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_7_anchor" id="j2_7" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_7_anchor"><i class="jstree-icon jstree-themeicon feather icon-image text-success jstree-themeicon-custom" role="presentation"></i>avatar.png</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_8_anchor" aria-expanded="true" id="j2_8" class="jstree-node  jstree-open"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_8_anchor"><i class="jstree-icon jstree-themeicon feather icon-folder jstree-themeicon-custom" role="presentation"></i>js</a><ul role="group" class="jstree-children"><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_9_anchor" id="j2_9" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_9_anchor"><i class="jstree-icon jstree-themeicon fa fa-code text-warning jstree-themeicon-custom" role="presentation"></i>jquery.js</a></li><li role="treeitem" aria-selected="false" aria-level="2" aria-labelledby="j2_10_anchor" id="j2_10" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_10_anchor"><i class="jstree-icon jstree-themeicon fa fa-code text-warning jstree-themeicon-custom" role="presentation"></i>app.js</a></li></ul></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_11_anchor" id="j2_11" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_11_anchor"><i class="jstree-icon jstree-themeicon fa fa-html5 text-danger jstree-themeicon-custom" role="presentation"></i>index.html</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_12_anchor" id="j2_12" class="jstree-node  jstree-leaf"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_12_anchor"><i class="jstree-icon jstree-themeicon fa fa-html5 text-danger jstree-themeicon-custom" role="presentation"></i>page-one.html</a></li><li role="treeitem" aria-selected="false" aria-level="1" aria-labelledby="j2_13_anchor" id="j2_13" class="jstree-node  jstree-leaf jstree-last"><i class="jstree-icon jstree-ocl" role="presentation"></i><a class="jstree-anchor" href="#" tabindex="-1" id="j2_13_anchor"><i class="jstree-icon jstree-themeicon fa fa-html5 text-danger jstree-themeicon-custom" role="presentation"></i>page-two.html</a></li></ul></div>
 				<div class="card-body">
 					<!-- Task List table -->
 					<div class="table-responsive">
@@ -279,13 +320,133 @@
 		</div>
 	</div>
 </section>
+<!-- BEGIN: Page Vendor JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/polyfill.min.js"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/extensions/sweet-alerts.js"></script>
+<!-- END: Page JS-->
+
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/nestable.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/jstree.js"></script>
+<!-- <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/bootstrap-treeview.min.js"></script> -->
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Theme JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
+<!-- END: Theme JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/ex-component-treeview.js"></script>
+<!-- END: Page JS-->
 
 <script type="text/javascript">
-	$("#insertFolderBtn").on("click", function(){
-		$("#insertFolder").submit();
-	});
 	
+	$('#jstree-example-2').jstree({ 'core' : {
+		  'data' : [
+		      { "id" : "ajson1", "parent" : "#", "text" : "Simple root node","icon":"jstree-icon jstree-themeicon feather icon-image text-success jstree-themeicon-custom" },
+		      { "id" : "ajson2", "parent" : "#", "text" : "Root node 2" },
+		      { "id" : "ajson3", "parent" : "ajson2", "text" : "Child 1" ,"icon": "glyphicon glyphicon-leaf"},
+		      { "id" : "ajson4", "parent" : "ajson2", "text" : "Child 2" ,"icon": "glyphicon glyphicon-leaf"},
+		    ]
+		  } 
+		});
+	
+	// 1.폴더 생성 모달창 버튼 이벤트 
+	// 	 input 태그 초기화
+	// 2. 폴더 이름 정규식 체크
+	//    통과 못하면 alert 띄우기
+	//    통과시 폴더 생성
+	let makeFolderBtn = $("#makeFolderBtn");
+	let foldName = $("#foldName");
+	makeFolderBtn.on("click", function(){
+		let newFoldName = foldName.val();
+		// 특수 문자 체크(로직 상 안됨)
+		const regExp1 = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+		const regExp2 = /\s/g;
+
+		let reg1 = regExp1.test(newFoldName);
+		let reg2 = regExp2.test(newFoldName);
+
+		if(reg1){
+			foldName.val("");
+			Swal.fire({
+				title: "특수문자는 사용할 수 없습니다.",
+				animation: false,
+				customClass: "animated flipInX",
+				confirmButtonClass: "btn btn-danger",
+				buttonsStyling: false
+			});
+			return;
+		}else if(reg2 || newFoldName == ""){
+			foldName.val("");
+			Swal.fire({
+				title: "공백은 허용되지 않습니다.",
+				animation: false,
+				customClass: "animated flipInX",
+				confirmButtonClass: "btn btn-danger",
+				buttonsStyling: false
+			});
+			return;
+		}
+		
+		foldName.val("");
+		$("#AddFoder").modal("hide");
+		fn_makeFold("/",newFoldName);
+	});
+
+	// 폴더 생성 함수
+	function fn_makeFold(path, newFoldName){
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+		$.ajax({
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			url : "/proj/docsMkdir",
+			method : "post",
+			data : {path : path, newFoldName : newFoldName},
+			dataType : "json",
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			success : function(resp){
+				if(resp){
+					alert("폴더 생성 완료");
+				}
+			}
+		});
+	}
+
+
+	// 폴더를 조회 할 경로를 파라미터로 넘긴다.
+	// 폴더 추가 버튼 시작 ===================================================
+// 	$("#insertFolderBtn").on("click", function(){
+// 		// $("#insertFolder").submit();
+// 		$.ajax({
+// 			url : "",
+// 			method : "",
+// 			dataType : "",
+
+// 		})
+
+
+
+// 	});
+	// 폴더 추가 버튼 끝 =====================================================
+
+	// 파일 추가 버튼 시작 ===================================================
 	$("#docsFileUploadBtn").on("click", function(){
 		$("#fileUploadForm").submit();
 	});
+	// 파일 추가 버튼 끝 ===================================================
 </script>
