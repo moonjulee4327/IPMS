@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ipms.commons.vo.FtpVO;
 import com.ipms.commons.vo.IntgAttachFileVO;
 import com.ipms.proj.docs.vo.DocsVO;
 
@@ -28,11 +30,11 @@ import lombok.extern.slf4j.Slf4j;
 public class FtpUtil {
 	
 	// FTP 서버의 아이피 주소
-	private static final String host = "192.168.42.50"; // 서버 컴 : 192.168.142.9
+	private static final String host = "192.168.142.9"; // 서버 컴 : 192.168.142.9, 192.168.42.49
 	// FTP 포트번호 (기본값 21)
 	private static final int port = 21;
 	// user name
-	private static final String user = "mjmj"; // 서버 컴 : finalproj
+	private static final String user = "finalproj"; // 서버 컴 : finalproj
 	// user password
 	private static final String pwd = "java";
 	
@@ -252,6 +254,55 @@ public class FtpUtil {
 		}
 		
 		return intgAttachFileVOList;
+	}
+	
+	
+	public static List<FtpVO> getList(String path) {
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		List<FtpVO> ftpVOList = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date regDate = null;
+		String tempDate;
+		
+		try {
+			ftp.changeWorkingDirectory(path);
+			FTPFile[] listFiles = ftp.listFiles();
+			
+			ftpVOList = new ArrayList<FtpVO>();
+//			int parentId = 0;
+			for(FTPFile file : listFiles) {
+				FtpVO ftpVO = new FtpVO();
+//				if(file.isDirectory() == true) {
+//					ftp.changeWorkingDirectory(path+"/"+file.getName());
+//					FTPFile[] rowListFiles = ftp.listFiles();
+//					for (FTPFile ftpFile : rowListFiles) {
+//						
+//					}
+					
+				ftpVO.setText(file.getName());
+				ftpVO.setSize(file.getSize());
+				
+				regDate = file.getTimestamp().getTime();
+				tempDate = sdf.format(regDate);
+				
+				ftpVO.setRegDate(tempDate);
+				if(file.isDirectory()) {
+					ftpVO.setDir(true);
+				}
+				
+				ftpVOList.add(ftpVO);
+					
+			}
+//				parentId++;
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return ftpVOList;
 	}
 	
 }
