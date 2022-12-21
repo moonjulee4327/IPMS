@@ -2,47 +2,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<link rel="apple-touch-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
-<link rel="shortcut icon" type="image/x-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/favicon.ico">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
 
 <!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/animate/animate.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/sweetalert2.min.css">
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/vertical-menu.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
 <!-- END: Page CSS-->
 
-<link rel="apple-touch-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
-<link rel="shortcut icon" type="image/x-icon" href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/favicon.ico">
-<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i%7COpen+Sans:300,300i,400,400i,600,600i,700,700i" rel="stylesheet">
 
 <!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/nestable.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/jstree/themes/default/style.css">
 <!-- <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/extensions/bootstrap-treeview.min.css"> -->
 <!-- END: Vendor CSS-->
 
 <!-- BEGIN: Theme CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/bootstrap-extended.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/colors.css">
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/components.css">
 <!-- END: Theme CSS-->
 
 <!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/extensions/ex-component-treeview.css">
 <!-- END: Page CSS-->
 
 <!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
 <!-- END: Custom CSS-->
 
 <script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
@@ -62,7 +46,7 @@
 				<div class="card-header">
 					<h1 class="card-title" style="font-family: 'MICEGothic Bold'">문서함</h1>
 					<div class="heading-elements mt-0">
-						<button class="btn btn-primary btn-md" data-toggle="modal"
+						<button id="newdir" class="btn btn-primary btn-md" data-toggle="modal"
 							data-target="#AddFoder">
 							<i class="d-md-none d-block feather icon-plus white"></i> <span
 								class="d-md-block d-none"><i class="icon-folder-alt"></i>&nbsp;폴더 만들기</span>
@@ -75,7 +59,7 @@
 									<section class="contact-form">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">폴더 만들기</h5>
-												<button type="button" class="close" data-dismiss="modal"
+												<button id="folerClose" type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
 												</button>
@@ -107,7 +91,7 @@
 										<form id="fileUploadForm" class="contact-input" action="/proj/docsFileUpload" method="post" enctype="multipart/form-data">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">파일 업로드</h5>
-												<button type="button" class="close" data-dismiss="modal"
+												<button id="fileClose" type="button" class="close" data-dismiss="modal"
 													aria-label="Close">
 													<span aria-hidden="true">×</span>
 												</button>
@@ -121,7 +105,7 @@
 											<div class="modal-footer">
 												<fieldset
 													class="form-group position-relative has-icon-left mb-0">
-													<input type="submit" id="docsFileUploadBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="업로드">
+													<input type="button" id="docsFileUploadBtn" class="btn btn-info add-contact-item" data-dismiss="modal" value="업로드">
 														<i class="fa fa-paper-plane-o d-block d-lg-none"></i> <span
 															class="d-none d-lg-block"></span>
 												</fieldset>
@@ -207,7 +191,7 @@
 													
 												</td>
 												<!-- 등록일자 컬럼 -->
-												<td id="colDate" class="date"></td>
+												<td id="colRegDate" class="date"></td>
 												<!-- 기능 컬럼 -->
 												<td>
 													&nbsp;
@@ -236,7 +220,6 @@
 </section>
 
 <!-- BEGIN: Page Vendor JS-->
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/polyfill.min.js"></script>
 <!-- END: Page Vendor JS-->
@@ -255,8 +238,6 @@
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
-<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
@@ -275,23 +256,25 @@
 	let thisId = 1;								
 	let thisParent = 1;							
 	
+	// 페이지 로드 시 한번 실행
+	// 자기 호출 익명함수
 	!function(){
 		$.ajax({
 			url : "/proj/docTest",
 			method : "get",
 			data : {
-				path : "/P001"
+				path : "P001"
 			},
 			dataType : "json",
 			success : function(resp){
-				let root = fn_makeTreeObj(id, "#", "P001");
+				let root = fn_makeTreeObj(id, "#", "/P001");
 				treeData.push(root);
 				contentArea.empty();
 				$.each(resp, function(index, data){
 					if(data.dir == true){
 						id++;
 						let treeObj = fn_makeTreeObj(id, 1, data.text);
-						console.log("찍힘");
+						console.log(data);
 						
 						treeData.push(treeObj);
 					}
@@ -335,12 +318,13 @@
 		return treeObj;
 	}
 	
+	// path를 구해주는 함수
 	function fn_makePath(text, parents) {
 		let path = "";
 		for (let i = parents.length - 1; i >= 0; i--) {
 			let id = parents[i];
 			let temp = treeArea.jstree(true).get_node(id).text;
-			if(temp == "내 문서") continue;
+			if(temp == "P001") continue;
 			if (id == "#") {
 				continue;
 			} else {
@@ -349,11 +333,14 @@
 			path += temp;
 		}
 		path += ("/" + text);
-		if(text == "내 문서") path = "";
+		// 여기 고침
+		if(text == "P001") path = "";
 		thisPath = path;
+		console.log("fn_makePath - thisPath -> ", thisPath);
 		return path;
 	}
 
+	// jstree 자식 추가
 	function fn_addChild(data) {
 		let test = treeArea.jstree("create_node", data.parent, data, "last",
 			function(new_node) {
@@ -362,6 +349,7 @@
 			});
 	}
 
+	// jstree 선택시 비동기 통신
 	treeArea.on('select_node.jstree', function(e, data) {
 		treeArea.jstree("open_node", treeArea
 				.jstree("get_selected"));
@@ -371,6 +359,9 @@
 		let path = fn_makePath(text, parents);
 		let children = data.node.children;
 		thisPath = path;
+
+		console.log("treeArea - thisPath -> ", thisPath);
+		
 		thisId = parent;
 		thisParent = parents[0];
 		console.log("thisId", thisId);
@@ -404,21 +395,42 @@
 		});
 	})
 
+	function getByteSize(size){
+		const byteUnits = ["KB", "MB", "GB", "TB"];
+		
+		for(let i=0;i<byteUnits.length;i++) {
+			size = Math.floor(size / 1024);
+		  if(size<1024) return size.toFixed(1) + byteUnits[i];
+		}
+	}
+
 	function fn_makeBlock(data){
+		let division = "";
+		let divisionIcon = "";
 		let text = data.text;
+		let size = data.size;
+		let volume = "";
+		let regDate = data.regDate;
 		let dotIndex = text.lastIndexOf(".");
 		let fileExtention = text.substring(dotIndex+1, text.length);
 		let listTd;
 		let cutText = "";
 		
-		// if(data.dir){
-		// 	imgTag = fn_makeDirImg(text);
-		// }else{
-		// 	imgTag = fn_makeExtensionImg(fileExtention);
-		// }
+
+		console.log(data);
 		
-		if(text.length > 8){
-			cutText = text.substring(0,8) + "..";
+		if(data.dir){
+			division = "폴더";
+			divisionIcon = "fa fa-folder-open";
+			volume = "-"; 
+		}else{
+			division = "파일";
+			divisionIcon = "feather icon-file";
+			volume = getByteSize(size);
+		}
+		
+		if(text.length > 20){
+			cutText = text.substring(0,20) + "..";
 		}else{
 			cutText = text;
 		}
@@ -438,14 +450,36 @@
 		// 		</td>
 		// 	</tr>
 		// </tbody>
+		// <i class="feather icon-folder"></i>
 
 		let contentBlock = $("<tr>").attr("role", "row").attr("class", "odd")
 								.append(
+									$("<td>").attr("class", "sorting_1").append(
+										$("<i>").attr("class", divisionIcon)
+									).append(
+											$("<p>").attr("id", "coldivision").html(division)
+									)
+								).append(
 									$("<td>").attr("class", "sorting_1")
 										.append(
-											$("<a>").attr("id", "colName").attr("href", "#").html(text)
-										)
-									);
+											$("<a>").attr("id", "colName").attr("href", "#").html(cutText)
+									)
+								).append(
+									$("<td>").attr("class", "sorting_1")
+										.append(
+											$("<a>").attr("id", "colSize").attr("href", "#").html(volume)
+									)
+								).append(
+									$("<td>").attr("class", "sorting_1")
+										.append(
+											$("<a>").attr("id", "colRegDate").attr("href", "#").html(regDate)
+									)
+								).append(
+									$("<td>").attr("class", "sorting_1")
+										.append(
+											$("<a>").attr("id", "colRegDate").attr("href", "#").html(regDate)
+									)
+								);
 									// .append(
 									// 	$("<div>").attr("class", "file-block")
 									// 			.append( 
@@ -473,7 +507,7 @@
 	
 	function fn_ajaxMoveDir(path){
 		$.ajax({
-			url : "${cPath}/groupware/archive/dirDepthList.do",
+			url : "/proj/docTest",
 			method : "get",
 			data : {
 				path : path
@@ -503,6 +537,152 @@
 	//   }
 	// }); 
 	
+	// 폴더 생성 모달 
+	// 모달 띄우는 버튼 클릭시 input태그 초기화
+	let newdir = $("#newdir");
+	let dirInput = $("#foldName");
+	newdir.on("click", function(){
+		dirInput.val("");
+	});
 
+	// 폴더 생성
+	let makeFolderBtn = $("#makeFolderBtn");
+	let addFFolderModal = $("#AddFoder");
+
+	makeFolderBtn.on("click", function(){
+		let dirName = dirInput.val();
+		const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+		let reg = regExp.test(dirName);
+		console.log(reg);
+		if(reg){
+			console.log("특수문자는 사용할 수 없습니다.");
+			return;
+		}
+		let path = thisPath;
+		console.log("makeFolderBtn - thisPath -> ", thisPath);
+		let result = fn_createDir(path, dirName);
+		$("#folerClose").trigger('click');
+	});
 	
+	// 현재 경로와 생성할 폴더 이름을 파라미터로 받는다.
+	// ftp서버에 생성이 완료됐으면 jstree에 자식노드 추가
+	// ftp서버에 생성이 완료됐으면 현재 폴더 fn_ajaxMoveDir을 통해 다시 로드
+	function fn_createDir(path ,dirName){
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+		$.ajax({
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			url : "/proj/dirDocTest",
+			method : "post",
+			data : {path : path, dirName : dirName},
+			dataType : "json",
+			success : function(resp) {
+				if(resp){
+					fn_ajaxMoveDir(path);
+					id++;
+					let treeObj = fn_makeTreeObj(id, thisId, dirName);
+					treeArea.jstree("create_node", thisId, treeObj, "last");
+				}else{
+					console.log("같은 이름의 폴더가 존재합니다.");
+					return false;
+				}
+			},
+			error : function(errorResp) {
+				console.log(errorResp.status);
+				console.info("폴더 생성 실패");
+			}
+		});
+		return true;
+	}
+
+	let AddFile = $("#AddFile");
+	let docsFileUploadBtn = $("#docsFileUploadBtn");
+
+	docsFileUploadBtn.on("click", function(){
+
+		console.log("docsFileUploadBtn - thisPath -> ", thisPath);
+		fn_uploadAjaxAwait(thisPath);
+	});
+
+	function fn_uploadAjaxAwait(thisPath){
+		
+		console.log("fn_uploadAjaxAwait - thisPath -> ", thisPath);
+		
+		
+
+		// docsFileUploadBtn.submit();
+
+		// for(let i=0;i<files.length;i++){
+			
+			let form = new FormData();
+		// 	let file = files[i].file;
+			form.append("docsFile", file);
+		// 	form.append("path", thisPath);
+			
+		// 	let progressbar = fn_makeProgressTag();
+		// 	console.log(progressbar);
+		// 	console.log(filebox[i]);
+		// 	$(filebox[i]).after(progressbar);
+		// 	var promise = fn_uploadAjax(i, form);
+		// }
+		fn_uploadAjax(thisPath);
+
+		fn_ajaxMoveDir(thisPath);
+		$("#fileClose").trigger('click');
+	}
+	
+	function fn_uploadAjax(data){
+		
+		
+
+		// let progressbar = $(".progress-bar");
+		// let completeTd = $(".complete-td");
+		
+		// return new Promise(function(resolve, reject){
+		
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+		$.ajax({
+			// xhr: function() {
+			// 	var xhr = new window.XMLHttpRequest();
+				
+			// 	xhr.upload.addEventListener("progress", function(event) {
+			// 		if (event.lengthComputable) {
+			// 			var percentComplete = event.loaded / event.total;
+			// 			percentComplete = parseInt(percentComplete * 100);
+						
+			// 			$(progressbar[index]).attr("style", "width:"+percentComplete+"%");
+			// 			let iconTag = $("<img>").attr("src", "${cPath}/resources/groupware/icon/check.png")
+			// 									.attr("class", "icon-img");
+			// 			if (percentComplete === 100) {
+			// 				$(completeTd[index]).append(iconTag);	
+			// 			}
+			// 		}
+			// 	}, false);
+			// 	return xhr;
+			// },
+			beforeSend : function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			url : "/proj/uploadFileTest",
+			method : "post",
+			data : data,
+			contentType : false,
+			processData : false,
+			enctype : 'multipart/form-data',
+			dataType : "json",
+			success : function(resp) {
+				console.log(resp);
+				resolve(resp);
+			},
+			error : function(errorResp) {
+				console.log(errorResp.status);
+				reject(errorResp);
+			}
+		});
+		
+	}
+
 </script>

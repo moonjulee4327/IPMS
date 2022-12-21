@@ -256,7 +256,7 @@ public class FtpUtil {
 		return intgAttachFileVOList;
 	}
 	
-	
+	// ========================== 여기서 부터 새로 시작 ===================================
 	public static List<FtpVO> getList(String path) {
 		
 		FTPClient ftp = ftpServerConnect();
@@ -305,4 +305,122 @@ public class FtpUtil {
 		return ftpVOList;
 	}
 	
+	// 파일 존재 여부 boolean
+	public static boolean isDirectoryExist(String path, String dirName) {
+		
+		log.info("[isDirectoryExist] isFileExist parameter");
+		log.info("[isDirectoryExist] param > path : {}", path);
+		log.info("[isDirectoryExist] param > fileName : {}", dirName);
+		
+		FTPClient ftpClient = ftpServerConnect();
+		
+		boolean flag = false;
+		
+		try {
+			
+			boolean moveDir = ftpClient.changeWorkingDirectory(path);
+			log.debug("[isDirectoryExist] moveDir : {} > {}", path, moveDir);
+				
+			
+			FTPFile[] files = ftpClient.listDirectories();
+			
+			for(FTPFile file : files) {
+				if(file.getName().equals(dirName)) {
+					flag = true;
+					break;
+				}
+			} // for end
+			
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		log.debug("[isDirectoryExist] return : {}", flag);
+		return flag;
+	}
+	
+	// 폴더 생성
+	public static boolean createDirectory(String path, String dirName) {
+		
+		log.info("[createDirectory] createDirectory parameter");
+		log.info("[createDirectory] param > path : {}", path);
+		log.info("[createDirectory] param > dirName : {}", dirName);
+		
+		FTPClient ftpClient = ftpServerConnect();
+
+		boolean moveDir = false;
+		boolean makeResult = false;
+		try {
+			moveDir = ftpClient.changeWorkingDirectory(path);
+			log.debug("[createDirectory] moveDir : {} > {}", path, moveDir);
+			if(!moveDir) {
+				throw new RuntimeException("can't move directory...");
+			}
+			makeResult = ftpClient.makeDirectory(dirName);
+		} catch (IOException e) {
+			log.error("[createDirectory] move directory error : {}", e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		return makeResult;
+	}
+	
+	// 파일 생성
+	public static void uploadToFtp(String savePath, String saveName, MultipartFile docsfile) {
+		
+		if(docsfile==null) return;
+		
+		FTPClient ftp = ftpServerConnect();
+		
+		try {
+			boolean moveDir = ftp.changeWorkingDirectory(savePath);
+			log.debug("[uploadToFtp] - moveDir -> {}", moveDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try (
+				InputStream is = docsfile.getInputStream();
+				OutputStream os = ftp.storeFileStream(saveName);
+			){
+				
+				log.debug("[uploadToFtp] stream working...");
+				byte[] buffer = new byte[1024];
+				int length = -1;
+				while( (length = is.read(buffer, 0, buffer.length)) != -1 ) {
+					os.write(buffer, 0, length);
+				}
+				log.debug("[uploadToFtp] stream working end...");
+				
+			} catch (Exception e) {
+				log.error("[uploadToFtp] stream error : {}", e.getMessage());
+				throw new RuntimeException(e);
+			} finally {
+				
+				try {
+					ftp.disconnect();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				log.debug("[uploadToFtp] ftpClient return...");
+				
+			}
+		
+	}
+	
+	// ========================== 여기서 부터 새로 끝  ===================================
 }
