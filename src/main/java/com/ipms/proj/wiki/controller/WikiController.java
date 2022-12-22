@@ -35,8 +35,8 @@ public class WikiController {
 		List<WikiVO> wikiList;
 		WikiVO wikiDetail;
 		WikiVO wikiVO = new WikiVO();
-		wikiVO.setWikiId(wikiId);
-		wikiVO.setProjId(projId);
+		
+		
 		log.info(wikiVO.toString());
 		List<WikiVO> highWikiId = this.wikiService.selectHighWikiId(projId);
 		if(highWikiId == null) {
@@ -46,8 +46,11 @@ public class WikiController {
 		
 		//wikiId가 null 이라면 모든 위키를 찾아온다
 		if(wikiId == null) {
-			wikiList = wikiService.selectWiki(null); 
+			wikiVO.setProjId(projId);
+			wikiList = wikiService.selectWiki(wikiVO); 
 		}else {
+			wikiVO.setProjId(projId);
+			wikiVO.setWikiId(wikiId);
 			wikiList = wikiService.selectWiki(wikiVO);
 			//현재 위키 아이디의 정보도 가져오므로 자기자신은 제거한다
 			wikiList.remove(0);
@@ -113,9 +116,9 @@ public class WikiController {
 	@GetMapping("/{projId}/updateWiki")
 	public String wikiUpdate(Model model,String wikiId,@PathVariable String projId) {
 		WikiVO wikiVO = wikiService.selectWikiDetail(wikiId);
-		List<WikiVO> highWikiId = this.wikiService.selectHighWikiId(projId);
 		
-		model.addAttribute("highWikiId",highWikiId);
+		
+		model.addAttribute("projId",projId);
 		model.addAttribute("list",wikiVO);
 		return "proj/wiki/wikiUpdate";
 	}
@@ -123,20 +126,20 @@ public class WikiController {
 	@PostMapping("/wikiUpdate")
 	public String wikiUpdatePost(WikiVO wikiVO) {
 		int result = wikiService.updateWiki(wikiVO);
-		
+		String projId = wikiVO.getProjId();
 		if(result > 0) {
-			return "redirect:/proj/wiki";
+			return "redirect:/proj/"+projId+"/wiki";
 		}
-			return "redirect:/proj/wiki";
+			return  "redirect:/proj/"+projId+"/wiki";
 	}
 	
-	@GetMapping("/wikiDelete")
-	public String wikiDelete(String wikiId) {
+	@GetMapping("/{projId}/wikiDelete")
+	public String wikiDelete(String wikiId,@PathVariable String projId) {
 		int result = wikiService.deleteWiki(wikiId);
 		
 		if(result > 0) {
-			return "redirect:/proj/wiki";
+			return "redirect:/proj/"+projId+"/wiki";
 		}
-			return "redirect:/proj/wiki";
+			return "redirect:/proj/"+projId+"/wiki";
 	}
 }

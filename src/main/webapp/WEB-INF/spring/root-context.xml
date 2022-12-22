@@ -27,16 +27,27 @@
 	dataSource.setDriverClassName() = "oracle.jdbc.driver.OracleDriver";
 	 -->
 	 <!-- dataSource : 데이터베이스와 관련된 정보를 설정 -->
-	<bean id="dataSource" 
-		class="org.apache.commons.dbcp2.BasicDataSource" 
-		destroy-method="close">
-		<property name="driverClassName" 
-		value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url"
-		value="jdbc:oracle:thin:@localhost:1521:xe" />
-		<property name="username" value="testdb" />
-		<property name="password" value="java" />
+<!-- 	<bean id="dataSource"  -->
+<!-- 		class="org.apache.commons.dbcp2.BasicDataSource"  -->
+<!-- 		destroy-method="close"> -->
+<!-- 		<property name="driverClassName"  -->
+<!-- 		value="oracle.jdbc.driver.OracleDriver" /> -->
+<!-- 		<property name="url" -->
+<!-- 		value="jdbc:oracle:thin:@112.220.114.130:1521:xe" /> -->
+<!-- 		<property name="username" value="team3_202206F" /> -->
+<!-- 		<property name="password" value="java" /> -->
 
+<!-- 	</bean> -->
+
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@112.220.114.130:1521:xe"></property>	
+		<property name="username" value="team3_202206F"></property>
+		<property name="password" value="java"></property>
+	</bean>	
+	
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig" />
 	</bean>
 	<!-- 데이터베이스와 연결을 맺고 끊어질 때까지의 
 	라이프 사이클을 관리해주는 sqlSession 객체를 생성

@@ -3,6 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns:beans="http://www.springframework.org/schema/beans" 
 xmlns:context="http://www.springframework.org/schema/context" 
+xmlns:websocket="http://www.springframework.org/schema/websocket" 
 xmlns:security="http://www.springframework.org/schema/security" 
 xsi:schemaLocation="http://www.springframework.org/schema/mvc 
 http://www.springframework.org/schema/mvc/spring-mvc.xsd 
@@ -11,7 +12,8 @@ http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/context 
 http://www.springframework.org/schema/context/spring-context.xsd 
 http://www.springframework.org/schema/security 
-http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+http://www.springframework.org/schema/security/spring-security-4.2.xsd
+http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 <!-- servlet-context.xml : 스프링 웹(view) 설정 파일 -->
    <!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
    
@@ -65,6 +67,13 @@ http://www.springframework.org/schema/security/spring-security-4.2.xsd">
    <beans:bean id="multipartResolver"
       class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
    </beans:bean>
+   
+      <websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/echo" />
+		<websocket:sockjs />
+	</websocket:handlers>
+    
+	<beans:bean id="echoHandler" class="com.ipms.proj.chat.controller.EchoHandler"></beans:bean>
    
 </beans:beans>
 

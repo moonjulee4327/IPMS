@@ -1,4 +1,5 @@
 package com.ipms.proj.calendar.service.serviceImpl;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ipms.proj.calendar.mapper.CalendarMapper;
 import com.ipms.proj.calendar.service.CalendarService;
 import com.ipms.proj.calendar.vo.CalendarVO;
+import com.ipms.proj.task.vo.TaskVO;
 
 @Service
 public class CalendarServiceImpl implements CalendarService {
@@ -33,6 +35,18 @@ public class CalendarServiceImpl implements CalendarService {
 	public int deleteSchd(CalendarVO calendarVO) {
 		
 		return this.calendarMapper.deleteSchd(calendarVO);
+	}
+
+	@Override
+	public int updateSchd(CalendarVO calendarVO) {
+		
+		return this.calendarMapper.updateSchd(calendarVO);
+	}
+
+	@Override
+	public List<TaskVO> selectT() {
+		
+		return this.calendarMapper.selectT();
 	}
 
 }

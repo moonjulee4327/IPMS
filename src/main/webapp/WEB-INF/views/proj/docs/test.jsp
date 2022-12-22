@@ -88,7 +88,8 @@
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
 									<section class="contact-form">
-										<form id="fileUploadForm" class="contact-input" action="/proj/docsFileUpload" method="post" enctype="multipart/form-data">
+										<!-- action="/proj/docsFileUpload" method="post" enctype="multipart/form-data" -->
+										<form id="fileUploadForm" class="contact-input">
 											<div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel1">파일 업로드</h5>
 												<button id="fileClose" type="button" class="close" data-dismiss="modal"
@@ -99,7 +100,7 @@
 											<div class="modal-body">
 												<fieldset class="form-group col-12">
 													<input type="file" name="docsFile" class="form-control-file"
-														id="user-image">
+														id="docsFile" multiple="multiple">
 												</fieldset>
 											</div>
 											<div class="modal-footer">
@@ -110,7 +111,7 @@
 															class="d-none d-lg-block"></span>
 												</fieldset>
 											</div>
-											<sec:csrfInput/>
+											<!-- <sec:csrfInput/> -->
 										</form>
 									</section>
 								</div>
@@ -597,6 +598,7 @@
 		return true;
 	}
 
+	// 파일 업로드 
 	let AddFile = $("#AddFile");
 	let docsFileUploadBtn = $("#docsFileUploadBtn");
 
@@ -606,7 +608,7 @@
 		fn_uploadAjaxAwait(thisPath);
 	});
 
-	function fn_uploadAjaxAwait(thisPath){
+	async function fn_uploadAjaxAwait(thisPath){
 		
 		console.log("fn_uploadAjaxAwait - thisPath -> ", thisPath);
 		
@@ -615,10 +617,33 @@
 		// docsFileUploadBtn.submit();
 
 		// for(let i=0;i<files.length;i++){
-			
+
+		let docsFile = $("#docsFile");
+
+		// console.log("docsFile[0].files: ", docsFile[0].files);
+
+		// if (docsFile[0].files.length === 0) {
+		// 	alert("파일은 선택해주세요");
+		// 	return;
+		// }
+		
+		for(let i=0; i < docsFile.length; i++){
 			let form = new FormData();
+			let files = docsFile[0].files[i];
+
+			console.log("files: ", files);
+			
+			form.append("docsFile", files);
+			form.append("path", thisPath);
+
+
+			await fn_uploadAjax(form);
+		}
+
+
+
 		// 	let file = files[i].file;
-			form.append("docsFile", file);
+		// 	form.append("docsFile", file);
 		// 	form.append("path", thisPath);
 			
 		// 	let progressbar = fn_makeProgressTag();
@@ -627,15 +652,15 @@
 		// 	$(filebox[i]).after(progressbar);
 		// 	var promise = fn_uploadAjax(i, form);
 		// }
-		fn_uploadAjax(thisPath);
 
+		$("#fileClose").modal("hide");
+		$("#docsFile").val("");
 		fn_ajaxMoveDir(thisPath);
-		$("#fileClose").trigger('click');
 	}
 	
 	function fn_uploadAjax(data){
 		
-		
+		// console.log("fn_uploadAjax - data : ", data);
 
 		// let progressbar = $(".progress-bar");
 		// let completeTd = $(".complete-td");
@@ -644,43 +669,46 @@
 		
 		var header = "${_csrf.headerName}";
 		var token = "${_csrf.token}";
-		$.ajax({
-			// xhr: function() {
-			// 	var xhr = new window.XMLHttpRequest();
-				
-			// 	xhr.upload.addEventListener("progress", function(event) {
-			// 		if (event.lengthComputable) {
-			// 			var percentComplete = event.loaded / event.total;
-			// 			percentComplete = parseInt(percentComplete * 100);
-						
-			// 			$(progressbar[index]).attr("style", "width:"+percentComplete+"%");
-			// 			let iconTag = $("<img>").attr("src", "${cPath}/resources/groupware/icon/check.png")
-			// 									.attr("class", "icon-img");
-			// 			if (percentComplete === 100) {
-			// 				$(completeTd[index]).append(iconTag);	
-			// 			}
-			// 		}
-			// 	}, false);
-			// 	return xhr;
-			// },
-			beforeSend : function(xhr){
-				xhr.setRequestHeader(header, token);
-			},
-			url : "/proj/uploadFileTest",
-			method : "post",
-			data : data,
-			contentType : false,
-			processData : false,
-			enctype : 'multipart/form-data',
-			dataType : "json",
-			success : function(resp) {
-				console.log(resp);
-				resolve(resp);
-			},
-			error : function(errorResp) {
-				console.log(errorResp.status);
-				reject(errorResp);
-			}
+		
+		return new Promise(function(resolve, reject){
+			$.ajax({
+				// xhr: function() {
+				// 	var xhr = new window.XMLHttpRequest();
+					
+				// 	xhr.upload.addEventListener("progress", function(event) {
+				// 		if (event.lengthComputable) {
+				// 			var percentComplete = event.loaded / event.total;
+				// 			percentComplete = parseInt(percentComplete * 100);
+							
+				// 			$(progressbar[index]).attr("style", "width:"+percentComplete+"%");
+				// 			let iconTag = $("<img>").attr("src", "${cPath}/resources/groupware/icon/check.png")
+				// 									.attr("class", "icon-img");
+				// 			if (percentComplete === 100) {
+				// 				$(completeTd[index]).append(iconTag);	
+				// 			}
+				// 		}
+				// 	}, false);
+				// 	return xhr;
+				// },
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token);
+				},
+				url : "/proj/uploadFileTest",
+				method : "post",
+				data : data,
+				contentType : false,
+				processData : false,
+				enctype : 'multipart/form-data',
+				dataType : "json",
+				success : function(resp) {
+					console.log(resp);
+					resolve(resp);
+				},
+				error : function(errorResp) {
+					console.log(errorResp.status);
+					reject(errorResp);
+				}
+			});
 		});
 		
 	}

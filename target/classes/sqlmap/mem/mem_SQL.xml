@@ -21,7 +21,8 @@
     <!--회원가입-->
     <insert id="registerMember" parameterType="com.ipms.main.login.vo.MemVO">
         <selectKey order="BEFORE" keyProperty="memCode" resultType="String">
-            SELECT  To_char(NVL(MAX(mem_code),0)+1) FROM mem
+            SELECT NVL(SUBSTR(MAX(MEM_CODE),1,1)|| TRIM(TO_CHAR(SUBSTR(MAX(MEM_CODE),2) + 1,'000')),'M001')
+            FROM MEM
         </selectKey>
         INSERT INTO mem (
         MEM_CODE,
@@ -52,7 +53,7 @@
         <result property="memName" column="MEM_NAME" />
         <result property="memPhoneNumber" column="MEM_PHONE_NUMBER" />
         <result property="memWhdrlWhth" column="MEM_WHDRL_YN" />
-        <result property="memImgRoute" column="proj_img_route" />
+        <result property="memImgRoute" column="mem_img_route" />
         <result property="memSgnupDate" column="MEM_SGNUP_DATE" />
         <collection property="memAuthList" resultMap="authMap"></collection>
     </resultMap>
@@ -70,7 +71,7 @@
         ,A.mem_name
         ,A.mem_phone_number
         ,A.mem_sgnup_date
-        ,A.proj_img_route
+        ,A.mem_img_route
         ,A.mem_whdrl_yn
         ,B.mem_auth
         FROM mem A
@@ -90,9 +91,9 @@
 
     <!--권한 추가 -->
     <insert id="authInsert" parameterType="com.ipms.main.login.vo.MemberAuth" >
-        INSERT INTO member_auth(mem_code,PROJ_ID,mem_auth)
+        INSERT INTO member_auth(mem_code,proj_id,mem_auth)
         values
-            (#{memCode},'0',#{memAuth})
+            (#{memCode},'P001',#{memAuth})
     </insert>
 </mapper>
 

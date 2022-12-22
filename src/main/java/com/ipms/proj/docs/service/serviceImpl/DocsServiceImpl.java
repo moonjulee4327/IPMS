@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.proj.docs.mapper.DocsMapper;
@@ -42,26 +41,25 @@ public class DocsServiceImpl implements DocsService{
 		
 		return docsList;
 	}
-	
-	// 폴더 생성
-	@Override
-	public int insertFolder(DocsVO docsVO) {
-		
-		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
-		
-		FtpUtil.ftpDocsMkdir("P001", docsVO.getFoldName());
-		
-		int result = docsMapper.insertFolder(docsVO);
-		
-		return result;
-	}
 
 	@Override
-	public void fileUpload(MultipartFile docsFile) {
-		
-		FtpUtil.ftpFileUpload(docsFile);
-		
+	public int insertFolder(DocsVO docsVO) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+	
+	// 폴더 생성
+//	@Override
+//	public int insertFolder(DocsVO docsVO) {
+//		
+//		log.info("DocsServiceImpl - insertFolder() : docsVO.getFoldName() -> {}", docsVO.getFoldName());
+//		
+//		FtpUtil.docsMkdir(docsVO.getFoldName());
+//		
+//		int result = docsMapper.insertFolder(docsVO);
+//		
+//		return result;
+//	}
 	
 
 }

@@ -2,6 +2,10 @@ package com.ipms.proj.task.vo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Data
@@ -12,8 +16,15 @@ public class TaskVO {
 	private String memCode; // 회원 코드
 	private String taskTitle; // 일감 제목
 	private String taskCts; //  일감 내용
-	private Date taskStrtDate; // 일감 시작일자
+	
+	@JsonFormat(pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date taskStrtDate; // 일감 시작일자	
+	
+	@JsonFormat(pattern = "yyyy-MM-dd" , timezone = "Asia/Seoul")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date taskEndDate; // 일감 종료일자
+	
 	private String taskStusCode; // 일감 상태 코드
 	private int taskPgres; // 진척도
 	private String highTaskId; //  상위 일감 아이디
@@ -22,5 +33,6 @@ public class TaskVO {
 	private String taskRepre; // 담당자
 	private String deleteYn; // 삭제 여부
 	private String referCts; // 반려 내용
+	private int workUpdateNum; // 반려 시 내용 업데이트 번호
 	
 }

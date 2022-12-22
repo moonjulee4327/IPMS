@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 
@@ -45,6 +45,7 @@
 					                </li>
 					                <li class="breadcrumb-item"><a href="/main/adminSvcQaA" style="color: gray;">Q&A 관리</a>
 					                </li>
+					               
 					            </ol>
 					        </div>
 					    </div>
@@ -78,60 +79,60 @@
 										<th>선택</th>
 										<th>공지사항 번호</th>
 										<th>제목</th>
-										<th>내용</th>
 										<th>등록일자</th>
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${list}" var="noticeList" varStatus="stat">
 									<tr>
-										<td><input type='checkbox' id="ckbox" name="ckbox"
-											value=""></td>
-										<td>111</td>
-										<td><b><a href="/main/svcNoticeDetail" style="color: #455DBD;">사이트 사용불가 공지</a></b>
-											<button type="button"
-												class="btn btn-outline-secondary btn-sm">
-												<i class="feather icon-search"></i>
-											</button></td>
-										<td>사이트가 이용불가요</td>
-										<td><span class="badge badge-success">2022-12-09</span></td>
+										<td><input type='checkbox' id="ckbox" class="ckbox" name="ckbox" value="${noticeList.siteNtNum}"></td>
+										<td>${stat.count}</td>
+										<td><b><a href="/main/adminSvcNoticeDetail?siteNtNum=${noticeList.siteNtNum}" style="color: #455DBD;">${noticeList.siteNtTitle}</a></b>
+										</td>
+										<td><span class="badge badge-success"><fmt:formatDate value="${noticeList.siteNtWriteDate}" pattern="yyyy-MM-dd" /></span></td>
 									</tr>
+								
+								</c:forEach>
 								</tbody>
 							</table>
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
 										<button type="button" class="btn"
-											style="background-color: #546E7A; color: white;">삭제</button>
+											style="background-color: #546E7A; color: white;" id="chkDeleteBtn">삭제</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
 										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
 										<ul class="pagination">
+										<c:if test="${pageVO.prev }">
 											<li class="paginate_button page-item previous disabled"
 												id="DataTables_Table_0_previous"><a href="#"
 												aria-controls="DataTables_Table_0" data-dt-idx="0"
 												tabindex="0" class="page-link">Previous</a></li>
-											<li class="paginate_button page-item active"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="1"
-												tabindex="0" class="page-link">1</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="2"
-												tabindex="0" class="page-link">2</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="3"
-												tabindex="0" class="page-link">3</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="4"
-												tabindex="0" class="page-link">4</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="5"
-												tabindex="0" class="page-link">5</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="6"
-												tabindex="0" class="page-link">6</a></li>
-											<li class="paginate_button page-item next"
-												id="DataTables_Table_0_next"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="7"
-												tabindex="0" class="page-link">Next</a></li>
+										</c:if>
+										 <c:forEach var = "num" begin = "${pageVO.startPage }" end = "${pageVO.endPage }">
+										 	<c:choose>
+	                                    	<c:when test="${pageVO.pageNum eq num }">
+												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="1"
+													tabindex="0" class="page-link">${num}</a></li>
+											</c:when>
+                                    			<c:otherwise>
+                                    				<li class="paginate_button page-item "><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="2"
+													tabindex="0" class="page-link">${num}</a></li>
+                                    			</c:otherwise>
+	                                  	  </c:choose>
+	                                    </c:forEach>
+										<c:if test="${pageVO.next }">
+		                               
+			                                    <li class="paginate_button page-item next"
+													id="DataTables_Table_0_next"><a href="/main/adminSvcNotice?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}"
+													aria-controls="DataTables_Table_0" data-dt-idx="7"
+													tabindex="0" class="page-link">Next</a></li>
+		                                   
+                                    	</c:if>
+											
 										</ul>
 									</div>
 								</div>
@@ -144,7 +145,6 @@
 		</div>
 	</section>
 	<!-- END: Content-->
-
 	<!-- BEGIN: Page Vendor JS-->
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/jquery.dataTables.min.js"></script>
@@ -164,7 +164,43 @@
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
-
+	<script type="text/javascript">
+		
+			$("#chkDeleteBtn").on("click",function(){
+				var param = [];
+				var storeOrder=[];
+				
+				if($('.ckbox:checked').length==0){
+					alert("선택한 게시물이 없습니다.");
+				}else{
+					$(".ckbox:checked").each(function(i) {
+					 
+					    storeOrder = {
+					    	"siteNtNum"	: $(this).val()
+					    };
+					        
+				    	//param 배열에 storeOrder 오브젝트를 담는다.
+					      param.push(storeOrder);
+					  });
+					
+				}
+				$.ajax({
+					 type : 'post',           // 타입 (get, post, put 등등)
+					    url : '/main/adminSvcNoticeChkDelete',           // 요청할 서버url
+					    contentType : "application/json; charset=utf-8",
+					    dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)
+					    data : JSON.stringify(param),
+					    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+				            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					  	},
+					    success : function(result) { // 결과 성공 콜백함수
+					        console.log(result);
+					    	location.reload();
+					    }
+				});
+				}
+			);
+	</script>
 </body>
 <!-- END: Body-->
 

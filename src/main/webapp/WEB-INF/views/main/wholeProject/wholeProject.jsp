@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <div class="app-content container center-layout mt-2" style="overflow: auto">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
@@ -43,122 +46,100 @@
                     <!--/ Search Navbar-->
                     <!--Search Result-->
                     <div id="search-results" class="card-body">
-                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGallery"
+                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGalle
+                    ry"
                              data-pswp-uid="1">
                             <div class="card-deck-wrapper">
                                 <div class="card-deck">
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/main/projlistdetail" itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600"></span> sollicitudin <span
-                                                    class="font-small-2 text-muted float-right">720 x 600</span></p>
-                                            <p class="card-text">Nulla ac vulputate mauris. Nam tincidunt odio
-                                                purus.</p>
+                                    <c:forEach var="item" items="${list}" varStatus="idx">
+                                        <div class="grid-item" style="width:300px;margin-left:10px;">
+                                            <figure class="card card-img-top border-grey border-lighten"
+                                                    itemprop="associatedMedia" itemscope
+                                                    itemtype="http://schema.org/ImageObject">
+                                                <a href="/main/projectDetail/${item.projId}" itemprop="contentUrl"
+                                                   data-size="480x360"><img class="gallery-thumbnail card-img-top"
+                                                                            src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
+                                                                            itemprop="thumbnail"
+                                                                            alt="Image description">
+                                                </a>
+                                                <div class="card-body px-0">
+                                                    <p><span class="text-bold-600"></span> ${item.teamId} <span
+                                                            class="font-small-2 text-muted float-right">${item.projId}</span>
+                                                    </p>
+<%--                                                    <p class="card-text">${item.projSmry}</p>--%>
+                                                </div>
+                                            </figure>
                                         </div>
-                                    </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/2.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/2.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Aliquam </span> vel nib <span
-                                                    class="font-small-2 text-muted float-right">480 x 360</span></p>
-                                            <p class="card-text">Phasellus vitae aliquam felis, et bibendum orci.</p>
-                                        </div>
-                                    </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/3.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/3.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Molestie </span> accumsan <span
-                                                    class="font-small-2 text-muted float-right">480 x 360</span></p>
-                                            <p class="card-text">Maecenas commodo odio sed nibh viverra vestibulum.</p>
-                                        </div>
-                                    </figure>
-                                    <figure class="card card-img-top border-grey border-lighten-2"
-                                            itemprop="associatedMedia" itemscope=""
-                                            itemtype="http://schema.org/ImageObject">
-                                        <a href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/4.jpg"
-                                           itemprop="contentUrl" data-size="480x360">
-                                            <img class="gallery-thumbnail card-img-top"
-                                                 src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/4.jpg"
-                                                 itemprop="thumbnail" alt="Image description">
-                                        </a>
-                                        <div class="card-body px-0">
-                                            <p><span class="text-bold-600">Nam eu </span> efficitur <span
-                                                    class="font-small-2 text-muted float-right">500 x 360</span></p>
-                                            <p class="card-text">Donec porttitor massa vitae leo rutrum viverra.</p>
-                                        </div>
-                                    </figure>
+                                    </c:forEach>
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="text-center">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination pagination-separate pagination-round pagination-flat"
-                                style="text-align: center;margin-left: 500px">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">« Prev</span>
-                                        <span class="sr-only">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item "><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                        <span aria-hidden="true">Next »</span>
-                                        <span class="sr-only">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <!-- Root element of PhotoSwipe. Must have class pswp. -->
-                <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-                    <!-- Background of PhotoSwipe.
-                   It's a separate element as animating opacity is faster than rgba(). -->
-                    <div class="pswp__bg"></div>
-                    <!-- Slides wrapper with overflow:hidden. -->
-                    <div class="pswp__scroll-wrap">
-                        <!-- Container that holds slides.
-                      PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                      Don't modify these 3 pswp__item elements, data is added later on. -->
-                        <div class="pswp__container">
-                            <div class="pswp__item"></div>
-                            <div class="pswp__item"></div>
-                            <div class="pswp__item"></div>
+                        <div class="text-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-separate pagination-round pagination-flat"
+                                    style="text-align: center;margin-left: 500px">
+                                    <%--                                    <c:if test="${pageMaker.prev}">--%>
+                                    <%--                                        <li class="page-item">--%>
+                                    <%--                                            <a class="page-link" href="${pageMaker.startPage-1}" aria-label="Previous">--%>
+                                    <%--                                                <span aria-hidden="true">« Prev</span>--%>
+                                    <%--                                                <span class="sr-only">Previous</span>--%>
+                                    <%--                                            </a></li>--%>
+                                    <%--                                    </c:if>--%>
+                                    <%--                                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">--%>
+                                    <%--                                        <li class="page-item active${pageMaker.cri.pageNum==num?"active":""}"><a--%>
+                                    <%--                                                class="page-link" href="${num}">${num}</a></li>--%>
+                                    <%--                                    </c:forEach>--%>
+                                    <%--                                    <c:if test="${pageMaker.next}">--%>
+                                    <%--                                        <li class="page-item">--%>
+                                    <%--                                            <a class="page-link" href="${pageMaker.startPage+1}" aria-label="Next">--%>
+                                    <%--                                                <span class="sr-only">Next</span>--%>
+                                    <%--                                            </a>--%>
+                                    <%--                                        </li>--%>
+                                    <%--                                    </c:if>--%>
+                                    <%--                                    <form id="actionForm" action="/main/wholeProject" method="get">--%>
+                                    <%--                                        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"/>--%>
+                                    <%--                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}"/>--%>
+                                    <%--                                    </form>--%>
+                                </ul>
+                            </nav>
                         </div>
-                        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+                    </div>
+                    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+                        <!-- Background of PhotoSwipe.
+                       It's a separate element as animating opacity is faster than rgba(). -->
+                        <div class="pswp__bg"></div>
+                        <!-- Slides wrapper with overflow:hidden. -->
+                        <div class="pswp__scroll-wrap">
+                            <!-- Container that holds slides.
+                          PhotoSwipe keeps only 3 of them in the DOM to save memory.
+                          Don't modify these 3 pswp__item elements, data is added later on. -->
+                            <div class="pswp__container">
+                                <div class="pswp__item"></div>
+                                <div class="pswp__item"></div>
+                                <div class="pswp__item"></div>
+                            </div>
+                            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
 
+                        </div>
                     </div>
                 </div>
+                <!--/ PhotoSwipe -->
+            </section>
         </div>
-        <!--/ PhotoSwipe -->
     </div>
 </div>
-<!--/ Search Result-->
-</section>
-<!--/ Search form-->
+<script>
+    var actionForm = $("#actionForm");
+    $(".page-link ").on("click", function (e) {
+        e.preventDefault();
+
+        var targetPage = $(this).attr("href");
+        console.log(targetPage);
+        actionForm.find("input[name='pageNum']").val(targetPage);
+        actionForm.submit();
+    });
+
+</script>

@@ -23,13 +23,13 @@
 						<span class="menu-title" data-i18n="Invoice">대시보드</span>
 					</a>
 				<li class=" nav-item">
-					<a href="/proj/work">
+					<a href="/proj/${projId}/work">
 					<i class="feather icon-file-plus"></i>
 						<span class="menu-title" data-i18n="Kanban Application">일감 관리</span>
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="/proj/issueboard">
+					<a href="/proj/${projId}/issueboard">
 					<i class="feather icon-alert-circle"></i>
 						<span class="menu-title" data-i18n="Kanban Application">이슈</span>
 					</a>
@@ -47,25 +47,19 @@
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="/proj/erd">
+					<a href="/proj/${projId}/erd">
 					<i class="fa fa-database"></i>
 						<span class="menu-title" data-i18n="Kanban Application">ERD그리기</span>
 					</a>
 				</li>
 				<li class=" nav-item">	
-					<a href="/proj/docs">
+					<a href="/proj/${projId}/docs">
 					<i class="fa fa-download"></i>
 						<span class="menu-title" data-i18n="Kanban Application">문서함</span>
 					</a>
 				</li>
 				<li class=" nav-item">
-					<a href="#">
-					<i class="fa fa-comments"></i>
-						<span class="menu-title" data-i18n="Kanban Application">채팅하기</span>
-					</a>
-				</li>
-				<li class=" nav-item">
-					<a href="/proj/wiki">
+					<a href="/proj/${projId}/wiki">
 					<i class="fa fa-sitemap"></i>
 						<span class="menu-title" data-i18n="Kanban Application">위키</span>
 					</a>
@@ -113,20 +107,20 @@
     <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
 
 <script type="text/javascript">
-$(function() {
-	var flag = false;
-	$('#menuBtn').on('click', function() {
-		if(!flag){
-			$("#menuBtn").attr("class","nav-item has-sub open");
-			$('.menu-content').css('height', '82.3935px');
-			flag = true;
-		}else if(flag == true){
-			$("#menuBtn").attr("class","nav-item has-sub");
-			$('.menu-content').css('height', 'auto');
-			flag = false;
-		}
+// $(function() {
+// 	var flag = false;
+// 	$('#menuBtn').on('click', function() {
+// 		if(!flag){
+// 			$("#menuBtn").attr("class","nav-item has-sub open");
+// 			$('.menu-content').css('height', '82.3935px');
+// 			flag = true;
+// 		}else if(flag == true){
+// 			$("#menuBtn").attr("class","nav-item has-sub");
+// 			$('.menu-content').css('height', 'auto');
+// 			flag = false;
+// 		}
 		
-	});
-});
+// 	});
+// });
 	
 </script>

@@ -6,12 +6,29 @@
     font-style: normal;
 }
 
-* {
+*{
    margin: 0;
    padding: 0;
    font-family: 'MICEGothic Bold';
 }
 
+h1 {
+   font-family: 'MICEGothic Bold';
+}
+
+h2 {
+   font-family: 'MICEGothic Bold';
+}
 h3 {
+   font-family: 'MICEGothic Bold';
+}
+h4 {
+   font-family: 'MICEGothic Bold';
+}
+h5 {
+   font-family: 'MICEGothic Bold';
+}
+
+a {
    font-family: 'MICEGothic Bold';
 }

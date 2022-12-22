@@ -63,16 +63,20 @@ public class DocsTestController {
 	
 	@ResponseBody
 	@PostMapping("/uploadFileTest")
-	public boolean uploadFile(MultipartFile docsFile, String path) {
+	public boolean uploadFile(MultipartFile[] docsFile, String path) {
 		
 		String savePath = "";
 		
-		if(StringUtils.isNotBlank(path)) {
-			log.info("DocsTestController - uploadFile -> {}", path);
+		if(StringUtils.isNotBlank(path) || docsFile.length > 0 || docsFile != null) {
+			log.info("DocsTestController - uploadFile -> path : {}", path);
+			log.info("DocsTestController - uploadFile -> docsFile.length : {}", docsFile.length);
 			savePath += path;
 		}
 		
-		FtpUtil.uploadToFtp(savePath, docsFile.getOriginalFilename(), docsFile);
+		
+		for(int i=0; i < docsFile.length; i++) {
+			FtpUtil.uploadToFtp(savePath, docsFile[i].getOriginalFilename(), docsFile[i]);
+		}
 		
 		return true;
 	}

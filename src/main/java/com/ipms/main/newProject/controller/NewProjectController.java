@@ -1,16 +1,16 @@
 package com.ipms.main.newProject.controller;
 
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.newProject.service.NewProjectService;
-
-import com.ipms.main.newProject.vo.ProjMemVO;
+import com.ipms.main.newProject.vo.ProjTeamVO;
 import com.ipms.main.newProject.vo.ProjVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 
 @Slf4j
@@ -22,55 +22,31 @@ public class NewProjectController {
     NewProjectService newProjectService;
 
     //프로젝트 생성
-    @RequestMapping(value = "/newProjectForm" , method = RequestMethod.GET)
-    public String newProject(){
+    @RequestMapping(value = "/newProjectForm", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.CREATED)
+    public String newProject() {
         return "main/newProject/newProjectForm";
     }
 
 
-    /**
-     * @param projVO
-     * @param projMemVO
-     * @param memEmail
-     * @param memCode
-     * @return
+    /*
+     * 프로젝트 생성 -> 프로젝트 팀 구성 -> 프로젝트 멤버 생성
      */
     @RequestMapping(value = "/newProjectPost", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public String newProjectPost(@ModelAttribute ProjVO projVO,
-                                 @ModelAttribute ProjMemVO projMemVO ,
-                                 @RequestParam String memEmail,
-                                 @RequestParam String memCode)
-    {
-        int result = this.newProjectService.projInsert(projVO);
-        log.info("==================RESULT================"+result);
-        if(result==1){
-            ProjMemVO vo = new ProjMemVO();
-            vo.setProjId(projVO.getProjId());
-            vo.setMemCode(memCode);
-            log.info("projectId:"+vo.getProjId());
-            log.info("memCode:"+vo.getMemCode());
-            int result2 = this.newProjectService.insertProjMem(vo);
-            log.info("result2:"+result2);
-            return "main/page";
-        }else{
-            return "main/page";
-        }
+                                 @ModelAttribute MemVO memVO,
+                                 @ModelAttribute ProjTeamVO projTeamVO,
+                                 @RequestParam String teamId,
+                                 @RequestParam String memCode) {
+        return this.newProjectService.projectCreate(projVO, memVO, projTeamVO, teamId, memCode);
     }
 
-    /**
-     * @param uploadFile
-     * @param model
-     * @return
-     */
     @RequestMapping(value = "/uploadFormAction", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
     public String uploadFormPost(@RequestParam("uploadFile") MultipartFile[] uploadFile, Model model) {
-
-        String uploadFolder = "E:\\testUpload";
-
+        String uploadFolder = "C:\\upload";
         for (MultipartFile multipartFile : uploadFile) {
-            log.info("-------------------------------------");
-            log.info("Upload File Name: " + multipartFile.getOriginalFilename());
-            log.info("Upload File Size: " + multipartFile.getSize());
             File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
             try {
                 multipartFile.transferTo(saveFile);
@@ -78,7 +54,7 @@ public class NewProjectController {
                 log.error(e.getMessage());
             }
         }
-        return  "main/loginForm";
+        return "main/loginForm";
     }
 
 

@@ -2,13 +2,12 @@ package com.ipms.main.login.controller;
 
 import com.ipms.main.login.service.LoginService;
 import com.ipms.main.login.vo.MemVO;
-import com.ipms.main.login.mapper.MemMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
 
@@ -18,8 +17,6 @@ import javax.inject.Inject;
 public class LoginController {
     @Autowired
     LoginService loginService;
-    @Autowired
-    MemMapper memMapper;
     @Inject
     BCryptPasswordEncoder passEncoder;
 
@@ -29,23 +26,23 @@ public class LoginController {
         return "main/login/loginForm";
     }
 
+
     // 비밀번호 찾기
     @RequestMapping(value = "/fgtPwd", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
     public String ForgotPwd() {
         return "main/ForgotPassword/fgtPwd";
     }
 
+
     //로그인  POST
     @RequestMapping(value = "/loginPost", method = RequestMethod.POST)
-    public String loginPost(@ModelAttribute MemVO memvo, @RequestParam String memEmail, @RequestParam String memPasswd) {
-        log.info("=================================");
-
-        int result = this.loginService.loginMem(memvo);
-
-        if (result == 1) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public String loginPost(@ModelAttribute MemVO memvo) {
+        int success = this.loginService.loginMem(memvo);
+        if (success == 1) {
             return "redirect:/main/loginMain";
         } else {
-            log.info("=====================");
             return "redirect:/main/loginForm";
         }
     }
