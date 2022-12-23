@@ -1,9 +1,16 @@
 package com.ipms.proj.docs.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ipms.commons.ftp.FtpUtil;
+import com.ipms.commons.vo.FtpFilePathVO;
 import com.ipms.commons.vo.FtpVO;
 import com.ipms.proj.docs.service.DocsService;
 import com.ipms.proj.docs.vo.DocsVO;
@@ -53,6 +61,7 @@ public class DocsController {
 //		return "proj/docs/docsList";
 //	}
 	
+	// view 조회
 	@GetMapping("/{projId}/docs")
 	public String view(@PathVariable String projId, Model model) {
 		
@@ -85,7 +94,7 @@ public class DocsController {
 //		
 //	}
 	
-	
+	// 트리와 view 조회
 	@ResponseBody
 	@GetMapping("/docTest")
 	public List<FtpVO> docsTests(@RequestParam String path) {
@@ -96,6 +105,7 @@ public class DocsController {
 		return docsList;
 	}
 	
+	// 폴더 생성
 	@ResponseBody
 	@PostMapping("/dirDocTest")
 	public boolean makeDirTests(String path, String dirName) {
@@ -118,6 +128,7 @@ public class DocsController {
 		return result;
 	}
 	
+	// 다중 파일 업로드
 	@ResponseBody
 	@PostMapping("/uploadFileTest")
 	public boolean uploadFile(MultipartFile[] docsFile, String path) {
@@ -137,4 +148,73 @@ public class DocsController {
 		
 		return true;
 	}
+	
+	// 다중 파일 다운로드
+	@PostMapping("/fileDownload")
+	public void downloadFile(@RequestBody FtpFilePathVO ftpFilePath, HttpServletResponse resp) {
+		
+		String savePath = "";
+		String fileName = "";
+		
+		if(ftpFilePath != null) {
+			savePath = ftpFilePath.getPath(); 
+			fileName = ftpFilePath.getFileName();
+			log.info("DocsTestController - downloadFile : svaePath -> {}", savePath);
+			log.info("DocsTestController - downloadFile : fileName -> {}", fileName);
+		}
+		
+		byte[] file = null;
+		file = FtpUtil.getFileByte(savePath, fileName);
+		
+		resp.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+		resp.setContentLength(file.length);
+		resp.setHeader("Content-Disposition", "attatchment;filename=\"" + fileName + "\"");
+		
+		log.info("DocsTestController - downloadFile : 헤더 설정 통과");
+		
+		try (
+				OutputStream os = resp.getOutputStream();
+				InputStream is = new ByteArrayInputStream(file);	
+		){
+			byte[] buffer = new byte[1024];
+			int length = -1;
+			
+			while( (length = is.read(buffer, 0, buffer.length)) != -1 ) {
+				os.write(buffer, 0, length);
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("stream error : " + e.getMessage());
+		}
+		
+	}
+	
+	// 삭제
+	@ResponseBody
+	@PostMapping("/removeFile")
+	public boolean removeFiles(@RequestParam("path") String path, @RequestParam("fileName[]") String[] fileName) {
+		
+		String savePath = "";
+		
+		if(StringUtils.isNotBlank(path)) {
+			savePath += path;
+			
+			log.info("DocsTestController - removeFiles -> path : {}", path);
+			log.info("DocsTestController - removeFiles -> savePath : {}", savePath);
+		}
+		
+		boolean result = true;
+		
+		for(String name : fileName) {
+			log.info("DocsTestController - removeFiles -> name : {}", name);
+			result = FtpUtil.removeFiles(savePath, name);
+			
+			if(!result) {
+				break;
+			}
+		}
+		
+		return result;
+	}
+	
+	
 }

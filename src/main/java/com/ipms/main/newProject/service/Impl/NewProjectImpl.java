@@ -1,5 +1,6 @@
 package com.ipms.main.newProject.service.Impl;
 
+import com.ipms.commons.ftp.FtpUtil;
 import com.ipms.main.login.vo.MemVO;
 import com.ipms.main.login.vo.MemberAuth;
 import com.ipms.main.newProject.service.NewProjectService;
@@ -36,7 +37,9 @@ public class NewProjectImpl implements NewProjectService {
             vo.setMemCode(memCode);
             vo.setTeamId(teamId);
             insertProjMem(vo);
-
+            
+            
+            
             //권한부여 ROLE_MEMBER , ROLE_PROJECT_LEADER
             List<MemberAuth> list = memVO.getMemAuthList();
             for (MemberAuth authVO : list) {
@@ -48,6 +51,8 @@ public class NewProjectImpl implements NewProjectService {
                     projAuthInsert(memberAuth);
                 }
             }
+            
+            FtpUtil.createDirectory("/", projVO.getProjId());
             return "main/page";
         }
         return "main/loginFrom";

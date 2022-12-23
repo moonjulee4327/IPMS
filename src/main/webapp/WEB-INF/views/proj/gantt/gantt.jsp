@@ -10,7 +10,7 @@
 <script src="/resources/gantt/samples/common/testdata.js"></script>
 </head>
 
-<div class="mygantt" style='width:100%; height:95%;position: absolute;'></div>
+<div class="mygantt" style='width:95%; height:95%;position: absolute;'></div>
 <script>
 //데이터 형태 id,text= title, duration = 며칠동안인지 ,progress 0.1 = 10% 
 $(function(){
@@ -84,7 +84,11 @@ var demo_tasks2 = {
 			{"id":"21","source":"15","target":"23","type":"2"}
 		]
 	};
+	gantt.i18n.setLocale("kr");
 	gantt.config.readonly = true;
+	gantt.plugins({
+	    quick_info: true
+	});
 	$(".mygantt").dhx_gantt({
 		data: demo_tasks2,
 	});

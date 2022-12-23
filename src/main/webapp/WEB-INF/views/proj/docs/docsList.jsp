@@ -39,6 +39,8 @@
 	}
 </style>
 
+<input type="hidden" id="projId" data-projId="${projId}">
+
 <section class="row all-contacts">
 	<div class="col-12">
 		<div class="card">
@@ -123,6 +125,14 @@
 							<i class="d-md-none d-block feather icon-plus white"></i> <span
 								class="d-md-block d-none"><i class="feather icon-upload"></i>&nbsp;파일 업로드</span>
 						</button>
+						<button id="download" class="btn btn-secondary btn-md">
+							<i class="d-md-none d-block feather icon-plus white"></i><span
+								class="d-md-block d-none"><i class="feather icon-download"></i>&nbsp;파일 다운로드</span>
+						</button>
+						<button id="remove" class="btn btn-danger btn-md">
+							<i class="d-md-none d-block feather icon-plus white"></i><span
+								class="d-md-block d-none"><i class="feather icon-alert-circle"></i>&nbsp;삭제</span>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -151,23 +161,23 @@
 												<th class="sorting_asc" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Name: activate to sort column descending"
-													style="width: 141.646px;" aria-sort="ascending">구분</th>
+													style="width: 141.646px;" aria-sort="ascending">체크</th>
 												<th class="sorting" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Email: activate to sort column ascending"
-													style="width: 159.844px;">명</th>
+													style="width: 159.844px;">구분</th>
 												<th class="sorting" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Phone: activate to sort column ascending"
-													style="width: 87.0625px;">크기</th>
+													style="width: 87.0625px;">명</th>
 												<th class="sorting" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Favorite: activate to sort column ascending"
-													style="width: 57.75px;">등록일자</th>
+													style="width: 57.75px;">크기</th>
 														<th class="sorting" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Favorite: activate to sort column ascending"
-													style="width: 57.75px;">기능</th>
+													style="width: 57.75px;">등록일자</th>
 											</tr>
 										</thead>
 										<tbody id="content-area">
@@ -220,6 +230,14 @@
 	</div>
 </section>
 
+<div id="ajax_indicator" style="display:none;">
+	<p style="text-align: center; padding: 16px 0 0 0; left: 50%; top: 50%; position: absolute;">
+		<img src="/resources/loadding/Double Ring-2.8s-199px.gif" />
+	</p>
+</div>
+
+​
+
 <!-- BEGIN: Page Vendor JS-->
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/extensions/polyfill.min.js"></script>
@@ -260,15 +278,17 @@
 	// 페이지 로드 시 한번 실행
 	// 자기 호출 익명함수
 	!function(){
+		let projId = $("#projId").data("projid");
+		console.log("projId : ", projId);
 		$.ajax({
 			url : "/proj/docTest",
 			method : "get",
 			data : {
-				path : "P001"
+				path : projId
 			},
 			dataType : "json",
 			success : function(resp){
-				let root = fn_makeTreeObj(id, "#", "/P001");
+				let root = fn_makeTreeObj(id, "#", "/"+projId);
 				treeData.push(root);
 				contentArea.empty();
 				$.each(resp, function(index, data){
@@ -325,7 +345,7 @@
 		for (let i = parents.length - 1; i >= 0; i--) {
 			let id = parents[i];
 			let temp = treeArea.jstree(true).get_node(id).text;
-			if(temp == "P001") continue;
+			if(temp == projId) continue;
 			if (id == "#") {
 				continue;
 			} else {
@@ -335,7 +355,7 @@
 		}
 		path += ("/" + text);
 		// 여기 고침
-		if(text == "P001") path = "";
+		if(text == projId) path = "";
 		thisPath = path;
 		console.log("fn_makePath - thisPath -> ", thisPath);
 		return path;
@@ -408,6 +428,7 @@
 	function fn_makeBlock(data){
 		let division = "";
 		let divisionIcon = "";
+		let divisionCheckBox = "";
 		let text = data.text;
 		let size = data.size;
 		let volume = "";
@@ -416,7 +437,6 @@
 		let fileExtention = text.substring(dotIndex+1, text.length);
 		let listTd;
 		let cutText = "";
-		
 
 		console.log(data);
 		
@@ -424,10 +444,12 @@
 			division = "폴더";
 			divisionIcon = "fa fa-folder-open";
 			volume = "-"; 
+			divisionCheckBox = "hidden";
 		}else{
 			division = "파일";
 			divisionIcon = "feather icon-file";
 			volume = getByteSize(size);
+			divisionCheckBox = "checkbox";
 		}
 		
 		if(text.length > 20){
@@ -453,7 +475,34 @@
 		// </tbody>
 		// <i class="feather icon-folder"></i>
 
+		// <div class="icheckbox_square" style="position: relative;">
+		// 	<input type="checkbox" id="input-11" style="position: absolute; opacity: 0;">
+		// 	<ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+		// </div>
+
+		// $("<input>").attr("type", divisionCheckBox)
+		// 												.attr("name", "fileName")
+		// 												.attr("value", text)
+		// 												.attr("id", "checkbx")
+
+		// $("<div>").attr("class", "icheckbox_square").css("position", "relative")
+		// 										.append(
+		// 											$("<input>").attr("type", "chechbox").css("position","absolute").css("opacity","0")
+		// 												.append(
+		// 													$("<ins>").attr("class", "iCheck-helper").css("position", "absolute").css("top", "0%").css("left", "0%").css("display", "block").css("width","100%").css("height", "100%").css("margin", "0px").css("padding","0px").css("background", "rgb(255, 255, 255)").css("border", "0px").css("opacity", "0")
+		// 												)
+		// 										)
+
 		let contentBlock = $("<tr>").attr("role", "row").attr("class", "odd")
+								.append(
+									$("<td>").attr("class", "sorting_1")
+										.append(
+											$("<input>").attr("type", "checkbox")
+														.attr("name", "fileName")
+														.attr("value", text)
+														.attr("class", "checkbx")
+									)
+								)
 								.append(
 									$("<td>").attr("class", "sorting_1").append(
 										$("<i>").attr("class", divisionIcon)
@@ -469,11 +518,6 @@
 									$("<td>").attr("class", "sorting_1")
 										.append(
 											$("<a>").attr("id", "colSize").attr("href", "#").html(volume)
-									)
-								).append(
-									$("<td>").attr("class", "sorting_1")
-										.append(
-											$("<a>").attr("id", "colRegDate").attr("href", "#").html(regDate)
 									)
 								).append(
 									$("<td>").attr("class", "sorting_1")
@@ -598,17 +642,45 @@
 		return true;
 	}
 
+
+	// 파일 업로드 변수 선언
+	let saveFileArr = [];
+	let docsFile = $("#docsFile");
+	let fileId = 0;
+	docsFile.on("change", function(){
+		console.log(this.files);
+		let files = this.files;
+		for(let i = 0; i < files.length; i++){
+			let file = files[i];
+			let objFile = {
+				id : fileId
+				, file : file
+			}
+			saveFileArr.push(objFile);
+
+			fileId++;
+		}
+	})
+
+
 	// 파일 업로드 
 	let AddFile = $("#AddFile");
 	let docsFileUploadBtn = $("#docsFileUploadBtn");
 
 	docsFileUploadBtn.on("click", function(){
 
+		if(saveFileArr.length <= 0){
+			toastr.error("선택한 파일이 없습니다.");
+			return;
+		}
+
+		console.log("saveFileArr : ", saveFileArr);
 		console.log("docsFileUploadBtn - thisPath -> ", thisPath);
-		fn_uploadAjaxAwait(thisPath);
+
+		fn_uploadAjaxAwait(saveFileArr, thisPath);
 	});
 
-	async function fn_uploadAjaxAwait(thisPath){
+	async function fn_uploadAjaxAwait(files, thisPath){
 		
 		console.log("fn_uploadAjaxAwait - thisPath -> ", thisPath);
 		
@@ -618,7 +690,7 @@
 
 		// for(let i=0;i<files.length;i++){
 
-		let docsFile = $("#docsFile");
+		
 
 		// console.log("docsFile[0].files: ", docsFile[0].files);
 
@@ -627,17 +699,17 @@
 		// 	return;
 		// }
 		
-		for(let i=0; i < docsFile.length; i++){
+		for(let i=0; i < files.length; i++){
 			let form = new FormData();
-			let files = docsFile[0].files[i];
+			let file = files[i].file;
 
-			console.log("files: ", files);
+			console.log("files: ", file);
 			
-			form.append("docsFile", files);
+			form.append("docsFile", file);
 			form.append("path", thisPath);
 
 
-			await fn_uploadAjax(form);
+			await fn_uploadAjax(i, form);
 		}
 
 
@@ -658,7 +730,8 @@
 		fn_ajaxMoveDir(thisPath);
 	}
 	
-	function fn_uploadAjax(data){
+	// 파일 업로드 동기 처리
+	function fn_uploadAjax(index, data){
 		
 		// console.log("fn_uploadAjax - data : ", data);
 
@@ -692,6 +765,10 @@
 				// },
 				beforeSend : function(xhr){
 					xhr.setRequestHeader(header, token);
+					$('#ajax_indicator').show().fadeIn('fast');
+				},
+				complete: function() {
+					$('#ajax_indicator').fadeOut();
 				},
 				url : "/proj/uploadFileTest",
 				method : "post",
@@ -712,5 +789,164 @@
 		});
 		
 	}
+
+	// let checkBoxs = [];
+
+	// $("input[name=fileName]:checked").each(function(i){
+
+	// 	checkBoxs.push($(this).val());
+
+	// });
+
+	// 다중 파일 다운로드 설정
+	let downloadBtn = $("#download"); 
+	downloadBtn.on("click", function(){
+
+		console.log("들어옴");
+
+		let checkBoxs = $(".checkbx:checked");
+
+		console.log("checkBoxs : ", checkBoxs);
+
+		let path = thisPath;
+
+		console.log("path : ", path);
+
+		if(checkBoxs.length == 0){
+			alert("체크한 파일이 없습니다.");
+			return;
+		}
+
+		if($("#coldivision").html() == "폴더"){
+			alert("폴더는 다운할 수 없습니다.");
+			$("input:checkbox[class='checkbx']").prop("checked", false);
+			return;
+		}
+
+		for(let i=0;i<checkBoxs.length;i++){
+			fn_fileDownload(path, checkBoxs[i].value);
+		}
+		$("input:checkbox[class='checkbx']").prop("checked", false);
+	});
+
+	// 파일 다운로드 (비동기)
+	function fn_fileDownload(path, fileName){
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+
+		let data = {
+			path : path
+			, fileName : fileName
+		}
+		let jsonData = JSON.stringify(data);
+		
+		const xhr = new XMLHttpRequest();
+		
+		xhr.open("POST", "/proj/fileDownload");
+		xhr.setRequestHeader(header, token);
+		xhr.responseType = "blob";
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		
+		xhr.onreadystatechange = function(){
+			if(this.readyState == 1 || this.readyState == 3){
+				$('#ajax_indicator').show().fadeIn('fast');
+			}else if(this.readyState == 4 && this.status == 200){
+				var link=document.createElement('a');
+				link.href=window.URL.createObjectURL(this.response);
+				link.download=fileName;
+				link.click();
+				$('#ajax_indicator').fadeOut();
+			}
+		}
+		xhr.send(jsonData);
+	}
+
+	// 삭제
+	let removeBtn = $("#remove");
+	removeBtn.on("click", function(){
+		let checkBoxs = $(".checkbx:checked");
+		let path = thisPath;
+		
+		if(checkBoxs.length == 0){
+			alert("체크한 부분이 없습니다.");
+			return;
+		}
+
+		let result = confirm("정말 삭제하시겠습니까? 삭제 후에는 복구가 불가능합니다.");
+
+		if(result){
+			let ckVals = [];
+			for(let i = 0; i < checkBoxs.length; i++){
+				ckVals.push(checkBoxs[i].value);
+			}
+
+			let data = {
+				"path" : path
+				, "fileName" : ckVals
+			};
+
+			let result = true;
+
+			fn_fileRemove(data);
+
+		}else{
+			$("input:checkbox[class='checkbx']").prop("checked", false);
+			return;
+		}
+
+	});
+
+	function fn_fileRemove(data){
+		let result = true;
+		var header = "${_csrf.headerName}";
+		var token = "${_csrf.token}";
+
+		let promise = new Promise( (resolve, reject) => {
+			$.ajax({
+				beforeSend : function(xhr){
+					xhr.setRequestHeader(header, token);
+					$('#ajax_indicator').show().fadeIn('fast');
+				},
+				complete: function() {
+					$('#ajax_indicator').fadeOut();
+				},
+				url : "/proj/removeFile",
+				method : "post",
+				data : data,
+				dataType : "json",
+				success : function(resp) {
+					result = resp;
+					
+					resolve(result);
+				},
+				error : function(errorResp) {
+					reject(result);
+					console.log(errorResp.status);
+				}
+			});
+		} );
+		
+		promise.then( (resolve) => {
+			let test = fn_ajaxMoveDir(data.path);
+			
+			$.each(data.fileName, function(index, fileName){
+				for(let i=1;i<=id;i++){
+					let node = treeArea.jstree(true).get_node(i);
+					if(node.text == fileName){
+						let nodeId = node.id;
+						treeArea.jstree(true).delete_node(nodeId);
+						break;
+					}
+				}
+			});
+			
+			
+		}).catch( (reject) => {
+			alert("파일 삭제 실패!");
+		});
+		
+		return result;
+	}
+
 
 </script>
