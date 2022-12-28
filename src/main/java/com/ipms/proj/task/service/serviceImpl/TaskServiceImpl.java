@@ -3,8 +3,11 @@ package com.ipms.proj.task.service.serviceImpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.ipms.main.login.vo.MemVO;
 import com.ipms.proj.task.mapper.TaskMapper;
 import com.ipms.proj.task.service.TaskService;
 import com.ipms.proj.task.vo.TaskVO;
@@ -19,13 +22,87 @@ public class TaskServiceImpl implements TaskService {
 	TaskMapper taskMapper;
 	
 	@Override
-	public List<TaskVO> HighWorkList() {
+	public int lowWorkInsert(TaskVO vo , Authentication authentication) {
+		UserDetails userdetail =  (UserDetails) authentication.getPrincipal();
+		log.info("userdetailName : " + userdetail.getUsername());
 		
-		List<TaskVO> vo = this.taskMapper.HighWorkList();
+		MemVO memvo = new MemVO();
+		memvo.setMemEmail(userdetail.getUsername());
+		
+		String userCode = this.taskMapper.userNameSelect(memvo);
+		log.info("userCode : " + userCode);
+		vo.setMemCode(userCode);
+		
+		log.info("TaskService --> CheckVO : " + vo.toString());
+		return this.taskMapper.lowWorkInsert(vo);
+	}
+	
+	@Override
+	public int HighWorkInsert(TaskVO vo , Authentication authentication) {
+		UserDetails userdetail =  (UserDetails) authentication.getPrincipal();
+		MemVO memvo = new MemVO();
+		memvo.setMemEmail(userdetail.getUsername());
+		
+		String userCode = this.taskMapper.userNameSelect(memvo);
+		vo.setMemCode(userCode);
+		log.info("TaskService --> 상위일감VO CHECK : " + vo.toString());
+		
+		String[] autharr = this.taskMapper.authCheck(vo);
+		
+		for(int i=0; i<autharr.length; i++) {
+			if(autharr[i].equals("ROLE_PROJECT_LEADER")) {
+				log.info("ROLE_PROJECT_READER IN ");
+				return this.taskMapper.HighWorkInsert(vo);
+				
+			}
+		}
+		log.info("TaskController --> authCheckVO --> :"+vo.toString());
+		log.info("TaskController --> authCheck --> :"+autharr[0]);
+		
+		return -1;
+	}
+	
+	@Override
+	public List<TaskVO> HighWorkList(TaskVO vo , Authentication authentication) {
+		
+		UserDetails userdetail =  (UserDetails) authentication.getPrincipal();
+		MemVO memvo = new MemVO();
+		memvo.setMemEmail(userdetail.getUsername());
+		
+		String userCode = this.taskMapper.userNameSelect(memvo);
+		log.info("receive TaskServiceImpl => userCode : "  + userCode );
+		
+		vo.setMemCode(userCode);
+		
+		String[] autharr = this.taskMapper.authCheck(vo);
 		
 		log.info("receive TaskServiceImpl => vo : "  + vo.toString());
 		
-		return vo;
+		//리더일 경우 모든 일감 셀렉트
+		for(int i=0; i<autharr.length; i++) {
+			if(autharr[i].equals("ROLE_PROJECT_LEADER")) {
+				log.info("ROLE_PROJECT_READER IN ");
+				List<TaskVO> returnvo = this.taskMapper.HighWorkList(vo);
+				return returnvo;
+			}
+		}	
+		
+		log.info(" 셀렉트 전 vo : " + vo.toString());
+		//일반 멤버일 경우 셀렉
+		List<TaskVO> memberTask = this.taskMapper.memberTaskList(vo);
+		List<TaskVO> nullTask = this.taskMapper.nullHighTaskId(vo); // projId 넘겨야됨
+		
+		for(TaskVO nt: memberTask) {
+			log.info("nt : --> : " + nt.toString());
+			nullTask.add(nt);
+		}
+		
+		log.info("memberTask --> : " + memberTask.toString());
+		log.info("nullTask --> : " + nullTask.toString());
+		
+		
+		
+		return nullTask;
 	}
 
 	@Override
@@ -35,11 +112,7 @@ public class TaskServiceImpl implements TaskService {
 		
 	}
 
-	@Override
-	public int lowWorkInsert(TaskVO vo) {
-		return this.taskMapper.lowWorkInsert(vo);
-	}
-
+	
 	@Override
 	public TaskVO HighWorkNum(TaskVO vo) {
 		vo = this.taskMapper.HighWorkNum(vo);
@@ -49,10 +122,6 @@ public class TaskServiceImpl implements TaskService {
 		return vo ;
 	}
 
-	@Override
-	public int HighWorkInsert(TaskVO vo) {
-		return this.taskMapper.HighWorkInsert(vo);
-	}
 
 	
 	@Override
@@ -81,6 +150,21 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public int taskPgresUpdate(TaskVO vo) {
 		return this.taskMapper.taskPgresUpdate(vo);
+	}
+
+	@Override
+	public int highTaskCtsUpdate(TaskVO vo) {
+		return this.taskMapper.highTaskCtsUpdate(vo);
+	}
+
+	@Override
+	public String[] authCheck(TaskVO vo) {
+		return this.taskMapper.authCheck(vo);
+	}
+
+	@Override
+	public int hiworkDelBefor(TaskVO vo) {
+		return this.taskMapper.hiworkDelBefor(vo);
 	}
 
 }

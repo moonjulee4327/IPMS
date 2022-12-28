@@ -6,6 +6,14 @@
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/common.css">
+<link rel="stylesheet" href="/resources/css/join.css">
+
+
+<script src="/resources/js/jquery-3.6.0.js"></script>
+<script src="/resources/js/join.js"></script>
+<script src="/resources/js/common.js"></script>
 <!DOCTYPE html>
 <head>
     <title>마이 페이지 - 초대/신청 현황 조회</title>
@@ -33,14 +41,15 @@
                 success: function (division) {
                     if (division == 1) {
                         alert("승인완료");
+                        $("sbscrMmbtn").css('display', 'none');
                     } else {
-                        alert(${msg});
+                        alert("실패");
                     }
                 }
             });
         }
 
-        function fn_companion(memCode , projId){
+        function fn_companion(memCode, projId) {
             console.log(memCode);
             console.log(projId);
             $.ajax({
@@ -61,6 +70,45 @@
             });
         }
 
+        function fn_acceptInvitationBtn(memCode , projId) {
+            alert(memCode+":"+projId);
+            $.ajax({
+                url: "/main/acceptInvitation",
+                type: "post",
+                data: {"memCode": memCode, "projId": projId},
+                dataType: "json",
+                beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: function (division) {
+                    if (division == 1) {
+                        alert("승인완료");
+                    } else {
+                        alert("실패");
+                    }
+                }
+            });
+        }
+
+        function fn_refusalInvitation(memCode,projId) {
+            alert(memCode+":"+projId);
+            $.ajax({
+                url: "/main/refusalInvitation",
+                type: "post",
+                data: {"memCode": memCode, "projId": projId},
+                dataType: "json",
+                beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: function (division) {
+                    if (division == 1) {
+                        alert("승인완료");
+                    } else {
+                        alert("실패");
+                    }
+                }
+            });
+        }
 
     </script>
 </head>
@@ -68,14 +116,14 @@
 <body>
 <!-- BEGIN: Content-->
 <!-- users edit start -->
-<div style="bottom:30px;" class="content-header-left col-md-6 col-12 mb-2">
+<div style="margin-top: 50px;" class="content-header-left col-md-6 col-12 mb-2">
     <h3 class="content-header-title mb-0"><b>초대/신청 현황 조회</b></h3>
     <div class="row breadcrumbs-top">
         <div class="breadcrumb-wrapper col-12"></div>
     </div>
 </div>
 <section class="users-edit">
-    <div class="card" style="width: 65%;">
+    <div class="card" style="width: 65%;height: 250px">
         <div class="card-content">
             <div class="card-body">
                 <ul class="nav nav-tabs mb-2" role="tablist">
@@ -86,9 +134,7 @@
                     <li class="nav-item"><a
                             class="nav-link d-flex align-items-center" id="information-tab"
                             data-toggle="tab" href="#information" aria-controls="information"
-                            role="tab" aria-selected="false"> <i
-                            class="feather icon-info mr-25"></i><span
-                            class="d-none d-sm-block">초대한 회원</span>
+                            role="tab" aria-selected="false">
                     </a></li>
                 </ul>
                 <div class="tab-content">
@@ -104,22 +150,27 @@
                                                    class="table table-hover mb-0 ps-container ps-theme-default">
                                                 <thead>
                                                 <tr>
-                                                    <th>시작일</th>
-                                                    <th>프로젝트명</th>
-                                                    <th>기간</th>
+                                                    <th>번호</th>
+                                                    <th>프로젝트 아이디</th>
+                                                    <th>프로젝트 이름</th>
                                                     <th>승인 여부</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td class="text-truncate">2022-12-01</td>
-                                                    <td class="text-truncate"><a href="#">프로젝트 이름입니다</a></td>
-                                                    <td class="text-truncate">2022-12-10</td>
-                                                    <td class="text-truncate">
-                                                        <button type="button" class="btn btn-success btn-sm">수락</button>
-                                                        <button type="button" class="btn btn-danger btn-sm">거절</button>
-                                                    </td>
-                                                </tr>
+                                                <c:forEach var="item" items="${invitationWaitingList}" varStatus="idx">
+                                                    <tr>
+                                                        <td class="text-truncate">${idx.count}</td>
+                                                        <td class="text-truncate"><a href="#">${item.projId}</a></td>
+                                                        <td class="text-truncate">${item.projName}</td>
+                                                        <td class="text-truncate">
+                                                            <button type="button" class="btn btn-success btn-sm"
+                                                                    onclick="fn_acceptInvitationBtn('${item.memCode}','${item.projId}' )">수락</button>
+                                                            <button type="button" class="btn btn-danger btn-sm"
+                                                                    onclick="fn_refusalInvitation('${item.memCode}','${item.projId}' )">거절
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -135,45 +186,13 @@
                     <div class="tab-pane" id="information"
                          aria-labelledby="information-tab" role="tabpanel">
                         <!-- users edit Info form start -->
-                        <form novalidate style="width: 100%;">
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="card" style="">
-                                    <div class="card-content">
-                                        <div class="table-responsive">
-                                            <table id="recent-orders"
-                                                   class="table table-hover mb-0 ps-container ps-theme-default">
-                                                <thead>
-                                                <tr>
-                                                    <th>시작일</th>
-                                                    <th>프로젝트명</th>
-                                                    <th>기간</th>
-                                                    <th>초대 승인</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td class="text-truncate">2022-12-01</td>
-                                                    <td class="text-truncate"><a href="#">이름입니다</a></td>
-                                                    <td class="text-truncate">2022-12-10</td>
-                                                    <td class="text-truncate"><span
-                                                            class="badge badge-warning">응답중</span>
-                                                        <button type="button" class="btn btn-danger btn-sm">취소</button>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                         <!-- users edit Info form ends -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card" style="width: 65%;">
+    <div class="card" style="width: 65%;height: 250px;margin-top: 100px;">
         <div class="card-content">
             <div class="card-body">
                 <ul class="nav nav-tabs mb-2" role="tablist">
@@ -214,9 +233,10 @@
                                                 <c:forEach var="item" items="${projectsApplied}" varStatus="status">
                                                     <tr>
                                                         <td class="text-truncate">${status.count}</td>
-                                                        <td class="text-truncate"><a href="#">${item.teamId}</a></td>
+                                                        <td class="text-truncate"><a href="#">${item.projId}</a></td>
                                                         <td class="text-truncate">${mvo.member.memName}</td>
-                                                        <td class="text-truncate"><span class="badge badge-warning">대기중</span>
+                                                        <td class="text-truncate"><span
+                                                                class="badge badge-warning">대기중</span>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -251,18 +271,22 @@
 
                                                 <c:forEach var="item" items="${memberWhoApplied}" varStatus="status">
                                                     <div>
-                                                        <input >
-
                                                     </div>
                                                     <tr>
                                                         <td class="text-truncate">&nbsp;${status.count}</td>
-                                                        <td class="text-truncate"><a href="#">${item.teamId}</a></td>
+                                                        <td class="text-truncate">${item.projId}</td>
                                                         <td class="text-truncate">${mvo.member.memName}</td>
                                                         <td class="text-truncate">
-                                                            <button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_approve('${item.memCode}','${item.projId}' )">
+                                                            <button type="button" id="sbscrMmbtn"
+                                                                    class="btn btn-success btn-sm"
+                                                                    onclick="fn_approve('${item.memCode}','${item.projId}' )">
                                                                 승인
                                                             </button>
-                                                            <button type="button" id="companionButton" class="btn btn-danger btn-sm" onclick="fn_companion('${item.memCode}','${item.projId}' )">반려</button>
+                                                            <button type="button" id="companionButton"
+                                                                    class="btn btn-danger btn-sm"
+                                                                    onclick="fn_companion('${item.memCode}','${item.projId}' )">
+                                                                반려
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -280,10 +304,7 @@
         </div>
     </div>
 </section>
-<!-- users edit ends -->
-<!-- END: Content-->
 
-<!-- BEGIN: Page Vendor JS-->
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 <script

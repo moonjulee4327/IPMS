@@ -4,119 +4,152 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#projName").change(function () {
-            var to = $("#projName").val();
-            $("#to").attr("value", to);
-            console.log(to);
-            $("#teamId").val(to);
+<head>
+    <title>주문 하기</title>
+    <link rel="stylesheet" type="text/css" href="/resources/GatherCss.css">
+    <script src="/resources/GatherJs.js"></script>
+    <link rel="stylesheet" href="/resources/css/reset.css">
+    <link rel="stylesheet" href="/resources/css/common.css">
+    <link rel="stylesheet" href="/resources/css/join.css">
+    <link rel="stylesheet" href="/resources/css/order.css">
+
+    <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+    <script src="/resources/js/jquery-3.6.0.js"></script>
+    <script src="/resources/js/order.js"></script>
+    <script src="/resources/js/join.js"></script>
+    <script src="/resources/js/common.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#uploadBtn").on("click", function (e) {
+                var formData = new FormData(e;
+                var inputFile = $("input[name='uploadFile']");
+                var files = inputFile[0].files;
+                console.log(files);
+            })
         })
-
-    })
-</script>
+    </script>
+</head>
 <body>
-<div class="app-content container center-layout mt-2" style="overflow: auto">
-    <div class="content-overlay"></div>
-    <div class="content-wrapper">
-        <div class="content-body"><!-- Search form-->
-            <section id="search-images" class="card overflow-hidden">
-                <div class="card-content collapse show">
+<div id="wrap">
+    <div id="container">
+        <div id="main">
+            <div id="content">
+                <div class="user_form">
+                    <h1 class="h1_tit">프로젝트 생성</h1>
 
-                    <div class="app-content container center-layout mt-2" style="margin-top: 100px;">
-                        <div class="card-header">
-                            <h4 class="card-title" style="font-size: xx-large"><strong>전체 프로젝트</strong></h4>
-                        </div>
-                        <div class="content-wrapper" >
-                            <div class="content-body">
-                                <div class="content-header row">
-                                    <div class="card-content collapse show">
-                                        <div class="card-body">
-                                            <form action="/main/newProjectPost" class="form-row" method="post">
-                                                <div class="form-group col-md-6 mb-2">
-                                                    <label for="projStrtDate">Project Name</label>
-                                                    <input type="text" id="projName" class="form-control border-primary"
-                                                           placeholder="Project Name" name="projName" value=""/>
-                                                    <input type="hidden" id="teamId" name="teamId"/>
-                                                </div>
-                                                <div class="form-group col-md-6 mb-2"></div>
-
-                                                <div class="form-group col-md-6 mb-2"></div>
-
-                                                <div class="form-group col-md-6 mb-2">
-                                                </div>
-                                                <div class="form-group col-md-6 mb-2">
-                                                    <div class="form-group">
-                                                        <div style="float: left">
-                                                            <label for="projStrtDate">Project Start Date</label>
-                                                            <input type="date" id="projStrtDate"
-                                                                   class="form-control border-primary"
-                                                                   placeholder="Start Date" name="projStrtDate"/>
-                                                        </div>
-                                                        <div style="float:right;">
-                                                            <label for="projEndDate">Project End Date</label>
-                                                            <input type="date" id="projEndDate"
-                                                                   class="form-control border-primary"
-                                                                   placeholder="End Date" name="projEndDate"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-6 mb-2"></div>
-                                                <div class="form-group col-md-6 mb-50">
-                                                    <img src="/resources/images/IPMSlogo.png"
-                                                         style="width: 200px;height: 300px;">
-                                                </div>
-                                                <div class="form-group col-12 mb-2 file-repeater">
-                                                    <div data-repeater-list="repeater-list">
-                                                        <div data-repeater-item="">
-                                                            <div class="row mb-1">
-                                                                <div class="col-9 col-xl-10">
-                                                                    <label class="file center-block">
-                                                                        <input type="file" id="file">
-                                                                        <span class="file-custom"></span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <button type="button" data-repeater-create=""
-                                                            class="btn btn-secondary">
-                                                        <i class="icon-plus4"></i> Add new file
-                                                    </button>
-                                                </div>
-                                                <div class="form-group col-12 mb-2">
-                                                     <textarea id="userinput8" rows="5" class="form-control" name="projSmry"
-                                                               placeholder="소개"></textarea>
-                                                </div>
-                                                <div style="margin-left: 10px;">
-                                                    <button type="submit" data-repeater-create=""
-                                                            class="btn btn-secondary"><i
-                                                            class="icon-plus4"></i> 등록
-                                                    </button>
-                                                </div>
-                                                <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
-                                                <input type="hidden" name="memAuthList[1].memAuth" value="ROLE_PROJECT_LEADER"/>
-                                                <sec:authorize access="isAuthenticated()">
-                                                    <input type="hidden" name="memEmail"
-                                                           value="<sec:authentication property="principal.username"/>"/>
-                                                    <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
-                                                    <input type="hidden" name="" value="${mvo.member}"/>
-                                                </sec:authorize>
-                                                <sec:csrfInput/>
-                                            </form>
-                                        </div>
+                    <h2 class="tit_section fst">
+                        프로젝트 정보
+                    </h2>
+                    <div id="itemList" class="page_aticle order_goodslist">
+                        <ul class="list_product">
+                            <li>
+                                <div class="thumb">
+                                    <img src="https://img-cf.kurly.com/shop/data/goods/156757412839i0.jpg">
+                                </div>
+                                <div class="name">
+                                    <div class="inner_name">
+                                        <form name="fileForm" action="/main/fileupload1" method="post"
+                                              enctype="multipart/form-data">
+                                            <input type="file" name="file"/>
+                                            <input type="submit" value="전송"/>
+                                            <sec:csrfInput/>
+                                        </form>
                                     </div>
                                 </div>
+                                <div class="info_price">
+                                        <span class="num">
+                                            <span class="price">
+                                                대표이미지
+                                            </span>
+                                        </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <form action="/main/newProjectPost" method="post">
+                        <h2 class="tit_section" id="titFocusOrderer">프로젝트 세부 정보</h2>
+
+                        <div class="order_section data_orderer">
+                            <table class="goodsinfo_table">
+                                <tbody>
+                                <tr class="fst">
+                                    <th>프로젝트 이름</th>
+                                    <td>
+                                        <input type="text" id="projName" class="form-control border-primary"
+                                               placeholder="프로젝트 이름" name="projName" value=""/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>프로젝트 기간</th>
+                                    <td>
+                                        <div style="float: left">
+                                            <input type="date" id="projStrtDate"
+                                                   class="form-control border-primary"
+                                                   placeholder="Start Date" name="projStrtDate"/>
+                                        </div>
+                                        <div style="float:left;">
+                                            <input type="date" id="projEndDate"
+                                                   class="form-control border-primary"
+                                                   placeholder="End Date" name="projEndDate"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h2 class="tit_section" id="divAddressWrapper">프로젝트 내용
+                            <span class="desc">기본적인 프로젝트에 대한 소개를 작성하세요. </span>
+                        </h2>
+
+                        <div class="order_section order_address" id="dataDelivery">
+                            <div class="form-group col-12 mb-2">
+                                <textarea id="userinput8" rows="5" class="form-control" name="projSmry"
+                                          placeholder="소개"></textarea>
                             </div>
                         </div>
-                    </div>
+                        <div class="data_method" style="margin-left: 150px;">
+                            <h2 class="tit_section" id="titFocusMethod">Precautions when writing</h2>
+                            <table class="goodsinfo_table tbl_left">
+                                <tbody>
+                                <tr>
+
+                                    <th>
+                                        <label class="label_radio" id="cardBenefit_kakaopay">
+                                            <span id="kakaopay">주의사항</span>
+                                        </label>
+                                    </th>
+                                    <td>
+                                        욕설과 타인을 비난 평가하는 내용이 포함시 해당 프로젝트는 관리자에 의하여 삭제됩니다.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
+                        <input type="hidden" name="memAuthList[1].memAuth" value="ROLE_PROJECT_LEADER"/>
+                        <sec:authorize access="isAuthenticated()">
+                            <input type="hidden" name="memEmail"
+                                   value="<sec:authentication property="principal.username"/>"/>
+                            <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
+                            <input type="hidden" name="" value="${mvo.member}"/>
+                        </sec:authorize>
+                        <sec:csrfInput/>
+                        <div class="tit_section">
+                            <input type="submit" value="등록하기" class="btn_payment">
+                        </div>
+
+                    </form>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </div>
 </body>
+</html>
 <script>
     CKEDITOR.replace('userinput8');
 </script>

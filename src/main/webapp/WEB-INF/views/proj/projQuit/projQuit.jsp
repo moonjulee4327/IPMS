@@ -1,5 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <!DOCTYPE html>
@@ -36,31 +41,21 @@
 								<h4 style="color: #404e67;">GET OFF PROJECT</h4>
 								<hr class="my-hr2">
 								<br>
+								<form action="/proj/projQuitProcess" method="post">
+								<input type="hidden" name="projId" value="${projId}"/>
+								<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
 								<p class="card-text">프로젝트를 하차하시려면 버튼을 누르세요.</p>
 								<br> <br> <br> <br>
-								<button class="btn btn-secondary">하차하기</button>
+								<button id="quitBtn" class="btn btn-secondary">하차하기</button>
 								<br> <br>
+									<sec:csrfInput/>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-	<!-- Outline variants section end -->
-
-	<!-- END: Content-->
-
-	<!-- BEGIN: Vendor JS-->
-	<!-- BEGIN Vendor JS-->
-
-	<!-- BEGIN: Page Vendor JS-->
-	<!-- END: Page Vendor JS-->
-
-	<!-- BEGIN: Page JS-->
-	<!-- END: Page JS-->
-
 </body>
-<!-- END: Body-->
-
 </html>
 

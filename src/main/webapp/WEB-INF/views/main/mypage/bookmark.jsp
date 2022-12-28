@@ -53,7 +53,8 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
 <!-- END: Custom CSS-->
-
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <style type="text/css">
 .jqstooltip {
 	position: absolute;
@@ -87,6 +88,7 @@
 		width: 520px;
 	}
 </style>
+
 </head>
 <!-- END: Head-->
 

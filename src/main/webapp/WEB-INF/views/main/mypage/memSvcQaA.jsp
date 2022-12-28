@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <div style="bottom: 30px;"
 	class="content-header-left col-md-6 col-12 mb-2">
 	<h3 class="content-header-title mb-0">

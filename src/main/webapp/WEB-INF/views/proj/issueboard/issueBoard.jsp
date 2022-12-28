@@ -25,7 +25,7 @@
 						<h1 style="font-family: 'MICEGothic Bold';">프로젝트 이슈 게시판입니다!</h1>
 					</div>
 					<div>
-						<div><a href="/proj/issueInsert" class="mr-1 mb-1 btn btn-outline-secondary btn-min-width">이슈 등록 <i class="icon-pencil"></i></a></div>
+						<div><a href="/proj/${projId}/issueInsert" class="mr-1 mb-1 btn btn-outline-secondary btn-min-width">이슈 등록 <i class="icon-pencil"></i></a></div>
 						<div
 							style="float: right; padding-right: 10px; padding-bottom: 10px;"
 							class="input-group col-3">
@@ -71,7 +71,7 @@
 							<c:forEach var="vo" items="${vo}">
 								<tr>
 									<td>${vo.issueId}</td>
-									<td><a href="/proj/issueDetail?issueTitle=${vo.issueTitle}">${vo.issueTitle }</a></td>
+									<td><a href="/proj/${projId}/issueDetail?issueTitle=${vo.issueTitle}">${vo.issueTitle }</a></td>
 									<td>${vo.writer}</td>
 									
 									<td>
@@ -96,7 +96,7 @@
                                     <!-- 이전 버튼 시작 -->
                                     <c:if test="${pageVO.prev }">
                                     <li class="paginate_button page-item previous" id="app-invoice-table_previous">
-                                        <a href="/proj/issueboard?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                     </li>
                                     </c:if>
                                     <!-- 이전 버튼 끝 -->
@@ -107,12 +107,12 @@
                                     <c:choose>
                                     <c:when test="${pageVO.pageNum eq num }">
 	                                    <li class="paginate_button page-item active">
-	                                        <a href="/proj/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
 	                                    </li>
                                     </c:when>
                                     <c:otherwise>
                                     	<li class="paginate_button page-item">
-	                                        <a href="/proj/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
 	                                    </li>
                                     </c:otherwise>
                                     </c:choose>
@@ -122,7 +122,7 @@
                                     <!-- 다음 버튼 시작 -->
                                     <c:if test="${pageVO.next }">
                                     <li class="paginate_button page-item next" id="app-invoice-table_next">
-                                        <a href="/proj/issueboard?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
                                     </li>
                                     </c:if>
                                     <!-- 다음 버튼 끝 -->

@@ -1,22 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 	
-<!DOCTYPE html>
+	
 <!-- BEGIN: Head-->
-<head>
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-invoice.css">
 <!-- END: Page CSS-->
 <script type="text/javascript" src="/resources/js/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="/resources/js/issueboard.js"></script>
 </head>
 <!-- END: Head-->
 
 <!-- BEGIN: Body-->
-
-<body>
+<script>
+	var header = '${_csrf.headerName}';
+	var token = '${_csrf.token}';
+</script>
 
 	<!-- BEGIN: Content-->
 	<div class="content-wrapper">
@@ -33,7 +38,7 @@
 								<div class="card-header px-0">
 									<div class="row">
 										<div class="col-md-12 col-lg-7 col-xl-4 mb-50">
-											<span class="invoice-id font-weight-bold">No. </span> <span>${list.issueId}</span>
+											<span class="invoice-id font-weight-bold">No. </span> <span id="issueId" >${list.issueId}</span>
 										</div>
 										<div class="col-md-12 col-lg-5 col-xl-8">
 											<div
@@ -60,6 +65,10 @@
 								<br>
 								<!-- 몰라서 일단 만들어만 놓음.... 클릭하면 일감 이동..?? -->
 								<hr>
+								<div>
+								<!-- 파일경로 -->
+								<img alt="사진ㅋ" src="/resources${list.filePath}">
+								</div>
 
 								<!-- 글 내용 -->
 								<div class="row invoice-adress-info py-2">
@@ -68,10 +77,18 @@
 									</div>
 								</div>
 								<hr>
-								<div>
-									<i class="feather icon-link"></i>첨부파일:
-									___________________________
-								</div>
+								
+								<c:if test="${list.filePath != null }">
+									<div>
+										<i class="feather icon-link"></i> 첨부파일:
+										<a href="/resources${list.filePath}" download="${list.fileName}">"${list.fileName}"</a>
+									</div>
+								</c:if>
+								<c:if test="${list.filePath == null }">
+									<div>
+										등록된 첨부파일이 없습니다.
+									</div>
+								</c:if>
 								<div style="float: right;">
 									<button type="button" class="btn btn-secondary">
 										<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
@@ -91,13 +108,10 @@
 								<form class="form-horizontal">
 									<div class="row">
 										<div class='col-sm-10'>
-											<input type="text" class="form-control" id="repContent"
-												placeholder="댓글을 입력하세요." />
+											<input type="text" class="form-control" id="issueCmtCts" name="issueCmtCts" placeholder="댓글을 입력하세요." />
 										</div>
 										<div class='col-sm-2'>
-											<button type="button" class="btn btn-secondary"
-												style="width: 150px;" id="repAdd" onclick="repAdd()">댓글
-												등록</button>
+											<button type="button" class="btn btn-secondary" style="width: 150px;" id="repAdd">댓글 등록</button>
 										</div>
 									</div>
 									<div>
@@ -115,30 +129,7 @@
 							Comments&nbsp;<i class="fa fa-comment fa"></i>
 						</div>
 						<div class="card-body" id="repListAdd">
-							<!-- 							<form class="form-horizontal"> -->
-							<!-- 								<div class="user-block"> -->
-							<!-- 									<div> -->
-							<!-- 										<div style="padding-bottom: 5px;"> -->
-							<!-- 											<span class="username"> <a href="#" style="font-size:15px;">김효정</a>&nbsp;&nbsp;<span -->
-							<!-- 												style="font-size: 8px; color: grey;">2022-12-09 17:20</span><a -->
-							<!-- 												href="#" class="float-right btn-box-tool replyDelBtn" -->
-							<!-- 												data-toggle="modal" data-target="#delModal"><i -->
-							<!-- 													class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a -->
-							<!-- 												href="#" class="float-right btn-box-tool replyModBtn" -->
-							<!-- 												data-toggle="modal" data-target="#modModal"> <i -->
-							<!-- 													class="fa fa-edit" style="color: #00838F;">수정</i> -->
-							<!-- 											</a> -->
-							<!-- 											</span> <span class="description"></span> -->
-							<!-- 										</div> -->
-							<!-- 										<div id="repContent">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div> -->
-							<!-- 										<div style="padding-top: 10px;"> -->
-							<!-- 											<button type="button" -->
-							<!-- 												class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button> -->
-							<!-- 										</div> -->
-							<!-- 										<hr> -->
-							<!-- 									</div> -->
-							<!-- 								</div> -->
-							<!-- 							</form> -->
+							 <!-- 댓글 인설트 성공 시 데이터 삽입  -->
 						</div>
 					</div>
 				</div>
@@ -148,28 +139,13 @@
 	<!-- END: Content-->
 
 	<!-- BEGIN: Page JS-->
-	<script
-		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
 	<!-- END: Page JS-->
 
-</body>
+<!-- <script> -->
+// var auth ="${auth}";
+// var mvo = "${mvo}";
+// var authCheck = "${authCheck}";
+<!-- </script> -->
 <!-- END: Body-->
 
-</html>
-
-<script type="text/javascript">
-
-$(function(){
-	
-	// 댓글 등록
-	$("#repAdd").on("click", function(){
-//  		alert("댓글 등록 떠라");
- 		let repCon = $("#repContent").val();
- 		$("#repListAdd").append(
- 		"<form class='form-horizontal'><div class='user-block'><div><div style='padding-bottom: 5px;'><span class='username'> <a href='#' style='font-size:15px;'>김효정</a>&nbsp;&nbsp;<span style='font-size: 8px; color: grey;'>2022-12-09 17:20</span><a href='#' class='float-right btn-box-tool replyDelBtn' data-toggle='modal' data-target='#delModal'><i class='fa fa-times' style='color: #D32F2F;'>삭제</i></a><a href='#' class='float-right btn-box-tool replyModBtn' data-toggle='modal' data-target='#modModal'><i class='fa fa-edit' style='color: #00838F;'>수정</i></a></span><span class='description'></span></div><div id='repContent'>"+repCon+"</div><div style='padding-top: 10px;'><button type='button' class='btn mr-1 mb-1 btn-secondary btn-sm'>ㄴ 댓글</button></div><hr></div></div></form>"		
- 		);
- 		$("#repContent").val("");
-	});
-	
-});
-</script>

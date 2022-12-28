@@ -20,6 +20,14 @@
 		<put-attribute name="mypageFooter" value="/WEB-INF/views/mypageTiles/mypageFooter.jsp" />
 	</definition>
 	
+	<!-- serviceCenter layout -->
+	<definition name="main-serviceCenter-layout" template="/WEB-INF/views/main/svcTiles/svcIndex.jsp">
+		<put-attribute name="svcHeader" value="/WEB-INF/views/main/svcTiles/svcHeader.jsp" />
+		<put-attribute name="svcAside" value="/WEB-INF/views/main/svcTiles/svcAside.jsp" />
+		<put-attribute name="svcBody" value="" />
+		<put-attribute name="svcFooter" value="/WEB-INF/views/main/svcTiles/svcFooter.jsp" />
+	</definition>
+	
 	<!-- admin layout -->
 	<definition name="admin-page-layout" template="/WEB-INF/views/adminTiles/adminIndex.jsp">
 		<put-attribute name="adminHeader" value="/WEB-INF/views/adminTiles/adminHeader.jsp" />
@@ -45,6 +53,10 @@
 	
 	<definition name="main/mypage/*" extends="main-mypage-layout">
 		<put-attribute name="mypageBody" value="/WEB-INF/views/main/mypage/{1}.jsp" />
+	</definition>
+
+	<definition name="main/serviceCenter/*" extends="main-serviceCenter-layout">
+		<put-attribute name="svcBody" value="/WEB-INF/views/main/serviceCenter/{1}.jsp" />
 	</definition>
 	
 	<definition name="main/admin/*" extends="admin-page-layout">

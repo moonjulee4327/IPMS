@@ -1,12 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 
 <!-- BEGIN: Vendor CSS-->
 <link rel="stylesheet" type="text/css"
-	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
-<link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-
 
 <div class="content-body">
 	<!-- Base style table -->
@@ -15,7 +19,7 @@
 			<div class="card">
 				<div class="card-header">
 					<h4 class="card-title">
-						<b>Notice</b>
+						<b>NOTICE</b>
 					</h4>
 				</div>
 				<div class="card-content collapse show">
@@ -23,15 +27,16 @@
 						<h1 style="font-family: 'MICEGothic Bold';">프로젝트 공지사항</h1>
 					</div>
 					<div>
+						<div><a href="/proj/noticeInsert" class="mr-1 mb-1 btn btn-outline-secondary btn-min-width">글 쓰기 <i class="icon-pencil"></i></a></div>
 						<div
 							style="float: right; padding-right: 10px; padding-bottom: 10px;"
 							class="input-group col-3">
 							<input type="text"
 								class="form-control form-control-xl input-xl border-grey border-lighten-1 "
-								placeholder="Search..." aria-describedby="button-addon2">
+								name="keyword">
 							<span class="input-group-append" id="button-addon2">
 								<button class="btn btn-secondary border-grey border-lighten-1"
-									type="button">
+									type="button" id="searchBtn">
 									<i class="feather icon-search"></i>
 								</button>
 							</span>
@@ -41,7 +46,13 @@
 						<table class="table table-striped table-bordered base-style table-hover">
 							<thead>
 								<tr role="row">
-									<th class="sorting" tabindex="0"
+									<sec:authorize access="hasRole('ROLE_PROJECT_LEADER' )">
+										<th class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Name: activate to sort column ascending"
+										style="width: 5px;"><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
+									</sec:authorize>
+										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 										aria-label="Name: activate to sort column ascending"
 										style="width: 5px;">글번호</th>
@@ -57,142 +68,98 @@
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 										aria-label="Age: activate to sort column ascending"
 										style="width: 250px;">작성일자</th>
+									
+<%-- 									<sec:authorize access="hasRole('ROLE_MEMBER')"> --%>
+<!-- 									<th class="sorting" tabindex="0" -->
+<!-- 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1" -->
+<!-- 										aria-label="Name: activate to sort column ascending" -->
+<!-- 										style="width: 5px;">글번호</th> -->
+<!-- 									<th class="sorting" tabindex="0" -->
+<!-- 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1" -->
+<!-- 										aria-label="Position: activate to sort column ascending" -->
+<!-- 										style="width: 450px;">제목</th> -->
+<!-- 									<th class="sorting" tabindex="0" -->
+<!-- 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1" -->
+<!-- 										aria-label="Office: activate to sort column ascending" -->
+<!-- 										style="width: 30px;">작성자</th> -->
+<!-- 									<th class="sorting" tabindex="0" -->
+<!-- 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1" -->
+<!-- 										aria-label="Age: activate to sort column ascending" -->
+<!-- 										style="width: 250px;">작성일자</th> -->
+<%-- 									</sec:authorize> --%>
 								</tr>
 							</thead>
 							<tbody>
+								<c:forEach var="noticeBoardVO" items="${ntSelect}">
 								<tr>
-									<td>1</td>
-									<td><a href="/proj/noticeDetail">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
+<%-- 								<sec:authorize access="hasRole('ROLE_PROJECT_LEADER' )"> --%>
+									<td><input type='checkbox' id="ckbox" name="ckbox" data-projNtNum="${noticeBoardVO.projNtNum}" value="${noticeBoardVO.projNtNum}"></td>
+<%-- 								</sec:authorize> --%>
+									<td>${noticeBoardVO.projNtNum}</td>
+									<td style="text-align:left;"><a href="/proj/noticeBoardDetail?projNtNum=${noticeBoardVO.projNtNum}">${noticeBoardVO.projNtTitle}</a></td>
+									<td>${noticeBoardVO.memCode}</td>
+									<td><fmt:formatDate value="${noticeBoardVO.projNtWriteDate}"
+										pattern="yyyy-MM-dd"/></td>
 								</tr>
-								<tr>
-									<td>2</td>
-									<td><a href="/proj/noticeBoardPL">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#">title test</a></td>
-									<td>writer</td>
-									<td>2022-12-05</td>
-								</tr>
-
+								</c:forEach>
+								
+<%-- 								<sec:authorize access="hasRole('ROLE_MEMBER')"> --%>
+<%-- 								<c:forEach var="freeboardVO" items="${freeSelect}"> --%>
+<!-- 								<tr> -->
+<%-- 									<td>${freeboardVO.projBdId}</td> --%>
+<%-- 									<td style="text-align:left;"><a href="/proj/freeBoardDetail?projBdId=${freeboardVO.projBdId}">${freeboardVO.projBdTitle}</a></td> --%>
+<%-- 									<td>${freeboardVO.writer}</td> --%>
+<%-- 									<td><fmt:formatDate value="${freeboardVO.projBdWriteDate}" --%>
+<%-- 										pattern="yyyy-MM-dd"/></td> --%>
+<!-- 								</tr> -->
+<%-- 								</c:forEach> --%>
+<%-- 								</sec:authorize> --%>
 						</table>
+
 						<div class="row">
-							<div class="col-sm-12 col-md-7 offset-5">
+							<div class="col-sm-12 col-md-7">
+								<div style="float: left; padding-left:67px;">
+									<button type="button" class="btn btn-sm" id="selectDel" style="background-color:#546E7A; color:white;">
+										선택 삭제
+									</button>
+								</div>
 								<div class="dataTables_paginate paging_simple_numbers"
-									id="DataTables_Table_0_paginate">
+									id="DataTables_Table_0_paginate" style="float:right;">
 									<ul class="pagination">
-										<li class="paginate_button page-item previous disabled"
-											id="DataTables_Table_0_previous"><a href="#"
+										<c:if test="${pageVO.prev}">
+										<li class="paginate_button page-item previous"
+											id="DataTables_Table_0_previous"><a href="/proj/noticeBoard?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
-											tabindex="0" class="page-link">Previous</a></li>
-										<li class="paginate_button page-item active"><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="1"
-											tabindex="0" class="page-link">1</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="2"
-											tabindex="0" class="page-link">2</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="3"
-											tabindex="0" class="page-link">3</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="4"
-											tabindex="0" class="page-link">4</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="5"
-											tabindex="0" class="page-link">5</a></li>
-										<li class="paginate_button page-item "><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="6"
-											tabindex="0" class="page-link">6</a></li>
+											tabindex="0" class="page-link">이전</a></li>
+										</c:if>
+										
+										<c:forEach var="num" begin="${pageVO.startPage}" end="${pageVO.endPage}">
+										<c:choose>
+										<c:when test="${pageVO.pageNum eq num}">
+											<li class="paginate_button page-item active">
+												<a href="/proj/noticeBoard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+											</li>
+										</c:when>
+										<c:otherwise>
+											<li class="paginate_button page-item">
+												<a href="/proj/noticeBoard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+											</li>
+										</c:otherwise>
+										</c:choose>
+										</c:forEach>
+										<c:if test="${pageVO.next}">
 										<li class="paginate_button page-item next"
-											id="DataTables_Table_0_next"><a href="#"
-											aria-controls="DataTables_Table_0" data-dt-idx="7"
-											tabindex="0" class="page-link">Next</a></li>
+											id="DataTables_Table_0_previous"><a href="/proj/noticeBoard?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}"
+											aria-controls="DataTables_Table_0" data-dt-idx="0"
+											tabindex="0" class="page-link">다음</a></li>
+										</c:if>
 									</ul>
 								</div>
 							</div>
 						</div>
+						<input type="hidden" name="memCode" value="<sec:authentication property='principal.member.memCode'/>"/>
+						<input type="hidden" name="" value="${mvo.member}"/>
+						<input type="hidden" id="projId" name="projId" value="P003" />
 					</div>
 				</div>
 			</div>
@@ -200,22 +167,65 @@
 	</div>
 </div>
 
-<!-- BEGIN: Vendor JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
-<!-- BEGIN Vendor JS-->
+<script>
+
+$(function(){
+	
+	// 체크박스 전체 선택
+	$("#allCkbox").on("click",function(){
+		
+		if($("#allCkbox").prop("checked")) {
+		//	$("#ckbox").prop("checked", true);
+			$("input[type=checkbox]").prop("checked",true);
+		} else {
+		//	$("#ckbox").prop("checked", false);
+			$("input[type=checkbox]").prop("checked",false);
+		}
+	});
+
+	// 선택 삭제 ---------------------------
+	$("#selectDel").on("click",function(){
+		
+		var confirmDel = confirm("선택한 글을 삭제하시겠습니까?");
+
+		if(confirmDel) {
+			
+			var ckArr = new Array();
+
+			$("input[id='ckbox']:checked").each(function(){
+				ckArr.push($(this).attr("data-projNtNum"));
+			});
+
+			$.ajax({
+				url: "/proj/deleteSelNt",
+				type: "post",
+				data: {ckbox : ckArr},
+				beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+		                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	 			},
+				success: function(result){
+					if(result == 1) {
+						alert("삭제하였습니다.")
+						location.href = "/proj/freeboard";
+					} else {
+						alert("삭제 실패");
+					}
+				}
+			});	// ajax end
+		} // if end
+
+	}); // ---------------------------------
+
+});
+
+
+</script>
+
 
 <!-- BEGIN: Page Vendor JS-->
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 <!-- END: Page Vendor JS-->
-
-<!-- BEGIN: Theme JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
-<!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
 <script

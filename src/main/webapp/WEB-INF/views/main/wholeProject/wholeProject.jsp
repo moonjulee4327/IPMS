@@ -1,33 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <div class="app-content container center-layout mt-2" style="overflow: auto">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
         <div class="content-body"><!-- Search form-->
             <section id="search-images" class="card overflow-hidden">
                 <div class="card-header">
-                    <h4 class="card-title" style="font-size: xx-large"><strong>전체 프로젝트</strong></h4>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                 </div>
                 <div class="card-content collapse show">
                     <div class="card-body pb-0">
                     </div>
+
                     <!--Search Navbar-->
                     <div class="todo-fixed-search d-flex justify-content-between align-items-center">
                         <div class="sidebar-toggle d-block d-lg-none">
                             <i class="feather icon-menu"></i>
                         </div>
                         <fieldset class="form-group position-relative has-icon-left m-0 flex-grow-1 pl-2">
-                            <input type="text" class="form-control todo-search" id="todo-search"
-                                   placeholder="Search Task">
-                            <div class="form-control-position">
-                                <i class="feather icon-search"></i>
+                            <div><input type="text" class="form-control todo-search" id="todo-search"
+                                        placeholder="Search Task" style="width: 40%;float: right">
                             </div>
+
                         </fieldset>
                         <div class="todo-sort dropdown mr-1">
                             <button class="btn dropdown-toggle sorting" type="button" id="sortDropdown"
@@ -46,8 +48,7 @@
                     <!--/ Search Navbar-->
                     <!--Search Result-->
                     <div id="search-results" class="card-body">
-                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGalle
-                    ry"
+                        <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGallery"
                              data-pswp-uid="1">
                             <div class="card-deck-wrapper">
                                 <div class="card-deck">
@@ -63,10 +64,15 @@
                                                                             alt="Image description">
                                                 </a>
                                                 <div class="card-body px-0">
-                                                    <p><span class="text-bold-600"></span> ${item.teamId} <span
-                                                            class="font-small-2 text-muted float-right">${item.projId}</span>
+                                                    <div style="text-align: center">
+                                                        <strong>${item.projName}</strong>(${item.projId})
+                                                    </div>
                                                     </p>
-<%--                                                    <p class="card-text">${item.projSmry}</p>--%>
+                                                    <br/>
+                                                    <div style="text-align: center">
+                                                        <span><fm:formatDate value="${item.projStrtDate}"/></span>~
+                                                        <span><fm:formatDate value="${item.projEndDate}"/></span>
+                                                    </div>
                                                 </div>
                                             </figure>
                                         </div>
@@ -76,57 +82,52 @@
                                 </div>
                             </div>
                         </div>
+
+                        <form id="searchForm" action="/main/wholeProject" method="get">
+                            <select name="type">
+                                <option value="T">프로젝트 아이디</option>
+                                <option value="C">프로젝트 이름</option>
+                            </select>
+                            <input type="text" name="keyword">
+                            <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
+                            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+                            <input type="submit" value="검색">
+                        </form>
+
                         <div class="text-center">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination pagination-separate pagination-round pagination-flat"
                                     style="text-align: center;margin-left: 500px">
-                                    <%--                                    <c:if test="${pageMaker.prev}">--%>
-                                    <%--                                        <li class="page-item">--%>
-                                    <%--                                            <a class="page-link" href="${pageMaker.startPage-1}" aria-label="Previous">--%>
-                                    <%--                                                <span aria-hidden="true">« Prev</span>--%>
-                                    <%--                                                <span class="sr-only">Previous</span>--%>
-                                    <%--                                            </a></li>--%>
-                                    <%--                                    </c:if>--%>
-                                    <%--                                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">--%>
-                                    <%--                                        <li class="page-item active${pageMaker.cri.pageNum==num?"active":""}"><a--%>
-                                    <%--                                                class="page-link" href="${num}">${num}</a></li>--%>
-                                    <%--                                    </c:forEach>--%>
-                                    <%--                                    <c:if test="${pageMaker.next}">--%>
-                                    <%--                                        <li class="page-item">--%>
-                                    <%--                                            <a class="page-link" href="${pageMaker.startPage+1}" aria-label="Next">--%>
-                                    <%--                                                <span class="sr-only">Next</span>--%>
-                                    <%--                                            </a>--%>
-                                    <%--                                        </li>--%>
-                                    <%--                                    </c:if>--%>
-                                    <%--                                    <form id="actionForm" action="/main/wholeProject" method="get">--%>
-                                    <%--                                        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"/>--%>
-                                    <%--                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}"/>--%>
-                                    <%--                                    </form>--%>
+
+                                    <c:if test="${pageMaker.prev}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="${pageMaker.pageNum-1}" aria-label="Previous">
+                                                <span aria-hidden="true"> Prev</span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="num">
+                                        <li class="page-item active${pageMaker.cri.pageNum==num?"active":""}"><a
+                                                class="page-link" href="${num}">${num}</a></li>
+                                    </c:forEach>
+                                    <c:if test="${pageMaker.next}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="${pageMaker.pageNum+1}" aria-label="Previous">
+                                                <span aria-hidden="true">Next</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
+                                    <form id="actionForm" action="/main/wholeProject" method="get">
+                                        <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"/>
+                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}"/>
+                                    </form>
                                 </ul>
                             </nav>
                         </div>
                     </div>
-                    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-                    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-                        <!-- Background of PhotoSwipe.
-                       It's a separate element as animating opacity is faster than rgba(). -->
-                        <div class="pswp__bg"></div>
-                        <!-- Slides wrapper with overflow:hidden. -->
-                        <div class="pswp__scroll-wrap">
-                            <!-- Container that holds slides.
-                          PhotoSwipe keeps only 3 of them in the DOM to save memory.
-                          Don't modify these 3 pswp__item elements, data is added later on. -->
-                            <div class="pswp__container">
-                                <div class="pswp__item"></div>
-                                <div class="pswp__item"></div>
-                                <div class="pswp__item"></div>
-                            </div>
-                            <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-
-                        </div>
-                    </div>
                 </div>
-                <!--/ PhotoSwipe -->
             </section>
         </div>
     </div>

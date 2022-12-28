@@ -3,6 +3,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <link rel="stylesheet" type="text/css" href="/resources/GatherCss.css">
 <script src="/resources/GatherJs.js"></script>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/common.css">
+<link rel="stylesheet" href="/resources/css/join.css">
+
+
+<script src="/resources/js/jquery-3.6.0.js"></script>
+<script src="/resources/js/join.js"></script>
+<script src="/resources/js/common.js"></script>
 
 <script>
     $(document).ready(function(){

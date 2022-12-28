@@ -37,6 +37,8 @@
   <!-- BEGIN: Custom CSS-->
   <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
   <!-- END: Custom CSS-->
+  <link rel="stylesheet" href="/resources/css/reset.css">
+  <link rel="stylesheet" href="/resources/css/join.css">
 </head>
 <body class="horizontal-layout horizontal-menu horizontal-menu-padding 2-columns d-flex flex-column min-vh-100" data-open="hover" data-menu="horizontal-menu" data-col="2-columns">
 
@@ -46,9 +48,6 @@
 
 <div class="header-navbar" role="navigation" data-menu="menu-wrapper"></div>
 
-<style>
-
-</style>
 
       <!-- mainBody 시작 -->
       <tiles:insertAttribute name="body"/>

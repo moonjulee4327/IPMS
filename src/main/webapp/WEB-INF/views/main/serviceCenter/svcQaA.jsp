@@ -2,29 +2,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<div class="content-wrapper" style="margin-top: 50px;">
-    <div class="content-header row" style="margin-left: 46%;">
-        <div class="content-header-left col-md-6 col-12 mb-2">
-            <h3 class="content-header-title mb-2" style="">고객센터</h3>
-        </div>
-    </div>
-    <div class="row breadcrumbs-top" style="margin-left: 720px;font-weight: bold; ">
-        <div class="breadcrumb-wrapper col-12">
-            <ol class="breadcrumb" style="position: relative;margin-right: 15px">
-                <li class="breadcrumb-item bold ">
-                    <a href="/main/svcNotice">공지사항</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="/main/svcFaq">자주묻는질문</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <a href="/main/svcQaA">Q&A</a>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <div class="card" style="width: 70%;margin-left: 300px;">
+<div class="content-wrapper" style="">
+
+
+    <div class="card" style="width: 1200px">
         <div class="card-body">
+        	<div class="row breadcrumbs-top" >
+		        <div class="breadcrumb-wrapper col-12">
+		            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px;">
+		                <li class="breadcrumb-item">Q&A</li>
+		            </ol>
+		        </div>
+		    </div>
             <!-- datatable started -->
             <div id="app-invoice-wrapper" class="">
                 <div id="app-invoice-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -129,7 +118,7 @@
         </div>
     </div>
 </div>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script> 
 <script>
 
 

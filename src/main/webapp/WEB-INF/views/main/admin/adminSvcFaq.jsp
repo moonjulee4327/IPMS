@@ -60,11 +60,23 @@
 										</div>
 										<form action="#">
 											<div class="position-relative">
-												<input type="search" id="search-contacts"
-													class="form-control" placeholder="Search">
-												<div class="form-control-position">
-													<i
-														class="fa fa-search text-size-base text-muted la-rotate-270"></i>
+												<div class="row">
+													<div style="width: 15px"></div>
+														<select class="selectpicker" id="seachCategory">
+															<option value="title">제목</option>
+															<option value="cts">내용</option>
+														</select>
+													
+													<div class="col-6">
+														<input type="search" id="search-contacts"
+														class="form-control" placeholder="Search">
+													</div>
+													<div class="col-3">
+														<input type="date" class="form-control" id="searchDate">
+													</div>
+													<div class="col-1">
+														<button type="button" class="btn btn-secondary" id="searchBtn">검색</button>
+													</div>	
 												</div>
 											</div>
 										</form>
@@ -113,12 +125,12 @@
 										 <c:forEach var = "num" begin = "${pageVO.startPage}" end = "${pageVO.endPage}">
 										 	<c:choose>
 	                                    	<c:when test="${pageVO.pageNum eq num}">
-												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="1"
 													tabindex="0" class="page-link">${num}</a></li>
 											</c:when>
                                     			<c:otherwise>
-                                    				<li class="paginate_button page-item "><a href="/main/adminSvcFaq?pageNum=${num}&amount=${pageVO.amount}"
+                                    				<li class="paginate_button page-item "><a href="/main/adminSvcFaq?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="2"
 													tabindex="0" class="page-link">${num}</a></li>
                                     			</c:otherwise>
@@ -127,7 +139,7 @@
 										<c:if test="${pageVO.next }">
 		                               
 			                                    <li class="paginate_button page-item next"
-													id="DataTables_Table_0_next"><a href="/main/adminSvcFaq?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}"
+													id="DataTables_Table_0_next"><a href="/main/adminSvcFaq?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="7"
 													tabindex="0" class="page-link">Next</a></li>
 		                                   
@@ -165,7 +177,14 @@
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
 	<script type="text/javascript">
-		
+			
+			$("#searchBtn").on("click",function(){
+				let keyword = $("#search-contacts").val();
+				let category = $("#seachCategory").val();
+				let date = $("#searchDate").val();
+				location.href = '?keyword='+keyword+'&category='+category+"&searchDate="+date;
+			});
+	
 			$("#chkDeleteBtn").on("click",function(){
 				var param = [];
 				var storeOrder=[];
@@ -184,7 +203,20 @@
 					  });
 					
 				}
-					console.log(param);
+				$.ajax({
+					 type : 'post',           // 타입 (get, post, put 등등)
+					    url : '/main/adminSvcNoticeChkDelete',           // 요청할 서버url
+					    contentType : "application/json; charset=utf-8",
+					    dataType : 'json',       // 데이터 타입 (html, xml, json, text 등등)
+					    data : JSON.stringify(param),
+					    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+				            xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+					  	},
+					    success : function(result) { // 결과 성공 콜백함수
+					        console.log(result);
+					    	location.reload();
+					    }
+					});
 				}
 			);
 	

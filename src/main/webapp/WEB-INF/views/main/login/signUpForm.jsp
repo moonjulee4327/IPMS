@@ -4,385 +4,377 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css"
+          href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
+    <script type="text/javascript"
+            src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/resources/GatherCss.css">
+    <link rel="stylesheet" href="/resources/css/reset.css">
+    <link rel="stylesheet" href="/resources/css/common.css">
+    <link rel="stylesheet" href="/resources/css/join.css">
 
-<!-- BEGIN: Page CSS-->
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/menu/menu-types/horizontal-menu.css">
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/core/colors/palette-gradient.css">
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/login-register.css">
-<!-- END: Page CSS-->
 
-<!-- BEGIN: Custom CSS-->
-<link rel="stylesheet" type="text/css"
-      href="/resources/stack-admin-v4.0/stack-admin/assets/css/style.css">
-<script src="/resources/js/jquery-3.6.0.js"></script>
-<script>
-    function registerCheck() {
-        var memEmail = $("#memEmail").val();
-        var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-        if (memEmail.match(regExp) != null) {
-            alert('Good!');
-        } else {
-            alert('이메일 형식으로 입력하세요.');
-            return false;
+    <script src="/resources/js/jquery-3.6.0.js"></script>
+    <script src="/resources/js/join.js"></script>
+    <script src="/resources/js/common.js"></script>
+    <title>회원가입</title>
+
+    <script>
+
+        function registerCheck() {
+            var memEmail = $("#memEmail").val();
+            $.ajax({
+                url: "/main/memRegisterCheck",
+                type: "post",
+                data: {"memEmail": memEmail},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: function (result) {
+                    if (result == 0) {
+                        alert("사용 가능한 이메일 입니다.");
+                        console.log(result)
+                    } else {
+                        console.log(result);
+                        alert("중복되는 이메일 입니다.");
+                        $("#memEmail").val("");
+                    }
+                }
+            });
         }
 
-        if (memEmail == "") {
-            $("#passMessage").html("이메일을 다시 입력하세요.");
-            $("#passMessage").css("color", "red");
-            return false;
+
+        function pw_check() {
+            var pw = $(".field_memPasswd input").val();                   // 변수 pw에 pw값 대입
+
+            var num = /[0-9]/;
+            var eng = /[a-zA-Z]/;
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+
+
+            if (pw.length < 10) {                                  //pw의 길이가 10 이하일 때
+                $(".field_pw .txt_guide .txt_case1").css('color', '#b3130b');
+            }
+
+            if (pw.length >= 10) {                                  //pw의 길이가 10 이상일 때
+                $(".field_pw .txt_guide .txt_case1").css('color', '#0f851a');
+            }
+
+            if (num.test(pw) == 0 || eng.test(pw) == 0 || spe.test(pw) == 0) {    // pw의 숫자가 없거나 , 영어가 없거나, 특수문자가 없을경우 실패
+                $(".field_pw .txt_guide .txt_case2").css('color', '#b3130b');
+            }
+
+
+            if (num.test(pw) == 1 && eng.test(pw) == 1 && spe.test(pw) == 1) { // pw의 숫자,영어,특수문자가 1개이상씩 있을경우 성공
+                $(".field_pw .txt_guide .txt_case2").css('color', '#0f851a');
+            }
+
         }
-        $.ajax({
-            url: "/main/memRegisterCheck",
-            type: "get",
-            data: {"memEmail": memEmail},
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-            },
-            success: function (result) {
-                if (result == 0) {
-                    $("#passMessage").html("이메일 사용이 가능합니다.");
-                    $("#passMessage").css("color", "blue");
-                    console.log(result)
-                    $("#btn").css('display', 'block');
-                    $("#chgBtn").css('display', 'none');
-                } else {
-                    $("#passMessage").html("이메일을 다시 입력하세요.");
-                    $("#passMessage").css("color", "red");
-                    console.log(result);
-                    $("#memEmail").val("");
+
+
+        function pw2_check() {
+            var pwd1 = $(".field_pw input").val();
+            var pwd2 = $(".field_repw input").val();
+
+            if (pwd1 != '' && pwd2 == '') {          //둘다 빈칸일 경우 아무것도 하지 않음
+                null;
+            } else if (pwd1 != "" || pwd2 != "") {     // 빈칸이 아닐 경우
+                if (pwd1 == pwd2) {                    // 비교해서 같으면
+                    $(".field_repw .txt_guide .txt_case1").css('color', '#0f851a');
+                    $(".field_repw .txt_guide .txt_case1").text("비밀번호가 동일합니다.");
+
+
+                } else {        // 비교해서 같지 않으면
+                    $(".field_repw .txt_guide .txt_case1").css('color', '#b3130b');
+                    $(".field_repw .txt_guide .txt_case1").text("비밀번호가 일치하지 않습니다.");
+
+
                 }
             }
-        });
-    }
-
-    $("select[name=location]").change(function () {
-        console.log($(this).val()); //value값 가져오기
-        console.log($("select[name=location] option:selected").text()); //text값 가져오기
-    });
-
-    $(document).ready(function () {
-        $("#memEmail").change(function () {
-            var to = $("#memEmail").val();
-            $("#to").attr("value", to);
-            console.log(to);
-        });
-    })
 
 
-        $(function () {
-            const randomNumber = Math.floor(Math.random() * 8888) + 1;
-            $('input[name=text]').attr('value', randomNumber);
-            let text1 = $("#text").val();
-            let memEmail;
-            let to = $("#to").val();
-            to = $("#memEmail").val();
-            // let text1 = randomNumber;
-            let text2;
-            $("#btn").on("click", function () {
-                to = $("#memEmail").val();
-                alert("Click");
-                console.log("to::" + to);
-                let fData = $("#frm").serialize();
-
-                $.ajax({
-                    url: "/sendMailProcess",
-                    type: "post",
-                    data: fData,
-                    beforeSend: function (xhr) {   // 데이터 전송 전  헤더에 csrf값 설정
-                        xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-                    },
-                    success: function (data) { //여기서 data는 controller에 list이다.
-                        $("#hideEmail").css('display', 'block');
-                    },
-                    error: function () {
-                        alert("오류입니다.");
-                        $("#hideEmail").css('display', 'none');
-                    }
-                })
-            })
-            $("#btn2").on("click", function () {
-                text2 = $("#emailNum1").val();
-                console.log("text2::" + text1);
-                console.log("text5::" + text2);
-                if (text1 == text2) {
-                    alert("인증 성공");
-                    $("#pwdForm1").css('display', 'block');
-                    $("#pwdForm2").css('display', 'block');
-
-                } else {
-                    alert("인증 실패");
-                }
-            });
-            let pwd1 = $("#newPwd1").val();
-            let pwd2 = $("#newPwd2").val();
-        })
+        }
 
 
-        $(function () {
-            $("#emailBtn").on("click", function () {
-                $("#hideEmail").css("display", 'block');
-            });
-        });
+    </script>
 
+    <script>
 
-        function passwordCheck() {
-            var password = $("#memPasswd").val();
-            var password2 = $("#paswd2").val();
-            if (password != password2) {
-                $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
-                $("#passMessage").css("color", "red");
-                $("#password").attr("value", "$#@!");
-                $("#sbtBtn").css('display', 'none');
+        function on_pw_check() {           //비밀번호 검사 함수
+            var pw = $(".field_memPasswd input").val();
+            var num = /[0-9]/;
+            var eng = /[a-zA-Z]/;
+            var spe = /[~!@#$%^&*()_+|<>?:{}]/;
+            if (pw.length < 10) {
+
+                alert('비밀번호를 정확히 입력해주세요');
+                return false;
+            } else if (num.test(pw) == 0 || eng.test(pw) == 0 || spe.test(pw) == 0) {
+
+                alert('비밀번호를 정확히 입력해주세요');
                 return false;
             } else {
-                $("#passMessage").html("비밀번호가 서로 같습니다..");
-                $("#passMessage").css("color", "blue");
-                $("#sbtBtn").css('display', 'block');
+
                 return true;
             }
         }
 
-        function handleOnChange(ph) {
-            const values = [];
-            const texts = [];
-            var opts = ph.options;
-            console.log(ph.options);
+        function on_pw2_check() {           //비밀번호 확인 검사 함수
+            var pw = $(".field_memPasswd input").val();
+            var pw2 = $(".field_memPasswd2 input").val();
+            if (pw2.length == 0) {
 
-            for (i = 0; i < opts.length; i++) {
-                console.log(opts[i].selected);
-                if (opts[i].selected) {
-                    values.push(opts.value);
-                    texts.push(opts.text);
-                }
+                alert('비밀번호 확인을 다시해주세요');
+                return false;
+            } else if (pw != pw2) {
+
+                alert('비밀번호 확인을 다시해주세요');
+                return false;
+            } else {
+
+                return true;
             }
-            document.getElementById('values').innerText = values;
-            document.getElementById('texts').innerText = texts;
         }
 
-        function checkReg() {
-            var reg = /^[가-힣]{2,4}$/; //한글 2~3
-            var reg = "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";//최소 8 자, 하나 이상의 문자와 하나의 숫자 정규식
-            var regExp = /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/;
+        function on_name_check() {             //이름 검사 함수
+            var name = $(".field_memName input").val();
+            if (name.length == 0) {
+
+                alert('이름을 입력해주세요');
+                return false;
+            } else {
+
+                return true;
+            }
+        }
+
+        function on_email_check() {             //이메일 검사 함수
+            var email = $(".field_memEmail input").val();
+            if (email.length == 0) {
+
+                alert('이메일을 정확히 입력해주세요');
+                return false;
+            } else {
+
+                return true;
+            }
+        }
+
+        function on_phone_check() {               //휴대폰번호 검사함수
+            var phone = $(".field_memPhoneNumber input").val();
+            if (phone.length == 0) {
+
+                alert('휴대폰 번호를 입력해주세요');
+                return false;
+            } else {
+
+                return true;
+            }
         }
 
 
-</script>
-<!-- END: Custom CSS-->
-
-
-<!-- BEGIN: Content-->
-
-<div class="app-content container center-layout mt-2">
-    <div class="content-wrapper">
-        <div class="content-header row"></div>
-        <div class="content-body">
-            <section class="row flexbox-container">
-                <div class="col-12 d-flex align-items-center justify-content-center">
-                    <div class="col-lg-4 col-md-8 col-10 box-shadow-2 p-0" style="margin-top:auto">
-                        <div class="card border-grey border-lighten-3 px-2 py-2 m-0">
-                            <div class="card-header border-0">
-                                <div class="card-title text-center">
-                                    <img src="/resources/logoImage/logo.jpg" alt="branding logo"
-                                         style="width: 100px; height: auto;">
-                                </div>
-                                <h6
-                                        class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                                    <span>Create Account</span>
-                                    <div id='values'></div>
-                                    <div id='texts'></div>
-                                </h6>
-                            </div>
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post">
-                                        <fieldset
-                                                class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg"
-                                                   id="name" name="memName" placeholder="이름" required="required">
-                                            <div class="form-control-position">
-                                                <i class="feather icon-user"></i>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset
-                                                class="form-group position-relative has-icon-left mb-1">
-
-                                            <div>
-                                                <input type="text" class="form-control form-control-lg" id="memEmail"
-                                                       name="memEmail" placeholder="이메일" required="required">
-
-                                                <button type="button" id="chgBtn"
-                                                        class="btn btn-success btn-min-width mr-1 mb-1"
-                                                        onclick="registerCheck()"
-                                                        style="float: right;width: 30px;display: block">중복체크
-                                                </button>
-                                                <button type="button" id="btn"
-                                                        class="btn btn-info btn-min-width mr-1 mb-1"
-                                                        style="float: right;width: 30px;display: none">인증번호 전송
-                                                </button>
-                                            </div>
-                                            <div class="form-control-position">
-                                                <i class="feather icon-user"></i>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="form-group position-relative has-icon-left mb-1" id="hideEmail"
-                                                  style="display: none">
-
-                                            <input type="password" class="form-control form-control-lg"
-                                                   style="float: left; width: 60%" id="emailNum1" name="emailNum1"
-                                                   placeholder="이메일 인증번호" required="required">
-                                            <button type="button" id="btn2"
-                                                    class="btn btn-success btn-min-width mr-1 mb-1"
-                                                    style="float: right;width: 30px;">인증번호 확인
-                                            </button>
-
-                                            <div class="form-control-position">
-                                                <i class="feather icon-user"></i>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg" id="memPhoneNumber"
-                                                   name="memPhoneNumber" placeholder="010xxxxyyyy" maxlength="11"
-                                                   required="required">
-                                            <div class="form-control-position">
-                                                <i class="feather icon-user"></i>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset
-                                                class="form-group position-relative has-icon-left mb-1">
-                                            <input type="text" class="form-control form-control-lg" id="memPasswd"
-                                                   name="memPasswd" placeholder="비밀번호" onkeyup="passwordCheck()"
-                                                   required="required">
-                                            <div class="form-control-position">
-                                                <i class="fa fa-key"></i>
-                                            </div>
-                                        </fieldset>
-                                        <fieldset
-                                                class="form-group position-relative has-icon-left mb-1">
-                                            <input type="password" class="form-control form-control-lg" id="paswd2"
-                                                   name="paswd2" placeholder="비밀번호 확인" onkeyup="passwordCheck()"
-                                                   required="required">
-                                            <div class="form-control-position">
-                                                <i class="fa fa-key"></i>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset class="form-group position-relative has-icon-left">
-                                            <div>
-                                                <!-- ======================================-->
-                                            </div>
-                                        </fieldset>
-                                        <fieldset>
-
-                                            <label>기술 스택</label>
-                                            <select class="select2 form-control select2-hidden-accessible"
-                                                    onchange="handleOnChange(this)" multiple data-select2-id="12"
-                                                    tabindex="-1" aria-hidden="true" aria-invalid="false">
-                                                <optgroup label="보유한 기술 스택을 선택하세요." data-select2-id="25">
-                                                    <option value="spring" data-select2-id="26">SPRING</option>
-                                                    <option value="vue" data-select2-id="27">Vue</option>
-                                                    <option value="js" data-select2-id="28">JS</option>
-                                                    <option value="mysql" data-select2-id="29">MYSQL</option>
-                                                </optgroup>
-                                            </select>
-                                        </fieldset>
-
-                                        <div>
-                                            <span id="passMessage" style="color: red"/>
-                                        </div>
-                                        <%--                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">--%>
-                                        <input type="submit" id="sbtBtn" name="sbtBtn"
-                                               class="btn btn-primary btn-lg btn-block" onclick="checkReg()"
-                                               style="display:none;">
-                                        <i class="feather icon-unlock"></i> Register
-                                        </input>
-                                        <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
-                                        <sec:csrfInput/>
-                                    </form>
-                                </div>
-                                <p class="text-center">모든 정보를 입력하세요</p>
-                            </div>
+        function on_submit_check() {               // fomr에 onsubmit으로 최종적으로 넘겨야될 함수
+            var check = false;                   //check변수에 false를 넣어주고 다른 함수들이 false를 반환하면 다음페이지로 못넘어가게 설정
+            if (on_pw_check() == check) {
+                return false;
+            } else if (on_pw2_check() == check) {
+                return false;
+            } else if (on_name_check() == check) {
+                return false;
+            } else if (on_email_check() == check) {
+                return false;
+            } else if (on_phone_check() == check) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="container">
+    <div id="main">
+        <div id="content">
+            <div class="page_aticle">
+                <div class="type_form member_join">
+                    <form class="form-horizontal form-simple" action="/main/signUpForm" method="post">
+                        <div class="field_head">
+                            <h3 class="tit">회원가입</h3>
+                            <p class="sub">
+                                <span class="ico">*</span>
+                                필수입력사항
+                            </p>
                         </div>
-                    </div>
+                        <table class="tbl_comm">
+                            <tbody>
+                            <tr class="fst field_id">
+                                <th>아이디
+                                    <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                </th>
+                                <td>
+                                    <input type="text" id="memEmail" name="memEmail" maxlength="40" req
+                                           placeholder="이메일 형식을 맞춰서 입력하세요.">
+                                    <button type="button" id="fchgBtn"
+                                            class="btn btn-success btn-min-width mr-1 mb-1" onclick="registerCheck()"
+                                            style="float: right;width: 30px;display: block">중복체크
+                                    </button>
+                                    <p class="txt_guide square">
+                                                <span class="
+">
+                                                    예)ipms1234@naver.com
+                                                </span>
+                                        <span class="txt txt_case2">
+                                                    아이디 중복확인
+                                                </span>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr class="field_pw">
+                                <th>
+                                    비밀번호
+                                    <span class="ico">*
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                </th>
+                                <td>
+                                    <input type="password" name="memPasswd" option="regPass" value="123412341234!"
+                                           onkeyup="pw_check()"
+                                           maxlength="16" class="reg_pw bad" placeholder="비밀번호를 입력해주세요">
+                                    <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    10자 이상 입력
+                                                </span>
+                                        <span class="txt txt_case2">
+                                                    영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합
+                                                </span>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr class="member_pwd field_repw">
+                                <th>
+                                    비밀번호확인
+                                    <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                </th>
+                                <td>
+                                    <input type="password" name="memPasswd2" option="regPass" onkeyup="pw2_check()"
+                                           value="123412341234!"
+                                           maxlength="16" class="confirm_pw" placeholder="비밀번호를 한번 더 입력해주세요">
+                                    <p class="txt_guide square">
+                                                <span class="txt txt_case1">
+                                                    동일한 비밀번호를 입력해주세요.
+                                                </span>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <tr class="field_name">
+                                <th>
+                                    이름
+                                    <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                </th>
+                                <td>
+                                    <input type="text" name="memName" label="이름" placeholder="이름을 입력해주세요">
+                                </td>
+                            </tr>
+
+
+                            <tr class="field_phone">
+                                <th>
+                                    휴대폰
+                                    <span class="ico">
+                                                *
+                                                <span class="screen_out">필수항목</span>
+                                            </span>
+                                </th>
+
+                                <td>
+                                    <div class="phone_num">
+                                        <input type="text" value="" pattern="[0-9]*" name="memPhoneNumber"
+                                               placeholder="숫자만 입력해주세요" class="inp">
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    <label>기술 스택</label>
+                                </th>
+                                <td>
+                                    <select name="selectedBox" class="select2 form-control select2-hidden-accessible" multiple data-select2-id="12" tabindex="-1" aria-hidden="true"
+                                            onchange="handleOnChange(this)">
+                                        <optgroup label="보유한 기술 스택을 선택하세요.">
+                                            <c:forEach var="item" items="${list}" varStatus="idx">
+                                                ${idx.count}
+                                                <option value="${item.commonCodeValue}" name="techStackVOList[${idx.count-1}].techStackCode">${item.commonCodeValue}</option>
+                                                <label>
+                                                </label>
+                                            </c:forEach>
+                                        </optgroup>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="hidden" id="techCode" name="techStackVOList[0].techStackCode" value=""/>
+                        <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
+                        <sec:csrfInput/>
+                        <div id="formSubmit" class="form_footer" style="border-top: 1px solid #333;">
+                            <button type="submit" class="btn active btn_join">가입하기</button>
+                        </div>
+                    </form>
                 </div>
-            </section>
+            </div>
         </div>
+        <input type="text" id="slider" data-asd>
     </div>
 </div>
-<!-- END: Content-->
-<!-- 이메일 -->
-<div style="display:none;">
-    <%--	<div>--%>
-    <%--		<input type="button" name="btn" id="btn" value="이메일 보내기">--%>
-    <%--	</div>--%>
-    <%--	<div id="layer2">--%>
-    <%--		<input type="text" id="emailNum1" name="emailNum1" value="" placeholder="입력하세요">--%>
-    <%--		<input type="text" id="emailNum2" name="emailNum2" value="" placeholder="입력하세요" style="display: block">--%>
-    <%--		<input type="button" id="btn2" name="btn2" value="인증번호 확인">--%>
-    <%--	</div>--%>
+</body>
+<script>
+    function handleOnChange(ph) {
+        const values = [];
+        const texts = [];
+        var opts = ph.options;
+        for (i = 0; i < opts.length; i++) {
+            // console.log(opts[i].selected);
+            if (opts[i].selected) {
+                values.push(opts[i].value);
+                texts.push(opts[i].value);
+            }
+        }
+        $("#techCode").val(values.join());
+        console.log(values);
+    }
+</script>
+</html>
 
-    <div style="display:none;">
-        <div>
-            <input type="button" name="btn" id="btn" value="이메일 보내기">
-        </div>
-        <div id="layer2">
-            <input type="text" id="emailNum1" name="emailNum1" value="" placeholder="입력하세요">
-            <input type="text" id="emailNum2" name="emailNum2" value="" placeholder="입력하세요" style="display: none">
-            <input type="button" id="btn2" name="btn2" value="인증번호 확인">
-        </div>
+<!-- BEGIN: Page Vendor JS-->
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
 
-        <form id="updateFrm" style="display: none">
-            <input type="text" id="newPwd1" name="newPwd1" placeholder="새로운 비밀번호">
-            <br>
-            <input type="text" id="newPwd2" name="newPwd2" placeholder="새로운 비밀번호 확인">
-            <br>
-            <input type="button" id="chkBtn" name="chkBtn" value="확인버튼" onclick="chkPwd()">
-        </form>
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/toggle/switchery.min.js"></script>
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
-        <form action="<%=request.getContextPath()%>/mail/sendMailProcess" id="frm" name="frm" method="post"
-              style="display: none">
-            <div>
-                <input type="text" id="from" name="from" placeholder="보내는 사람" value="pos04167@naver.com" readonly>
-            </div>
-            <div>
-                <input type="text" id="to" name="to"
-                       placeholder="받는 사람" value="" required="required"/>
-            </div>
-            <div>
-                <input type="text" id="subject" name="subject"
-                       placeholder="제목" value="이메일 인증번호" required="required"/>
-                <br>
-                <input type="text" id="text" name="text" value=""/>
-            </div>
-            <button type="submit">메일 전송하기</button>
-        </form>
-    </div>
-
-    <!-- BEGIN: Page JS-->
-    <script>
-        $('select').select2();
-    </script>
-    <script
-            src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
-    <script
-            src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/form-login-register.js"></script>
-    <!-- END: Page JS-->
-
-    <!-- BEGIN: Page Vendor JS-->
-    <script
-            src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
-    <!-- END: Page Vendor JS-->
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/charts/jquery.sparkline.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/app-assets/js/scripts/customizer.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/app-assets/js/scripts/ui/breadcrumbs-with-stats.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/select/form-select2.min.js"></script>
-    <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/ui/jquery.sticky.js"></script>
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/account-setting.js"></script>
+<script
+        src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/select/form-select2.js"></script>

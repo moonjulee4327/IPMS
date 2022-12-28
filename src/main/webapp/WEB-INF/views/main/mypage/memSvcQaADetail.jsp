@@ -8,7 +8,8 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-invoice.css">
 <!-- END: Page CSS-->
-
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 </head>
 <!-- END: Head-->
 

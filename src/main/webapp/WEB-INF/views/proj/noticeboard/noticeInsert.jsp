@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
-<head>
-
-</head>
-<!-- END: Head-->
-<!-- BEGIN: Body-->
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <body>
 	<!-- BEGIN: Content-->
 	<div class="content-body">
@@ -24,41 +23,45 @@
 						</div>
 						<div class="card-content collapse show">
 							<div class="card-body">
-								<form class="form">
+								<form class="form" action="/proj/noticeBoardInsertPost" method="post">
 									<div class="row justify-content-md-center">
 										<div class="col-md-6">
 											<div class="form-body">
 												<div class="form-group">
-													<label for="eventInput1">제목</label> <input
-														type="text" id="eventInput1" class="form-control"
-														placeholder="제목을 입력해주세요." name="title" required>
+													<label for="projNtTitle">제목</label> <input type="text" 
+														class="form-control"
+														placeholder="제목을 입력해주세요." id="projNtTitle" name="projNtTitle" required>
 												</div>
 
 												<div class="form-group">
-													<label for="eventInput3">내용</label> <input type="text"
-														id="eventInput3" class="form-control"
-														placeholder="내용을 입력해주세요." name="content" id="content" required>
+													<label for="projNtCts">내용</label>
+													<textarea cols="5" id="projNtCts" class="form-control"
+														placeholder="내용을 입력해주세요." name="projNtCts" style="resize:none;" required></textarea>
 												</div>
 
 												<div class="form-group">
-													<label>첨부파일</label><br><label id="projectinput7"
+													<label>첨부파일</label><br><label for="itgrnAttachFileNum"
 														class="file center-block"> <input type="file"
-														id="file"> <span class="file-custom"></span>
+														id="itgrnAttachFileNum"> <span class="file-custom"></span>
 													</label>
 												</div>
 										</div>
-									<div class="form-actions center" style="padding-top:50px; padding-bottom:120px;">
-										<button type="submit" class="btn btn-primary">
-											<i class="fa fa-check-square-o"></i> 등록
-										</button>
-										<button type="reset" class="btn btn-secondary mr-1">
-											<i class="feather icon-x"></i> 취소
-										</button>
+											<div class="form-actions center"
+												style="padding-top: 50px; padding-bottom: 120px;">
+												<button type="submit" class="btn btn-secondary" id="insertNt">
+													<i class="fa fa-check-square-o"></i> 등록
+												</button>
+												<a href="/proj/noticeBoard" class="btn btn-warning mr-1">
+													<i class="feather icon-x"></i> 취소
+												</a>
+											</div>
+										</div>
 									</div>
-									</div>
-									</div>
+									<input type="hidden" id="projId" name="projId" value="P003" />
+									<input type="hidden" id="memCode" name="memCode" value="<sec:authentication property='principal.member.memCode'/>" />
+									<sec:authentication property="principal.member"/>
+									<sec:csrfInput />
 								</form>
-
 							</div>
 						</div>
 					</div>
@@ -73,5 +76,5 @@
 </html>
 
 <script type="text/javascript">
-CKEDITOR.replace('content');
+CKEDITOR.replace('projNtCts');
 </script>

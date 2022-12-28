@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 <head>
 <title>관리자 페이지 - 고객센터 관리</title>
 
@@ -60,11 +60,23 @@
 										</div>
 										<form action="#">
 											<div class="position-relative">
-												<input type="search" id="search-contacts"
-													class="form-control" placeholder="Search">
-												<div class="form-control-position">
-													<i
-														class="fa fa-search text-size-base text-muted la-rotate-270"></i>
+												<div class="row">
+													<div style="width: 15px"></div>
+														<select class="selectpicker" id="seachCategory">
+															<option value="title">제목</option>
+															<option value="cts">내용</option>
+														</select>
+													
+													<div class="col-6">
+														<input type="search" id="search-contacts"
+														class="form-control" placeholder="Search">
+													</div>
+													<div class="col-3">
+														<input type="date" class="form-control" id="searchDate">
+													</div>
+													<div class="col-1">
+														<button type="button" class="btn btn-secondary" id="searchBtn">검색</button>
+													</div>	
 												</div>
 											</div>
 										</form>
@@ -106,19 +118,19 @@
 										<ul class="pagination">
 										<c:if test="${pageVO.prev }">
 											<li class="paginate_button page-item previous disabled"
-												id="DataTables_Table_0_previous"><a href="#"
+												id="DataTables_Table_0_previous"><a href="/main/adminSvcNotice?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 												aria-controls="DataTables_Table_0" data-dt-idx="0"
 												tabindex="0" class="page-link">Previous</a></li>
 										</c:if>
 										 <c:forEach var = "num" begin = "${pageVO.startPage }" end = "${pageVO.endPage }">
 										 	<c:choose>
 	                                    	<c:when test="${pageVO.pageNum eq num }">
-												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+												<li class="paginate_button page-item active"><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="1"
 													tabindex="0" class="page-link">${num}</a></li>
 											</c:when>
                                     			<c:otherwise>
-                                    				<li class="paginate_button page-item "><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}"
+                                    				<li class="paginate_button page-item "><a href="/main/adminSvcNotice?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="2"
 													tabindex="0" class="page-link">${num}</a></li>
                                     			</c:otherwise>
@@ -127,7 +139,7 @@
 										<c:if test="${pageVO.next }">
 		                               
 			                                    <li class="paginate_button page-item next"
-													id="DataTables_Table_0_next"><a href="/main/adminSvcNotice?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}"
+													id="DataTables_Table_0_next"><a href="/main/adminSvcNotice?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="7"
 													tabindex="0" class="page-link">Next</a></li>
 		                                   
@@ -142,7 +154,7 @@
 				</div>
 			</div>
 		</div>
-		</div>
+		
 	</section>
 	<!-- END: Content-->
 	<!-- BEGIN: Page Vendor JS-->
@@ -165,7 +177,15 @@
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
 	<script type="text/javascript">
-		
+			
+			$("#searchBtn").on("click",function(){
+				let keyword = $("#search-contacts").val();
+				let category = $("#seachCategory").val();
+				let date = $("#searchDate").val();
+				location.href = '?keyword='+keyword+'&category='+category+"&searchDate="+date;
+			});
+	
+	
 			$("#chkDeleteBtn").on("click",function(){
 				var param = [];
 				var storeOrder=[];
@@ -178,7 +198,7 @@
 					    storeOrder = {
 					    	"siteNtNum"	: $(this).val()
 					    };
-					        
+					   
 				    	//param 배열에 storeOrder 오브젝트를 담는다.
 					      param.push(storeOrder);
 					  });

@@ -3,12 +3,15 @@ package com.ipms.commons.ftp;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +21,8 @@ import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ipms.commons.ftp.vo.IntgAttachFileVO;
 import com.ipms.commons.vo.FtpVO;
-import com.ipms.commons.vo.IntgAttachFileVO;
 import com.ipms.proj.docs.vo.DocsVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -418,138 +421,136 @@ public class FtpUtil {
 				
 			}
 		
-	}
-	
-	// 파일 다운로드
-	public static byte[] getFileByte(String savePath, String saveName) {
-		
-		FTPClient ftp = ftpServerConnect();
-		
-		boolean moveDir = false;
-		byte[] byteArray = null;
-		
-		try {
-			moveDir = ftp.changeWorkingDirectory(savePath);
-			
-			log.debug("FtpUtil - getFileByte -> {}", moveDir);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
-		try (
-				
-			InputStream is = ftp.retrieveFileStream(saveName);
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-				
-		){
+		// 파일 다운로드
+		public static byte[] getFileByte(String savePath, String saveName) {
 			
-			byte[] buffer = new byte[1024];
-			int length = -1;
-			log.debug("[getFileByte] stream working start...");
-			while( (length = is.read(buffer, 0, buffer.length)) != -1 ) {
-				os.write(buffer, 0, length);
-			}
-			log.debug("[getFileByte] stream working end...");
+			FTPClient ftp = ftpServerConnect();
 			
-			byteArray = os.toByteArray();
+			boolean moveDir = false;
+			byte[] byteArray = null;
 			
-		} catch (Exception e) {
-			log.debug("[getFileByte] stream error : {}", e.getMessage());
-			throw new RuntimeException(e);
-		} finally {
 			try {
-				ftp.disconnect();
+				moveDir = ftp.changeWorkingDirectory(savePath);
+				
+				log.debug("FtpUtil - getFileByte -> {}", moveDir);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			log.debug("[uploadToFtp] ftpClient return...");
-		}
-		
-		return byteArray;
-		
-	}
-	
-	// 삭제
-	public static boolean removeFiles(String path, String saveName) {
-
-		FTPClient ftp = ftpServerConnect();
-
-		boolean result = false;
-		
-		try {
-			result = removeFileOne(ftp, path, saveName);
-		} finally {
-			try {
-				ftp.disconnect();
-			} catch (IOException e) {
-				e.printStackTrace();
+			
+			try (
+					
+				InputStream is = ftp.retrieveFileStream(saveName);
+				ByteArrayOutputStream os = new ByteArrayOutputStream();
+					
+			){
+				
+				byte[] buffer = new byte[1024];
+				int length = -1;
+				log.debug("[getFileByte] stream working start...");
+				while( (length = is.read(buffer, 0, buffer.length)) != -1 ) {
+					os.write(buffer, 0, length);
+				}
+				log.debug("[getFileByte] stream working end...");
+				
+				byteArray = os.toByteArray();
+				
+			} catch (Exception e) {
+				log.debug("[getFileByte] stream error : {}", e.getMessage());
+				throw new RuntimeException(e);
+			} finally {
+				try {
+					ftp.disconnect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				log.debug("[uploadToFtp] ftpClient return...");
 			}
+			
+			return byteArray;
+			
 		}
-		return result;
-	}
-
-	public static boolean removeFileOne(FTPClient ftp, String path, String saveName) {
-
-		boolean flag = true;
 		
-		try {
-			boolean result = ftp.changeWorkingDirectory(path);
-			log.info("FtpUtil - removeFileOne -> result : ", result);
-			FTPFile[] files = ftp.listFiles();
-			for (FTPFile file : files) {
-				if (file.getName().equals(saveName)) {
-					String filePath = path + "/" + saveName;
-					if (file.isDirectory()) {
+		// 삭제
+		public static boolean removeFiles(String path, String saveName) {
+
+			FTPClient ftp = ftpServerConnect();
+
+			boolean result = false;
+			
+			try {
+				result = removeFileOne(ftp, path, saveName);
+			} finally {
+				try {
+					ftp.disconnect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+
+		public static boolean removeFileOne(FTPClient ftp, String path, String saveName) {
+
+			boolean flag = true;
+			
+			try {
+				boolean result = ftp.changeWorkingDirectory(path);
+				log.info("FtpUtil - removeFileOne -> result : ", result);
+				FTPFile[] files = ftp.listFiles();
+				for (FTPFile file : files) {
+					if (file.getName().equals(saveName)) {
+						String filePath = path + "/" + saveName;
+						if (file.isDirectory()) {
+							boolean dirResult = removeDir(ftp, filePath);
+							if (dirResult) {
+								flag = ftp.removeDirectory(filePath);
+							}
+						} else {
+							flag = ftp.deleteFile(filePath);
+						}
+					}
+				}
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			return flag;
+		}
+		
+		// 재귀호출(폴더 삭제시 밑에 파일을 다 삭제하고 폴더를 삭제 해야 함)
+		public static boolean removeDir(FTPClient ftp, String path) {
+			
+			boolean flag = true;
+			
+			try {
+				boolean result = ftp.changeWorkingDirectory(path);
+				
+				FTPFile[] files = ftp.listFiles();
+				
+				for(FTPFile file : files) {
+					
+					String filePath = path + "/" + file.getName();
+					
+					if(file.isDirectory()) {
 						boolean dirResult = removeDir(ftp, filePath);
-						if (dirResult) {
+						
+						if(dirResult) {
 							flag = ftp.removeDirectory(filePath);
 						}
-					} else {
+					}else {
 						flag = ftp.deleteFile(filePath);
 					}
-				}
-			}
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return flag;
-	}
-	
-	// 재귀호출(폴더 삭제시 밑에 파일을 다 삭제하고 폴더를 삭제 해야 함)
-	public static boolean removeDir(FTPClient ftp, String path) {
-		
-		boolean flag = true;
-		
-		try {
-			boolean result = ftp.changeWorkingDirectory(path);
-			
-			FTPFile[] files = ftp.listFiles();
-			
-			for(FTPFile file : files) {
-				
-				String filePath = path + "/" + file.getName();
-				
-				if(file.isDirectory()) {
-					boolean dirResult = removeDir(ftp, filePath);
 					
-					if(dirResult) {
-						flag = ftp.removeDirectory(filePath);
-					}
-				}else {
-					flag = ftp.deleteFile(filePath);
 				}
-				
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+			return flag;
+			
 		}
-		
-		return flag;
-		
-	}
-	
-	
 	
 	// ========================== 여기서 부터 새로 끝  ===================================
 }

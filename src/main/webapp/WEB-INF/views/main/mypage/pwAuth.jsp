@@ -13,7 +13,8 @@
 	background-color: #B0BEC5;
 }
 </style>
-
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->

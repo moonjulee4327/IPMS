@@ -1,6 +1,7 @@
 package com.ipms.main.wholeProject.service.Impl;
 
-import com.ipms.commons.pageHandler.Criteria;
+import com.ipms.commons.vo.Criteria;
+import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
@@ -23,7 +24,8 @@ public class WholeProjectImpl implements WholeProjectService {
     ProjMapper projMapper;
     @Inject
     WholeProjectService wholeProjectService;
-
+@Autowired
+    MyPageMapper myPageMapper;
     @Transactional
     public String goToProjectDetails(String projId, Model model, Authentication authentication, HttpServletResponse response) throws IOException {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -40,23 +42,20 @@ public class WholeProjectImpl implements WholeProjectService {
     }
 
     @Transactional
-    public int registrationApplication(ProjMemVO projMemVO) {
-        String processed = this.projMapper.registrationStatus(projMemVO);
-        if (processed.equals(projMemVO.getMemCode())) {
-            return 0;
-        }
-        joinProject(projMemVO);
-        return 1;
+    public int joinProjectProcess(ProjVO projVO, Authentication authentication){
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String memCode = myPageMapper.getMemCode(userDetails.getUsername());
+        ProjVO vo = new ProjVO();
+        vo.setMemCode(memCode);
+        vo.setProjId(projVO.getProjId());
+        List<ProjVO> list = this.wholeProjectService.checkMyProject2(vo);
+        return this.wholeProjectService.joinProject(vo);
     }
 
-    @Override
-    public int joinProject(ProjMemVO projMemVO) {
-        return this.projMapper.joinProject(projMemVO);
-    }
 
     @Override
-    public String registrationStatus(ProjMemVO projMemVO) {
-        return this.projMapper.registrationStatus(projMemVO);
+    public int joinProject(ProjVO projVO) {
+        return this.projMapper.joinProject(projVO);
     }
 
 
@@ -66,23 +65,40 @@ public class WholeProjectImpl implements WholeProjectService {
     }
 
     @Override
+    public List<ProjVO> getListPage() {
+        return this.projMapper.getListPage();
+    }
+
+    @Override
+    public int getWholeProjectTotal() {
+        return this.projMapper.getWholeProjectTotal();
+    }
+
+    @Override
     public List<ProjVO> getListPage(Criteria criteria) {
         return this.projMapper.getListPage(criteria);
     }
-
 
     @Override
     public List<ProjVO> getProjId(String memEmail) {
         return this.projMapper.getProjId(memEmail);
     }
 
-    @Override
-    public int count() {
-        return this.projMapper.count();
-    }
 
     @Override
     public List<ProjVO> detailPage(String projId) {
         return this.projMapper.detailPage(projId);
     }
+
+
+    @Override
+    public List<ProjVO> checkMyProject(String projId) {
+        return this.projMapper.checkMyProject(projId);
+    }
+
+    @Override
+    public List<ProjVO> checkMyProject2(ProjVO projVO) {
+        return this.projMapper.checkMyProject2(projVO);
+    }
+
 }

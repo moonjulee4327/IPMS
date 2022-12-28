@@ -4,6 +4,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
@@ -34,12 +36,17 @@
                     </button>
                 </a></li>
 
-                <li class="nav-item"><a class="navbar-brand" href="/main/svcNotice"
-                                        style="margin-left: 80px;margin-top: 10px;position: relative;">
-                    <button type="button" class="btn btn-outline-light btn-min-width mr-1 mb-1"
-                            style="border: none;font-weight: bold;color: black">고객센터
-                    </button>
-                </a></li>
+                <li class="nav-item dropdown" style="margin-left: 80px;margin-top: 6px;position: relative;">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="border: none;font-weight: bold;color: black;font-family: noto sans,malgun gothic,AppleGothic,dotum;font-size: 1rem">
+					고객센터
+					</a>
+					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+						<a class="dropdown-item" id="dropdownOption21-tab" href="/main/svcNotice" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">공지사항</a>
+						<a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcFaq" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">자주 묻는 질문</a>
+						<a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcQaA" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">Q&A</a>
+					</div>
+				</li>
+                
 
 
             </ul>
@@ -301,4 +308,10 @@
     $("#signUpBtn").on("click", function () {
         location.href = "/main/signUpForm";
     });
+    
+    $(".dropdown-item").on("click",function(){
+    	let url = $(this).attr("href");
+//     	console.log("url", url);
+    	location.href = url;
+    })
 </script>

@@ -25,7 +25,7 @@
 	<div class="media p-1">
 	    <div class="media-left pr-1"></div>
 	    <div class="media-body media-middle">
-	        <h5 class="media-heading" style="padding-left: 37px">김효정님 </h5>
+	        <h5 class="media-heading" style="padding-left: 37px">${mvo.member.memName} </h5>
 	        <h4 class="media-heading" style="font-size: 15px"></h4>	        
 	    </div>
 	</div>

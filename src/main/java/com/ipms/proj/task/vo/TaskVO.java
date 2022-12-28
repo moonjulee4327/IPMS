@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ipms.main.login.vo.MemVO;
 
 import lombok.Data;
 
@@ -34,5 +35,6 @@ public class TaskVO {
 	private String deleteYn; // 삭제 여부
 	private String referCts; // 반려 내용
 	private int workUpdateNum; // 반려 시 내용 업데이트 번호
+	private String memEmail;//이메일
 	
 }

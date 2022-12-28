@@ -48,10 +48,21 @@
 
 									<!-- 체크박스로 일감 관련된 이슈/관련없는 이슈 나눠서 일감관련에 체크할 경우에만 일감을 선택하여 연결할 수 있는 div를 밑에 뜨게 했으면 좋겠다는 의견 -->
 												<div class="form-group">
-													<label for="eventInput2">관련 일감</label> 
-														<select id="taskId" name="taskId">
+													<div>
+														<label for="eventInput2"> 관련 일감</label><br/>
+														<select id="taskId" name="taskId"> 
+																			
 														</select>
-												</div>
+														
+														<span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="1" style="width: 210px;">
+														<span class="selection">
+														<span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-searchWikiId-container">
+														<span class="select2-selection__rendered" id="select2-searchWikiId-container" role="textbox" aria-readonly="true" title="검색">검색</span
+														><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+														
+														
+													</div>		
+													<br/>
 												<div class="form-group">
 													<label for="eventInput3">내용</label> 
 													<textarea cols="" rows="30" id="issueCts" name="issueCts" 
@@ -62,7 +73,7 @@
 													<label>첨부파일</label><br>
 													<label id="projectinput7"
 														class="file center-block"> 
-														<input type="file" id="file" name="itgrnAttachFileNum"> 
+														<input type="file" id="itgrnAttachFileNum" name="itgrnAttachFileNum"> 
 														<span class="file-custom"></span>
 													</label>
 												</div>

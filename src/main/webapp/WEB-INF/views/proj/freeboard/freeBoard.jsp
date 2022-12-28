@@ -53,7 +53,7 @@
 										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 										aria-label="Name: activate to sort column ascending"
-										style="width: 5px;">선택</th>
+										style="width: 5px;"><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
 									</sec:authorize>
 										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
@@ -121,9 +121,9 @@
 
 						<div class="row">
 							<div class="col-sm-12 col-md-7">
-								<div style="float: left; padding-left:40px;">
-									<button type="button" class="btn" id="selectDel" style="background-color:#546E7A; color:white;">
-										삭제
+								<div style="float: left; padding-left:67px;">
+									<button type="button" class="btn btn-sm" id="selectDel" style="background-color:#546E7A; color:white;">
+										선택 삭제
 									</button>
 								</div>
 								<div class="dataTables_paginate paging_simple_numbers"
@@ -173,8 +173,20 @@
 <script>
 
 $(function(){
-
-	// 선택 삭제 ---------------------------
+	
+	// 체크박스 전체 선택
+	$("#allCkbox").on("click",function(){
+		
+		if($("#allCkbox").prop("checked")) {
+		//	$("#ckbox").prop("checked", true);
+			$("input[type=checkbox]").prop("checked",true);
+		} else {
+		//	$("#ckbox").prop("checked", false);
+			$("input[type=checkbox]").prop("checked",false);
+		}
+	});
+	
+	// 체크박스 선택 글 삭제 ---------------------------
 	$("#selectDel").on("click",function(){
 		
 		var confirmDel = confirm("선택한 글을 삭제하시겠습니까?");
@@ -209,60 +221,11 @@ $(function(){
 
 });
 
-// 	function ckDel() {
-
-// 		alert("삭제 눌렀다");
-
-// 		let chArr = [];
-// 		let queryString = "";
-
-// 		$("input[name='ckbox']:checked").val((p_index, p_value) => {
-// 			queryString += "projBdId=" + p_value + "&";
-// 			console.log(queryString);
-// 		});
-
-// 		$.ajax({
-// 			type: "get",
-// 			url: ,
-// 			data: queryString,
-// 			dataType: "text",
-// 			beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
-//                 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-// 		},
-// 			success: function(result) {
-// 				if(result == "OK") {
-// 					alert("삭제하였습니다.");
-// 					location.href = "/proj/freeboard";
-// 				}
-// 			},
-// 			error : function(request, status, error) {
-//             console.log("code: " + request.status)
-//             console.log("message: " + request.responseText)
-//             console.log("error: " + error);
-// 			}
-// 		}); // ajax end
-
-// 	}
-
 </script>
 
-
-<!-- BEGIN: Vendor JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
-<!-- BEGIN Vendor JS-->
-
 <!-- BEGIN: Page Vendor JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 <!-- END: Page Vendor JS-->
-
-<!-- BEGIN: Theme JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
-<!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
 <script

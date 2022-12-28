@@ -161,7 +161,7 @@
 												<th class="sorting_asc" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Name: activate to sort column descending"
-													style="width: 141.646px;" aria-sort="ascending">체크</th>
+													style="width: 141.646px;" aria-sort="ascending"><input type="checkbox" id="cbx_chkAll" /></th>
 												<th class="sorting" tabindex="0"
 													aria-controls="users-contacts" rowspan="1" colspan="1"
 													aria-label="Email: activate to sort column ascending"
@@ -181,9 +181,9 @@
 											</tr>
 										</thead>
 										<tbody id="content-area">
-											<tr role="row" class="odd">
+											<tr role="row" class="odd" id="ckTr">
 												<!-- 구분 컬럼 -->
-												<td class="" id="coldivision"><i class="feather icon-folder"></i><i class="feather icon-file"></i></td>
+												<td class="sorting_1" id="coldivision"><i class="feather icon-folder"></i><i class="feather icon-file"></i></td>
 												<!-- 명 컬럼 -->
 												<td class="sorting_1">
 													<div class="media">
@@ -198,13 +198,13 @@
 													</div>
 												</td>
 												<!-- 사이즈 컬럼 -->
-												<td id="colSize" class="text-center">
+												<td id="colSize" class="sorting_1">
 													
 												</td>
 												<!-- 등록일자 컬럼 -->
-												<td id="colRegDate" class="date"></td>
+												<td id="colRegDate" class="sorting_1"></td>
 												<!-- 기능 컬럼 -->
-												<td>
+												<td class="sorting_1">
 													&nbsp;
 													<a data-toggle="modal" data-target="#EditContactModal" class="primary edit mr-1">
 														<i class="feather icon-download"></i>
@@ -550,6 +550,30 @@
 		return contentBlock;						
 	}
 	
+	// td 클릭시 체크 박스 클릭 이벤트
+	$(document).on('click','table > tbody > tr > td:nth-child(1), th:nth-child(1)',function(e){
+		if($(e.target).attr('type') == 'checkbox'){ return true; }
+		var radio = $(this).find('input[type=checkbox]');
+		var isChecked = radio.prop('checked');
+		radio.prop('checked', !isChecked)
+	});
+
+	// 클릭시 전체 선택 이벤트
+	$(document).ready(function() {
+		$("#cbx_chkAll").click(function() {
+			if($("#cbx_chkAll").is(":checked")) $("input[type=checkbox]").prop("checked", true);
+			else $("input[type=checkbox]").prop("checked", false);
+		});
+		
+		$("input[type=checkbox]").click(function() {
+			var total = $("input[type=checkbox]").length;
+			var checked = $("input[type=checkbox]:checked").length;
+			
+			if(total != checked) $("#cbx_chkAll").prop("checked", false);
+			else $("#cbx_chkAll").prop("checked", true); 
+		});
+	});
+
 	function fn_ajaxMoveDir(path){
 		$.ajax({
 			url : "/proj/docTest",
@@ -780,6 +804,7 @@
 				success : function(resp) {
 					console.log(resp);
 					resolve(resp);
+					saveFileArr = [];
 				},
 				error : function(errorResp) {
 					console.log(errorResp.status);

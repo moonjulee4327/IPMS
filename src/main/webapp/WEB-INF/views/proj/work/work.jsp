@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <link rel="apple-touch-icon"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/images/ico/apple-icon-120.png">
 <link rel="shortcut icon" type="image/x-icon"
@@ -108,7 +111,7 @@
 				<div class="row">
 					<div class="col-12">
 						<button type="button" class="btn btn-primary mb-1" id="add-kanban">
-							<i class="feather icon-plus-square mr-50"></i> Add New Board
+							<i class="feather icon-plus-square mr-50"></i> 상위일감 등록
 						</button>
 						<div id="kanban-app"></div>
 					</div>
@@ -124,12 +127,11 @@
 								<i class="feather icon-x"></i>
 							</button>
 						</div>
-						<!-- form start -->
-						<!--                   <form action="/kanban/workval" method="post" class="edit-kanban-item"> -->
 						<div class="card-content position-relative ps">
 							<div id="modalresult" class="card-body">
 								<div class="form-group">
-									<label>Card Title</label> <input type="text" id="taskTitle"
+									<label id="cardtitle">Card Title</label> 
+									<input type="text" id="taskTitle"
 										name="taskTitle" class="form-control edit-kanban-item-title"
 										placeholder="kanban Title">
 										<input type="hidden" id="taskId" name="taskId" value=""/>
@@ -154,11 +156,6 @@
 											aria-haspopup="true" aria-readonly="false"
 											aria-owns="P502209161_root" />
 									</div>
-									
-
-
-
-									
 									<div class="picker" id="P502209161_root" aria-hidden="true">
 										<div class="picker__holder" tabindex="-1">
 											<div class="picker__frame">
@@ -393,27 +390,14 @@
 										</div>
 									</div>
 								</div>
-<!-- 							<div class="card"> -->
-<!--                                 <div class="card-content"> -->
-<!--                                     <div class="card-body"> -->
-<!--                                         <div class="form-group"> -->
-<!--                                             <div id="pips-positions" class="mt-1 mb-3 noUi-target noUi-ltr noUi-horizontal"><div class="noUi-base"><div class="noUi-connects"></div><div class="noUi-origin" style="transform: translate(-1000%, 0px); z-index: 4;"><div class="noUi-handle noUi-handle-lower" data-handle="0" tabindex="0" role="slider" aria-orientation="horizontal" aria-valuemin="0.0" aria-valuemax="100.0" aria-valuenow="0.0" aria-valuetext="0.00"><div class="noUi-touch-area"></div></div></div></div><div class="noUi-pips noUi-pips-horizontal"><div class="noUi-marker noUi-marker-horizontal noUi-marker-large" style="left: 0%;"></div><div class="noUi-value noUi-value-horizontal noUi-value-large" data-value="0" style="left: 0%;">0</div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 4.16667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 8.33333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 12.5%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 16.6667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 20.8333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-large" style="left: 25%;"></div><div class="noUi-value noUi-value-horizontal noUi-value-large" data-value="18.125" style="left: 25%;">18</div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 29.1667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 33.3333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 37.5%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 41.6667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 45.8333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-large" style="left: 50%;"></div><div class="noUi-value noUi-value-horizontal noUi-value-large" data-value="40" style="left: 50%;">40</div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 54.1667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 58.3333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 62.5%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 66.6667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 70.8333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-large" style="left: 75%;"></div><div class="noUi-value noUi-value-horizontal noUi-value-large" data-value="70" style="left: 75%;">70</div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 79.1667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 83.3333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 87.5%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 91.6667%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-normal" style="left: 95.8333%;"></div><div class="noUi-marker noUi-marker-horizontal noUi-marker-large" style="left: 100%;"></div><div class="noUi-value noUi-value-horizontal noUi-value-large" data-value="100" style="left: 100%;">100</div></div></div> -->
-<!--                                         </div> -->
-<!--                                     </div> -->
-<!--                                 </div> -->
-<!--                             </div> -->
 								<div class="row">
 									<div class="col-6">
-										<div class="form-group">
-											<label>Label</label> 
-											<select name="taskStusCode"
-												id="taskStusCode" class="form-control text-white bg-primary">
-												<option value="primary" class="bg-primary" selected="">Primary</option>
-												<option value="danger" class="bg-danger">Danger</option>
-												<option value="success" class="bg-success">Success</option>
-												<option value="info" class="bg-info">Info</option>
-												<option value="warning" class="bg-warning">Warning</option>
-												<option value="secondary" class="bg-secondary">Secondary</option>
+										<div id="imbtn" class="form-group">
+											<label>중요도</label> 
+											<select onchange="chageLangSelect(this.value)" name="taskStusCode" id="taskStusCode" class="form-control text-white bg-primary">
+												<option value="primary" class="bg-primary" selected="selected">일반</option>
+												<option value="danger" class="bg-danger">높음</option>
+												<option value="secondary" class="bg-secondary">낮음</option>
 											</select>
 										</div>
 									</div>
@@ -431,7 +415,7 @@
 
 
 								<div class="form-group">
-									<label>하위일감 상세내용</label>
+									<label id="taskb">하위일감 상세내용</label>
 									<textarea id="taskCts" name="taskCts" rows="4" cols="78" style="resize: none;"></textarea>
 								</div>
 								<!-- Compose mail Quill editor -->
@@ -448,7 +432,7 @@
 
 
 							<div id="totaldiv" style=" padding-left:20px;">
-								<sec:authorize access="hasRole('ROLE_PROJECT_LEADER' )">
+								<c:if test="${authCheck eq 'true' }">
 										<div id="fdiv" style="padding-right: 4px; float: left;" >
 											<button id="approbtn" type="reset" class="btn btn-danger mr-1">
 												<i class="feather icon-trash-2 mr-50"></i> <span>반려</span>
@@ -457,19 +441,15 @@
 												<i class="feather icon-play mr-50"></i><span>승인</span>
 											</button>
 										</div>
-								</sec:authorize>
-								
-								<%-- <sec:authorize access="hasRole('ROLE_MEMBER')"> --%>
-								<sec:authorize access="hasRole('ROLE_PROJECT')">
+								</c:if>
+								<c:if test="${authCheck ne 'true' }">
 										<div id="sdiv">
 											<button id="mbmodifybtn" type="reset" class="btn btn-warning mr-1">
 												<i class="icon-refresh mr-50"></i> <span>수정</span>
 											</button>
 										</div>	
-								</sec:authorize>
+								</c:if>
 							</div>
-
-
 
 
 						<!-- 기존에 있던 버튼 -->
@@ -518,9 +498,12 @@
         </div>
     </div>
 </div>
-                                                    
 
-
+<script>
+var auth ="${auth}";
+var mvo = "${mvo}";
+var authCheck = "${authCheck}";
+</script>
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/jkanban/jkanban.min.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/quill/quill.snow.css">
 <link rel="stylesheet" type="text/css" href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/pickers/pickadate/pickadate.css">
