@@ -41,15 +41,16 @@
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 181.966px;" aria-label="Customer: activate to sort column ascending">제목</th>
                                     <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px;" aria-label="Amount: activate to sort column ascending">작성자</th>
-                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 119.753px;" aria-label="Tags: activate to sort column ascending">날짜</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px;" aria-label="Amount: activate to sort column ascending">답변 상태</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 119.753px;" aria-label="Tags: activate to sort column ascending">등록 일자</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <!-- 리스트 조회 시작 -->
-                                    <c:forEach var="svcQaA" items="${svcQaASelect}">
+                                    <c:forEach var="svcQaA" items="${svcQaASelect}" varStatus="stat">
                                     <tr role="row" class="odd">
                                         <td style="padding-left: 40px;">
-                                            ${svcQaA.qnaNum}
+                                            ${stat.count}
                                         </td>
                                         <td>
                                             <a href="/main/svcQaADetail?qnaNum=${svcQaA.qnaNum}">${svcQaA.qnaTitle}</a>
@@ -57,7 +58,10 @@
                                         <td>
                                             ${svcQaA.writer}
                                         </td>
-                                        <td>
+                                        <td style="padding-left: 35px">
+                                            ${svcQaA.qnaStatus}
+                                        </td>
+                                        <td style="padding-left: 23px">
                                             <fmt:formatDate value="${svcQaA.qnaWriteDate}" pattern="yyyy-MM-dd"/> 
                                         </td>
                                     </tr>

@@ -11,7 +11,7 @@ public interface SvcQaAMapper {
 	public List<SvcQaAVO> svcQaASelect(Criteria criteria);
 	
 	// 페이징을 위한 총 개수 조회
-	public int total(String memCode);
+	public int total();
 	
 	// Q&A 디테일 페이지
 	public SvcQaAVO svcQaADetail(String qnaNum);
@@ -19,4 +19,9 @@ public interface SvcQaAMapper {
 	// Q&A 생성
 	public int svcQaAInsert(SvcQaAVO svcQaAVO);
 	
+	// Q&A 수정
+	public int svcQaAUpdate(SvcQaAVO svcQaAVO);
+	
+	// Q&A 삭제
+	public int svcQaADelete(SvcQaAVO svcQaAVO);
 }

@@ -16,28 +16,29 @@
 					<div class="card-header" style="text-align:center;">
 						<h4 class="form-section" style="font-family: 'MICEGothic Bold';">
 							<i class="feather icon-edit"
-								style="color: #0D47A1; padding-right: 5px;"></i>Q&A 등록하기
+								style="color: #0D47A1; padding-right: 5px;"></i>Q&A 수정하기
 						</h4>
 					</div>
 					<div class="card-content collapse show">
 						<div class="card-body">
-							<form class="form" method="post" action="/main/svcQaAInsert">
+							<form class="form" method="post" action="/main/svcQaAUpdate">
+								<input type="hidden" id="qnaNum" name="qnaNum" value="${svcQaAVO.qnaNum}">
 								<div class="row justify-content-md-center">
 									<div class="col-md-6">
 										<div class="form-body">
 											<div class="form-group">
 												<label for="qnaTitle">제목</label> 
-												<input type="text" id="qnaTitle" class="form-control" placeholder="제목을 입력해주세요." name="qnaTitle" required>
+												<input type="text" id="qnaTitle" class="form-control" placeholder="제목을 입력해주세요." name="qnaTitle" value="${svcQaAVO.qnaTitle}" required>
 											</div>
 
 											<div class="form-group">
 												<label for="qnaCts">내용</label> 
-												<textarea id="qnaCts" class="form-control" placeholder="내용을 입력해주세요." name="qnaCts" required></textarea>
+												<textarea id="qnaCts" class="form-control" placeholder="내용을 입력해주세요." name="qnaCts" required>${svcQaAVO.qnaCts}</textarea>
 											</div>
 
 										</div>
 										<div class="form-actions center" style="padding-top:50px; padding-bottom:120px;">
-											<button type="submit"  class="btn btn-primary"><i class="fa fa-check-square-o"></i>등록</button>
+											<button type="submit"  class="btn btn-primary"><i class="fa fa-check-square-o"></i>수정</button>
 											<button type="button" class="btn btn-secondary mr-1"><i class="feather icon-x"></i>취소</button>
 										</div>
 									</div>
@@ -55,6 +56,7 @@
 <!-- END: Content-->
 
 <script type="text/javascript">
-	
 	CKEDITOR.replace('qnaCts');
+	CKEDITOR.instances.qnaCts.setData();
+
 </script>

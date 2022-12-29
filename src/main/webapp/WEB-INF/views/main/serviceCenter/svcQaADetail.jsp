@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 
 <script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
@@ -24,6 +27,8 @@
 				<div style="width: 1200px;">
 					<!-- using a bootstrap card -->
 					<div class="card">
+						<form id="qnaDelete" action="/main/svcQaADelete" method="post">
+						<input type="hidden" id="qnaNum" name="qnaNum" value="${svcQaAVO.qnaNum}">
 						<!-- card body -->
 						<div class="card-body p-2">
 							<!-- card-header -->
@@ -36,7 +41,7 @@
 										<div
 											class="d-flex align-items-center justify-content-end justify-content-xs-start">
 											<div class="issue-date pr-2">
-												<span><fmt:setLocale value="ko_kr"/><fmt:formatDate value="${svcQaAVO.qnaWriteDate}" pattern="yyyy-MM-dd hh:mm:ss"/></span>
+												<span><fmt:setLocale value="ko_kr"/><fmt:formatDate value="${svcQaAVO.qnaWriteDate}" pattern="yyyy-MM-dd"/></span>
 											</div>
 										</div>
 									</div>
@@ -49,6 +54,7 @@
 									class="col-6 d-flex flex-column justify-content-center align-items-start">
 									<h2 class="text-primary"
 										style="font-family: 'MICEGothic Bold';">${svcQaAVO.qnaTitle}</h2>
+									<br>
 									<span>작성자 : ${svcQaAVO.writer}</span>
 								</div>
 							</div>
@@ -57,23 +63,31 @@
 							<!-- 글 내용 -->
 							<div class="form-group">
 								<label for="qnaCts">내용</label> 
-								<textarea id="qnaCts" class="form-control" placeholder="내용을 입력해주세요." name="qnaCts" readonly="readonly">${svcQaAVO.qnaCts}</textarea>
+								<br>
+								<br>
+								<div id="qnaCts" >${svcQaAVO.qnaCts}</div>
 							</div>
 							<hr>
-							<div>
-								<i class="feather icon-link"></i>첨부파일:
-								___________________________
-							</div>
+<!-- 							<div> -->
+<!-- 								<i class="feather icon-link"></i>첨부파일: -->
+<!-- 								___________________________ -->
+<!-- 							</div> -->
 							<div style="float: right;">
-								<button type="button" class="btn btn-secondary">
+							<c:if test="${svcQaAVO.memCode eq mvo.member.memCode}">
+								<button type="button" id="qnaDelBtn" class="btn btn-secondary">
 									<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
 								</button>
-								<a href="/proj/freeBoardUpdate" class="btn btn-secondary">
+								<a href="/main/svcQaAUpdateForm?qnaNum=${svcQaAVO.qnaNum}" id="cancelBtn" class="btn btn-secondary">
 									<i class="feather icon-edit mr-25 common-size"></i>수정
-								</a> <a href="/proj/freeBoard" class="btn btn-primary"><i
-									class="fa fa-reply-all mr-25 common-size"></i>목록</a>
+								</a>
+							</c:if>
+								<a href="/main/svcQaA" class="btn btn-primary">
+									<i class="fa fa-reply-all mr-25 common-size"></i>목록
+								</a>
 							</div>
 						</div>
+						<sec:csrfInput/>
+					</form>
 					</div>
 				</div>
 				<div class="card mb-2" style="width: 1200px; height: 85px;">
@@ -143,5 +157,27 @@
 <!-- END: Page JS-->
 
 <script type="text/javascript">
-	CKEDITOR.replace('qnaCts');
+// 	CKEDITOR.replace('qnaCts',{
+// 		toolar: [],
+// 		readOnly:true
+// 	});
+
+// 	$("#cancelBtn").on("click", function(){
+// 		alert("눌림");
+// 		CKEDITOR.instances.qnaCts.setReadOnly(false);
+// 		CKEDITOR.instances.qnaCts.replace;
+// 	});
+let memCode1 = "${svcQaAVO.writer}";
+let memCode2 = "${mvo.member.memCode}";
+console.log(memCode1 + " : "+memCode2);
+
+$("#qnaDelBtn").on("click", function() {
+	let result = confirm("Q&A를 삭제하시겠습니까?");
+	let data = {};
+	if(result){
+		$("#qnaDelete").submit();
+	}else {
+		location.reload();
+	}
+});
 </script>

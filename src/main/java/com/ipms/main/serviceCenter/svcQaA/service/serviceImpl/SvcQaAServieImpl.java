@@ -27,9 +27,9 @@ public class SvcQaAServieImpl implements SvcQaAService{
 	
 	// 데이터 검증 하기
 	@Override
-	public int total(String memCode) {
+	public int total() {
 		
-		return svcQaAMapper.total(memCode);
+		return svcQaAMapper.total();
 		
 	}
 	
@@ -47,6 +47,19 @@ public class SvcQaAServieImpl implements SvcQaAService{
 		
 		return svcQaAMapper.svcQaAInsert(svcQaAVO);
 		
+	}
+	
+	// Q&A 수정
+	@Override
+	public int svcQaAUpdate(SvcQaAVO svcQaAVO) {
+		
+		return svcQaAMapper.svcQaAUpdate(svcQaAVO);
+	}
+
+	@Override
+	public int svcQaADelete(SvcQaAVO svcQaAVO) {
+		
+		return svcQaAMapper.svcQaADelete(svcQaAVO);
 	}
 	
 
