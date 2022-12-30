@@ -10,6 +10,37 @@
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 
+<script>
+    var socket = null;
+    $(document).ready(function () {
+        var soc = new SockJS("/echo-ws");
+        socket = soc;
+        soc.onopen = function () {
+            var msg = "${mvo.member.memName}님이 접속했습니다,${mvo.member.memCode}";
+            socket.send(msg);
+            console.log(msg)
+
+        };
+
+        //data는 send되는 값
+        soc.onmessage = function (data) {
+            //현재 시간
+            console.log(data);
+            var ctime = new Date();
+            //메시지를 받을 시 페이지 알림목록에 메시지 추가
+            var apd = "";
+            apd += "<a class='dropdown-item d-flex align-items-center mess' href='#'>";
+            apd += "<div class='mr-3'>";
+            apd += "<div class='icon-circle bg-warning'>";
+            apd += "<i class='fas fa-exclamation-triangle text-white'></i></div></div><div>";
+            apd += "<div class='small text-gray-500'>" + ctime.toLocaleString() + "</div>";/* 시간이 들어가는 부분  */
+            apd += data.data;/* 메시지가 들어가는 부분 */
+            apd += "</div></a>";
+            //알림목록 앞부분에 추가
+            $("#disp").prepend(apd);
+        };
+    });
+</script>
 <!-- Topbar -->
 <nav
         class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-static-top navbar-light navbar-border navbar-brand-center fixed-top"
@@ -24,13 +55,15 @@
                 </a>
                 </li>
 
-                <li class="nav-item"><a class="navbar-brand" href="/main/wholeProject" style="margin-left: 250px;margin-top: 10px">
+                <li class="nav-item"><a class="navbar-brand" href="/main/wholeProject"
+                                        style="margin-left: 250px;margin-top: 10px">
                     <button type="button" class="btn btn-outline-light btn-min-width mr-1 mb-1"
                             style="border: none;font-weight: bold;color: black">전체 프로젝트
                     </button>
                 </a></li>
 
-                <li class="nav-item"><a class="navbar-brand" href="/main/newProjectForm" style="margin-left: 100px;margin-top: 10px;">
+                <li class="nav-item"><a class="navbar-brand" href="/main/newProjectForm"
+                                        style="margin-left: 100px;margin-top: 10px;">
                     <button type="button" class="btn btn-outline-light btn-min-width mr-1 mb-1"
                             style="border: none;font-weight: bold;color: black">프로젝트 생성
                     </button>
@@ -63,87 +96,10 @@
 										New</span>
                             </h6>
                         </li>
-                        <li class="scrollable-container media-list ps"><a
-                                href="javascript:void(0)">
-                            <div class="media">
-                                <div class="media-left align-self-center">
-                                    <i class="feather icon-plus-square icon-bg-circle bg-cyan"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">You have new order!</h6>
-                                    <p class="notification-text font-small-3 text-muted">Lorem
-                                        ipsum dolor sit amet, consectetuer elit.</p>
-                                    <small>
-                                        <time class="media-meta text-muted"
-                                              datetime="2015-06-11T18:29:20+08:00">30 minutes ago
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </a><a href="javascript:void(0)">
-                            <div class="media">
-                                <div class="media-left align-self-center">
-                                    <i
-                                            class="feather icon-download-cloud icon-bg-circle bg-red bg-darken-1"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading red darken-1">99% Server load</h6>
-                                    <p class="notification-text font-small-3 text-muted">Aliquam
-                                        tincidunt mauris eu risus.</p>
-                                    <small>
-                                        <time class="media-meta text-muted"
-                                              datetime="2015-06-11T18:29:20+08:00">Five hour ago
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </a><a href="javascript:void(0)">
-                            <div class="media">
-                                <div class="media-left align-self-center">
-                                    <i
-                                            class="feather icon-alert-triangle icon-bg-circle bg-yellow bg-darken-3"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading yellow darken-3">Warning
-                                        notifixation</h6>
-                                    <p class="notification-text font-small-3 text-muted">Vestibulum
-                                        auctor dapibus neque.</p>
-                                    <small>
-                                        <time class="media-meta text-muted"
-                                              datetime="2015-06-11T18:29:20+08:00">Today
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </a><a href="javascript:void(0)">
-                            <div class="media">
-                                <div class="media-left align-self-center">
-                                    <i class="feather icon-check-circle icon-bg-circle bg-cyan"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Complete the task</h6>
-                                    <small>
-                                        <time class="media-meta text-muted"
-                                              datetime="2015-06-11T18:29:20+08:00">Last week
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </a><a href="javascript:void(0)">
-                            <div class="media">
-                                <div class="media-left align-self-center">
-                                    <i class="feather icon-file icon-bg-circle bg-teal"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Generate monthly report</h6>
-                                    <small>
-                                        <time class="media-meta text-muted"
-                                              datetime="2015-06-11T18:29:20+08:00">Last month
-                                        </time>
-                                    </small>
-                                </div>
-                            </div>
-                        </a>
+                        <li class="scrollable-container media-list ps">
+                            <a href="javascript:void(0)">
+                              <div id="disp">
+                            </a>
                             <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
                                 <div class="ps__thumb-x" tabindex="0"
                                      style="left: 0px; width: 0px;"></div>
@@ -273,17 +229,20 @@
             </ul>
             <!-- 비로그인-->
             <sec:authorize access="not hasAnyRole('ROLE_MEMBER')">
-                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인</button>
-                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입</button>
+                <button type="button" id="loginBtn" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그인
+                </button>
+                <button type="button" id="signUpBtn" class="btn btn-outline-secondary"><i class="fa fa-user-o"></i> 회원가입
+                </button>
             </sec:authorize>
 
             <!--로그인 -->
             <sec:authorize access="hasRole('ROLE_MEMBER')">
                 ${mvo.member.memName}님
-<%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
-                <button type="button" id="myPage"  class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지</button>
+                <%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
+                <button type="button" id="myPage" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>마이페이지
+                </button>
                 <form action="/customLogout" method='post'>
-                    <button  class="btn btn-outline-secondary" >로그아웃</button>
+                    <button class="btn btn-outline-secondary">로그아웃</button>
                     <sec:csrfInput/>
                 </form>
             </sec:authorize>

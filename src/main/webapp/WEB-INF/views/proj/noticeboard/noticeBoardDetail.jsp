@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <!-- BEGIN: Head-->
 <head>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
@@ -59,11 +61,10 @@
 										class="col-6 d-flex flex-column justify-content-center align-items-start">
 										<h2 class="text-primary"
 											style="font-family: 'MICEGothic Bold';">${data.projNtTitle}</h2>
-										<span>${data.memCode}</span>
+										<span>작성자: ${data.memCode}</span>
 									</div>
 								</div>
 								<hr>
-
 								<!-- 글 내용 -->
 								<div class="row invoice-adress-info py-2">
 									<div class="col-6 mt-1 from-info">
@@ -72,16 +73,21 @@
 								</div>
 								<hr>
 								<div>
-									<i class="feather icon-link"></i>첨부파일:
-									___________________________
+									<!--data.intgAttachFileVOList => List<IntgAttachFileVO> intgAttachFileVOList -->
+									<i class="feather icon-link"></i>첨부파일:&nbsp;
+									<c:forEach var="intgAttachFileVO" items="${data.intgAttachFileVOList}">
+									      <a href="/resources/uploadNt/${intgAttachFileVO.saveFileName}" download="${intgAttachFileVO.fileName}" style="color:#02b5b8;">${intgAttachFileVO.fileName}</a>
+									</c:forEach>
 								</div>
 								<div style="float: right;">
-									<button type="button" class="btn btn-danger" id="ntDel">
-											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
-									</button>
-									<a href="/proj/noticeUpdate?projNtNum=${data.projNtNum}" class="btn btn-warning">
-											<i class="feather icon-edit mr-25 common-size"></i>수정</a>
-									<a href="/proj/noticeBoard" class="btn btn-primary"><i
+									<c:if test="${memCheck eq 'true' }">
+										<button type="button" class="btn btn-danger" id="ntDel">
+												<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
+										</button>
+										<a href="/proj/${projId}/noticeUpdate?projNtNum=${data.projNtNum}" class="btn btn-warning">
+												<i class="feather icon-edit mr-25 common-size"></i>수정</a>
+									</c:if>
+									<a href="/proj/${projId}/noticeBoard" class="btn btn-primary"><i
 										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 								</div>
 							</div>
@@ -118,7 +124,7 @@ $(function() {
 		
 		
 		$.ajax({
-			url:"/proj/noticeBoardDelete",
+			url:"/proj/${projId}/noticeBoardDelete",
 			contentType:"application/json;charset=utf-8",
 			data:JSON.stringify(data),
 			dataType:"json",
@@ -133,7 +139,7 @@ $(function() {
 				// result가 0보다 크면 성공, 아니면 실패
 				if(result > 0) {
 					alert("글을 삭제하였습니다.");
-					location.href="/proj/noticeBoard";
+					location.href="/proj/${projId}/noticeBoard";
 				} else {
 					alert("삭제 실패. 다시 시도해주세요.");
 				}

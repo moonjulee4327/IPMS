@@ -16,9 +16,11 @@ public class Criteria {
     private String category;
     private Date searchDate;
     private String[] typeArr;
-
-    private String projId; // issueboard - 박종환 추가
     
+    private String aprov;
+    private String projId; // issueboard - 박종환 추가
+    private Date startDate;
+    private Date endDate;
     public Criteria() {
         this(1, 8);
     }

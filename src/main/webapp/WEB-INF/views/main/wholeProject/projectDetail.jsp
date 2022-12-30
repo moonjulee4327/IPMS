@@ -7,6 +7,7 @@
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
 <script>
+
     $(document).ready(function () {
         $("#joinBtn").on("click", function () {
             let fData = $("#joinData").serialize();
@@ -24,6 +25,27 @@
                     } else {
                         alert("오류입니다.");
                     }
+                }
+            })
+        })
+        
+        $("#markBtn").on("click",function(){
+			let memCode = "${mvo.member.memCode}";
+        	console.log("memCode : " , memCode);
+        	let data = {
+        				"memCode" : memCode
+        			};
+        	
+        	$.ajax({
+                url: "/main/markInsert",
+                type: "post",
+                contentType : "application/json;  charset=utf-8",
+                data: data,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: function (division) {
+              
                 }
             })
         })
@@ -56,12 +78,12 @@
                         <c:set var="memberCode" value="${mvo.member.memCode}"/>
                         <c:if test="${checkCode ne memberCode}">
                         <button type="button" id="joinBtn" class="btn btn-primary btn-min-width mr-1 mb-1">
-                            <i class="fa fa-user-o"></i> 가입하기
+                            <i class="fa fa-user-o"></i> 가입하기</button>
                             </c:if>
                             </c:forEach>
 
 
-                            <button type="button" class="btn btn-success btn-min-width mr-1 mb-1"><i
+                            <button id="markBtn" type="button" class="btn btn-success btn-min-width mr-1 mb-1"><i
                                     class="fa fa-star-o"></i> 북마크
                             </button>
                     </div>

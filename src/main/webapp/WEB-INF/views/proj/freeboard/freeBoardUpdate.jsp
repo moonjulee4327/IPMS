@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <head>
 
 </head>
@@ -25,7 +31,7 @@
 						</div>
 						<div class="card-content collapse show">
 							<div class="card-body">
-								<form class="form" action="/proj/freeBoardUpdatePost" method="post">		<!-- 나중에 첨부파일 추가하기 -->
+								<form class="form" action="/proj/${projId}/freeBoardUpdatePost" method="post">
 									<div class="row justify-content-md-center">
 										<div class="col-md-6">
 											<div class="form-body">
@@ -54,17 +60,18 @@
 												<button type="submit" class="btn btn-secondary" id="updateFree">
 													<i class="fa fa-check-square-o"></i> 등록
 												</button>
-												<a href="/proj/freeBoardDetail?projBdId=${data.projBdId}" class="btn btn-warning mr-1" id="cancelBtn">
+												<a href="/proj/${projId}/freeBoardDetail?projBdId=${data.projBdId}" class="btn btn-warning mr-1" id="cancelBtn">
 													<i class="feather icon-x"></i> 취소
 												</a>
 											</div>
 										</div>
 									</div>
+<%-- 										<input type="hidden" id="writer" name="writer" value="${data.writer}"> --%>
+<%-- 										<input type="hidden" id="deleteYn" name="deleteYn" value="${data.deleteYn}"> --%>
 										<input type="hidden" id="projBdId" name="projBdId" value="${data.projBdId}">
-										<input type="hidden" id="writer" name="writer" value="${data.writer}">
-										<input type="hidden" id="projId" name="projId" value="${data.projId}">
-										<input type="hidden" id="deleteYn" name="deleteYn" value="${data.deleteYn}">
-<%-- 									<sec:authentication property="principal.freeboardVO.projBdId"/> --%>
+										<input type="hidden" id="projId" name="projId" value="${projId}">
+										<input type="hidden" id="writer" name="writer" value="<sec:authentication property='principal.member.memCode'/>" />
+									<sec:authentication property="principal.member"/>
 									<sec:csrfInput />
 								</form>
 							</div>

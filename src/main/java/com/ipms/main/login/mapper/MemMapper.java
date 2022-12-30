@@ -25,4 +25,6 @@ public interface MemMapper {
     public int insertTechStack(TechStackVO techStackVO);
     //공통코드 뿌리기
     public List<CommonCodeVO> techStack();
+
+    public List<MemVO> allGetMemCode();
 }

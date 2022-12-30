@@ -3,6 +3,7 @@ package com.ipms.proj.dashboard.service;
 import java.util.List;
 import java.util.Map;
 
+import com.ipms.commons.vo.Criteria;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.erd.vo.ErdVO;
 import com.ipms.proj.freeboard.vo.FreeboardVO;
@@ -28,5 +29,9 @@ public interface DashboardService {
 	public ProjVO selectProj(Map<String, Object> map);
 
 	public Map<String, Object> selectPgres(Map<String, Object> map);
+
+	public List<TaskVO> selectTaskList(Criteria criteria);
+
+	public int total(Criteria criteria);
 
 }

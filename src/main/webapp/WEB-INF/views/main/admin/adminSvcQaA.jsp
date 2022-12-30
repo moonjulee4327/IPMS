@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<script type="text/javascript"
-	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 
-<head>
 <title>관리자 페이지 - 고객센터 관리</title>
 
 <!-- BEGIN: Vendor CSS-->
@@ -39,11 +38,14 @@
 						<div class="row breadcrumbs-top" >
 					        <div class="breadcrumb-wrapper col-12">
 					            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px; font-family: MICEGothic Bold">
-					                <li class="breadcrumb-item active"><a href="/main/adminSvcNotice" style="color: gray;">공지사항 관리</a>
+					                <li class="breadcrumb-item active">
+										<a href="/main/adminSvcNotice" style="color: gray;">공지사항 관리</a>
 					                </li>
-					                <li class="breadcrumb-item"><a href="/main/adminSvcFaq" style="color: gray;">자주묻는질문 관리</a>
+					                <li class="breadcrumb-item">
+										<a href="/main/adminSvcFaq" style="color: gray;">자주묻는질문 관리</a>
 					                </li>
-					                <li class="breadcrumb-item"><a href="/main/adminSvcQaA" style="color: #3F4E89">Q&A 관리</a>
+					                <li class="breadcrumb-item">
+										<a href="/main/adminSvcQaA" style="color: #3F4E89">Q&A 관리</a>
 					                </li>
 					               
 					            </ol>
@@ -55,14 +57,10 @@
 								<br>
 								<div style="float: right;">
 									<div class="btn-group mr-1 mb-1" style="padding-right: 32px;">
-										<button type="button"
-											class="btn btn-outline-secondary dropdown-toggle"
-											data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">진행 여부 선택</button>
-										<div class="dropdown-menu" x-placement="bottom-start"
-											style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
-											<a class="dropdown-item" href="#">응답 대기중</a> <a
-												class="dropdown-item" href="#">답변완료</a>
+										<button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">진행 여부 선택</button>
+										<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
+											<a class="dropdown-item" href="#">응답중</a> 
+											<a class="dropdown-item" href="#">응답완료</a>
 										</div>
 									</div>
 								</div>
@@ -99,57 +97,75 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td><input type='checkbox' id="ckbox" name="ckbox"
-											value=""></td>
-										<td>2345</td>
-										<td><b><a href="/main/adminSvcQaADetail" style="color: #455DBD;">사이트가 안들어가져요</a></b>
-											<button type="button"
-												class="btn btn-outline-secondary btn-sm">
-												<i class="feather icon-search"></i>
-											</button></td>
-										<td>박종환</td>
-										<td><span class="badge badge-success">응답 대기중</span></td>
-										<td>2022-10-01</td>
-										<td>2022-10-15</td>
-									</tr>
+									<!-- 리스트 조회 시작 -->
+                                    <c:forEach var="adminSvcQaA" items="${adminSvcQaASelect}" varStatus="stat">
+                                    <tr role="row" class="odd">
+										<td> <!-- 선택 -->
+											<input type='checkbox' id="ckbox" name="ckbox" value="">
+										</td>
+                                        <td style="padding-left: 35px;"> <!-- Q&A 번호 -->
+                                            ${stat.count}
+                                        </td>
+                                        <td> <!-- 제목 --> 
+                                            <b><a href="javascript:f_qnaDetail('${adminSvcQaA.qnaNum}')" style="color: #455DBD;">${adminSvcQaA.qnaTitle}</a></b>
+                                        </td>
+                                        <td> <!-- 작성자 -->
+                                            ${adminSvcQaA.writer}
+                                        </td> 
+                                        <td style=""> <!-- 답변 유무 -->
+                                            <span class="badge badge-warning">${adminSvcQaA.qnaStatus}</span>
+                                            <!-- <span class="badge badge-success">${adminSvcQaA.qnaStatus}</span> -->
+                                        </td>
+                                        <td> <!-- 등록 일자 -->
+                                            <fmt:formatDate value="${adminSvcQaA.qnaWriteDate}" pattern="yyyy-MM-dd"/> 
+                                        </td>
+                                        <td> <!-- 답변 일자 -->
+                                            <fmt:formatDate value="${adminSvcQaA.qnaWriteDate}" pattern="yyyy-MM-dd"/> 
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                    <!-- 리스트 조회 끝 -->
 								</tbody>
 							</table>
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
-									<div style="float: left;">
-										<button type="button" class="btn"
-											style="background-color: #546E7A; color: white;">삭제</button>
-									</div>
-									<div class="dataTables_paginate paging_simple_numbers"
-										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
+									<div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
 										<ul class="pagination">
-											<li class="paginate_button page-item previous disabled"
-												id="DataTables_Table_0_previous"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="0"
-												tabindex="0" class="page-link">Previous</a></li>
-											<li class="paginate_button page-item active"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="1"
-												tabindex="0" class="page-link">1</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="2"
-												tabindex="0" class="page-link">2</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="3"
-												tabindex="0" class="page-link">3</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="4"
-												tabindex="0" class="page-link">4</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="5"
-												tabindex="0" class="page-link">5</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="6"
-												tabindex="0" class="page-link">6</a></li>
-											<li class="paginate_button page-item next"
-												id="DataTables_Table_0_next"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="7"
-												tabindex="0" class="page-link">Next</a></li>
+		
+											<!-- 이전 버튼 시작 -->
+											<c:if test="${pageVO.prev }">
+											<li class="paginate_button page-item previous" id="app-invoice-table_previous">
+												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+											</li>
+											</c:if>
+											<!-- 이전 버튼 끝 -->
+											
+											<!-- 페이지 블록 시작 -->
+											<!-- 현재페이지 -->
+											<c:forEach var = "num" begin = "${pageVO.startPage }" end = "${pageVO.endPage }">
+											<c:choose>
+											<c:when test="${pageVO.pageNum eq num }">
+												<li class="paginate_button page-item active">
+													<a href="/main/adminSvcQaA?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+												</li>
+											</c:when>
+											<c:otherwise>
+												<li class="paginate_button page-item">
+													<a href="/main/adminSvcQaA?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+												</li>
+											</c:otherwise>
+											</c:choose>
+											</c:forEach>
+											<!-- 페이지 블록 끝 -->
+		
+											<!-- 다음 버튼 시작 -->
+											<c:if test="${pageVO.next }">
+											<li class="paginate_button page-item next" id="app-invoice-table_next">
+												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+											</li>
+											</c:if>
+											<!-- 다음 버튼 끝 -->
+		
 										</ul>
 									</div>
 								</div>
@@ -158,7 +174,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		</div>
 	</section>
 	<!-- END: Content-->
@@ -182,6 +197,18 @@
 	<script
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
+	
+	<script>
+		function f_qnaDetail(param) {
+			let v_open = "/main/adminPopUp/adminSvcQaADetail?qnaNum="+param;
+
+			let v_option = "width=750, height=800, top=100px, left=450px, scrollbars=yes";
+		
+			window.open(v_open, "Q&A 조회", v_option);
+			
+		}
+
+	</script>
 
 </body>
 <!-- END: Body-->

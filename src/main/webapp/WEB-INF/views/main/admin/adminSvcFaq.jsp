@@ -25,6 +25,12 @@
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-contacts.css">
 <!-- END: Page CSS-->
 
+<style type="text/css">
+	.breadcrumb-item active {
+		color: #3F4E89;
+	}
+</style>
+
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->
@@ -38,7 +44,7 @@
 					<div class="card-body">
 						<div class="row breadcrumbs-top" >
 					        <div class="breadcrumb-wrapper col-12">
-					            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px; font-family: MICEGothic Bold">
+				 				<ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px; font-family: MICEGothic Bold">
 					                <li class="breadcrumb-item"><a href="/main/adminSvcNotice" style="color: gray;">공지사항 관리</a>
 					                </li>
 					                <li class="breadcrumb-item active"><a href="/main/adminSvcFaq" style="color: #3F4E89;">자주묻는질문 관리</a>

@@ -7,6 +7,8 @@ import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.mapper.ProjMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.main.newProject.vo.ProjVO;
+import com.ipms.proj.chat.mapper.ChatMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +24,8 @@ public class NewProjectService {
     ProjMapper projMapper;
     @Autowired
     MyPageMapper myPageMapper;
-
+    @Autowired
+    ChatMapper chatMapper;
 
     @Transactional
     public String projectCreate(@ModelAttribute ProjVO projVO, @ModelAttribute MemVO memVO, Authentication authentication) {
@@ -50,6 +53,9 @@ public class NewProjectService {
             
             // 프로젝트 생성 시 프로젝트 폴더(문서함)생성 
             FtpUtil.createDirectory("/", projVO.getProjId());
+            
+            //프로젝트 생성시 채팅방 생성
+            chatMapper.createChatRoom(projVO);
             return "main/page";
         }
         return "redirect:/main/page";

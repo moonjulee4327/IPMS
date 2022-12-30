@@ -6,8 +6,10 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<input type="text" id="projBdId0" name="projBdId0" value="${param.projBdId}" />
-<input type="text" id="writer0" name="writer0" value="<sec:authentication property='principal.member.memCode'/>" />
+<input type="hidden" id="projBdId0" name="projBdId0" value="${param.projBdId}" />
+<input type="hidden" id="writer0" name="writer0" value="<sec:authentication property='principal.member.memCode'/>" />
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 
 <!DOCTYPE html>
 <!-- BEGIN: Head-->
@@ -88,15 +90,14 @@
 <!-- 									</label> -->
 <!-- 								</div> -->
 								<div style="float: right;">
-										<button type="button" class="btn btn-danger" id="freeDel">
-											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
-										</button>
-<!-- 										<button type="button" class="btn btn-secondary" id="updateFree"> -->
-<!-- 											<i class="feather icon-edit mr-25 common-size"></i>수정 -->
-<!-- 										</button> -->
-										<a href="/proj/freeBoardUpdate?projBdId=${data.projBdId}" class="btn btn-warning">
-											<i class="feather icon-edit mr-25 common-size"></i>수정
-										</a> <a href="/proj/{projId}/freeboard" class="btn btn-secondary"><i
+										<c:if test="${memCheck eq 'true' }">
+											<button type="button" class="btn btn-danger" id="freeDel">
+												<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
+											</button>
+											<a href="/proj/${projId}/freeBoardUpdate?projBdId=${data.projBdId}" class="btn btn-warning">
+												<i class="feather icon-edit mr-25 common-size"></i>수정</a> 
+										</c:if>
+										<a href="/proj/${projId}/freeboard" class="btn btn-secondary"><i
 											class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 									</div>
 								</div>
@@ -141,30 +142,40 @@
 									<div>
 									<form class="form-horizontal">
 										<div style="padding-bottom: 5px;">
-											<span class="username"> <a href="#" style="font-size:15px;">${freeboardCmtVO.writer}</a>&nbsp;&nbsp;<span
-												style="font-size: 8px; color: grey;"><fmt:formatDate value="${freeboardCmtVO.projBdCmtWriteDate}" pattern="yyyy-MM-dd HH:mm" /></span>
+											 <div style='font-size:15px; color: #02b5b8;'><i class='fa fa-user-o'></i>&nbsp;&nbsp;${freeboardCmtVO.writer}</div>
+											 <span class="username">
+											 <span style="font-size: 8px; color: grey;"><fmt:formatDate value="${freeboardCmtVO.projBdCmtWriteDate}" pattern="yyyy-MM-dd HH:mm" /></span>
 												<span id="fnEdit${stat.index}">
-													<button type="button" class="btn btn-danger btn-sm cmtDelete" style="float:right;" id="cmtDelete" 
-														onclick="fn_delete(${freeboardCmtVO.projBdCmtId})">삭제</button>&nbsp;
-													<button type="button" class="btn btn-warning btn-sm cmtModify" style="float:right; margin-right:3px;" id="cmtModify" 
-														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')">수정</button>
+												<!-- 로그인한 회원과 댓글 작성자가 일치하면 수정,삭제 버튼 보이게 -->
+												<c:if test="${freeboardCmtVO.writer eq mvo.member.memCode}">
+													<a style='font-size: 12px; text-decoration: underline;' 
+														onclick='fn_reCmt()' type='button' >댓글작성</a>
+													<a style="color : red; font-size: 12px; text-decoration: underline;" 
+														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')" type="button" id="cmtModify">수정</a>
+													<a style="color : grey; font-size: 12px; text-decoration: underline;" 
+														onclick="fn_delete(${freeboardCmtVO.projBdCmtId})" type="button" id="cmtDelete">삭제</a>
+<!-- 													<button type="button" class="btn btn-danger btn-sm cmtDelete" style="float:right;" id="cmtDelete"  -->
+<%-- 														onclick="fn_delete(${freeboardCmtVO.projBdCmtId})">삭제</button>&nbsp; --%>
+<!-- 													<button type="button" class="btn btn-warning btn-sm cmtModify" style="float:right; margin-right:3px;" id="cmtModify"  -->
+<%-- 														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')">수정</button> --%>
+												</c:if>
 												</span>
 												<span id="fnSave${stat.index}" style="display:none;">
-													<button type="button" class="btn btn-secondary btn-sm" style="float:right;"  
-														onclick="fn_updateGo(${freeboardCmtVO.projBdCmtId}, '${stat.index}')">등록</button>&nbsp;
-													<a href="/proj/freeBoardDetail?projBdId=${param.projBdId}" class="btn btn-danger btn-sm" style="float:right; margin-right:3px;"  
-														>취소</a>
+<!-- 													<button type="button" class="btn btn-secondary btn-sm" style="float:right;"  -->
+<%-- 													onclick="fn_updateGo(${freeboardCmtVO.projBdCmtId}, '${stat.index}')">등록</button>&nbsp; --%>
+													<a onclick="fn_updateGo(${freeboardCmtVO.projBdCmtId}, '${stat.index}')" style=" text-decoration: underline; width:33px; float:right;">등록</a>
+													<a href="/proj/${projId}/freeBoardDetail?projBdId=${param.projBdId}" style="text-decoration: underline; width:33px; float:right;">취소</a>
 												</span>
 											</span> <span class="description"></span>
 										</div>
 										<div id="cmtCts">
 											<span id="span${stat.index}">${freeboardCmtVO.projBdCmtCts}</span>
 											<input type="text" id="projBdCmtCts${stat.index}" name="projBdCmtCts" value="${freeboardCmtVO.projBdCmtCts}" 
-												style="display:none; width:900px; height:35px;" />
+												style="display:none; width:500px; height:35px;" />
 										</div>
 										<br>
 										<div style="padding-top: 10px;">
-											<button type="button" class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button>
+<!-- 											<button type="button" class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button> -->
 										</div>
 										<hr>
 										<input type="hidden" class="form-control" id="projBdCmtId" name="projBdCmtId" value="${freeboardCmtVO.projBdCmtId}">
@@ -194,6 +205,8 @@
 
 <script type="text/javascript">
 
+	var mine = "${mvo.member.memCode}";
+
 	$(function() {
 		
 		// 글 삭제 버튼 꾸욱
@@ -207,7 +220,7 @@
 			
 			// 아자작
 			$.ajax({
-				url:"/proj/freeBoardDelete",
+				url:"/proj/${projId}/freeBoardDelete",
 				contentType:"application/json;charset=utf-8",
 				data:JSON.stringify(data),
 				dataType:"json",
@@ -226,14 +239,13 @@
 					// result가 0보다 크면 성공, 아니면 실패
 					if(str > 0) {
 						alert("글을 삭제하였습니다.");
-						location.href="/proj/freeboard";
+						location.href="/proj/${projId}/freeboard";
 					} else {
 						alert("삭제 실패. 다시 시도해주세요.");
 					}
 				}
 			})	// ajax end
 		});
-		
 
 		// 댓글 등록
 		$("#freeCmtAdd").on("click",function() {
@@ -374,6 +386,9 @@
 		});	// ajax end
 	}
 	
+	function fn_reCmt(){
+		alert = "대댓 하잉";
+	}
 </script>
 
 

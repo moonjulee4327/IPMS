@@ -29,47 +29,32 @@
 										<div class="col-md-6">
 											<div class="form-body">
 												<div class="form-group">
-													<label for="eventInput1">제목</label> <input
-														type="text" id="eventInput1" class="form-control"
-														placeholder="제목을 입력해주세요." name="title" required>
+													<label for="eventInput1">제목</label> 
+													<input type="text" id="issueTitle" name="issueTitle" class="form-control" value="${list.issueTitle }"
+														placeholder="제목을 입력해주세요." required>
 												</div>
 
 									<!-- 체크박스로 일감 관련된 이슈/관련없는 이슈 나눠서 일감관련에 체크할 경우에만 일감을 선택하여 연결할 수 있는 div를 밑에 뜨게 했으면 좋겠다는 의견 -->
+												<div>
+														<label for="eventInput2"> 관련 일감</label><br>
+														<select id="taskId" name="taskId"> 
+															<option> ${list.issueTitle}</option>
+														</select>
+													</div><br/>
 												<div class="form-group">
-													<label for="eventInput2">관련 일감</label> <input type="text"
-														id="eventInput2" class="form-control" placeholder="이 부분은 더 찾아봐야함.. text말고 일감을 어떤 방법으로 연결시킬지"
-														name="work">
-												</div>
-												<div class="form-group">
-													<label for="eventInput3">내용</label> <input type="text"
-														id="eventInput3" class="form-control"
-														placeholder="내용을 입력해주세요." name="content" id="content" required>
+													<label for="eventInput3">내용</label> 
+													<textarea id="issueCts" name="issueCts" class="form-control" name="issueCts" required>
+													${list.issueCts}
+													</textarea>
 												</div>
 
 												<div class="form-group">
 													<label>첨부파일</label><br><label id="projectinput7"
-														class="file center-block"> <input type="file"
-														id="file"> <span class="file-custom"></span>
+														class="file center-block"> 
+														<input type="file" id="itgrnAttachFileNum" name="itgrnAttachFileNum"> 
+														<span class="file-custom"></span>
 													</label>
 												</div>
-												
-												<!-- 												<div class="form-group"> -->
-<!-- 													<label>Existing Customer</label> -->
-<!-- 													<div class="input-group"> -->
-<!-- 														<div -->
-<!-- 															class="d-inline-block custom-control custom-radio mr-1"> -->
-<!-- 															<input type="radio" name="customer1" -->
-<!-- 																class="custom-control-input" id="yes"> <label -->
-<!-- 																class="custom-control-label" for="yes">Yes</label> -->
-<!-- 														</div> -->
-<!-- 														<div class="d-inline-block custom-control custom-radio"> -->
-<!-- 															<input type="radio" name="customer1" -->
-<!-- 																class="custom-control-input" id="no"> <label -->
-<!-- 																class="custom-control-label" for="no">No</label> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 												</div> -->
-
 										</div>
 									<div class="form-actions center">
 										<button type="submit" class="btn btn-primary">
@@ -96,5 +81,5 @@
 </html>
 
 <script type="text/javascript">
-CKEDITOR.replace('content');
+CKEDITOR.replace('issueCts');
 </script>

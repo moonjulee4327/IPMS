@@ -6,6 +6,8 @@
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <link href="/resources/fullcalendar/lib/main.css" rel="stylesheet" />
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <script src="/resources/fullcalendar/lib/main.js"></script>
 <script src="/resources/fullcalendar/lib/locales/ko.js"></script>
 <head>
@@ -30,6 +32,10 @@ textarea:disabled {
     background: #FFF0F5 !important;
     border: none !important;
 } 
+
+.popover-content {
+	text-size:15px;
+}
 </style>
 
 <script>
@@ -180,6 +186,7 @@ function stringFormat(p_val){
 		  				taskCts:list[j]['taskCts'],
 		  				start:list[j]['taskStrtDate'],
 		  				end:list[j]['taskEndDate'],
+		  				taskPgres:list[j]['taskPgres'],
 		  				color: changeC,
 		  				textColor: changeF
 		  			})
@@ -194,6 +201,9 @@ function stringFormat(p_val){
 </script>
 </head>
 <body>
+	<button type="button" class="btn btn-secondary btn-round mr-1 mb-1" data-toggle="popover" data-placement="right" data-container="body" 
+	data-original-title="캘린더 이용 안내" data-content="개인의 프로젝트 상·하위 일감 및 일정을 확인할 수 있습니다. 상위 일감은 보라색, 하위 일감은 하늘색, 개인 일정은 분홍색으로 표시됩니다. 일정은 시간 관리가 가능하며, 일감은 조회만 가능합니다.">
+    <i class="fa fa-question-circle"></i></button>
 	<div id="calendar"
 		style="width: 1000px; margin: auto; background-color: white;"></div>
 
@@ -214,14 +224,18 @@ function stringFormat(p_val){
 				<div class="modal-body">
 					<div class="form-group" id="mTitle">
 						<label for="indvSchdTitle">일정 제목</label> <input type="text"
-							class="form-control" placeholder="제목을 입력하세요." id="indvSchdTitle" name="indvSchdTitle">
+						class="form-control" placeholder="제목을 입력하세요." id="indvSchdTitle" name="indvSchdTitle">
 					</div>
-					<div class="form-group mDt" style="float: left; padding-right:10px;">
-						<label for="indvSchdStrtDate">시작 일자</label>
-						<input type="text" class="form-control" id="indvDt" name="indvDt" value="" disabled>
+					<div class="row">
+					<div class="col-3">
+						<div class="form-group mDt" style="width:110px;">
+							<label for="indvSchdStrtDate">시작 일자</label>
+							<input type="text" class="form-control" id="indvDt" name="indvDt" value="" disabled>
+						</div>
 					</div>
-					<div class="form-group mStart" style="display:inline-block;">
-						<label for="indvSchdStrtDate">시작 시간</label>
+					<div class="col-3">
+					<div class="form-group mStart">
+						<label for="indvSchdStrtDate">종료 시간</label>
 						<select class="form-control" id="indvSchdStrtDate" onchange="startChange()">
 							<option value="06:00">06:00</option>
 							<option value="06:30">06:30</option>
@@ -261,12 +275,15 @@ function stringFormat(p_val){
 							<option value="23:30">23:30</option>
 						</select>
 					</div>
-					<div>
-					<div class="form-group mDt2" style="float:left; padding-right:10px;">
+					</div>
+					<div class="col-3">
+					<div class="form-group mDt2" style="width:110px;">
 						<label for="indvSchdEndDate">종료 일자</label>
 						<input type="text" class="form-control" id="indvDt2" name="indvDt2" value="" disabled>
 					</div>
-					<div class="form-group mEnd" style="display:inline-block;">
+					</div>
+					<div class="col-3">
+					<div class="form-group mEnd">
 						<label for="indvSchdEndDate">종료 시간</label>
 						<select class="form-control" id="indvSchdEndDate">
 							<option value="06:30">06:30</option>
@@ -307,6 +324,8 @@ function stringFormat(p_val){
 						</select>
 					</div>
 					</div>
+				</div>
+
 					<div class="form-group" id="mCts">
 						<label for="indvSchdCts">내용</label>
 						<div>
@@ -329,6 +348,9 @@ function stringFormat(p_val){
 			</div>
 		</div>
 	</div>
+
+                                                    
+                                                    
 	<!-- 일정 등록 모달 창 끝 -->
 
 	<script type="text/javascript">
@@ -430,8 +452,8 @@ function stringFormat(p_val){
 
 				$('.insertModal .mDt').css('display', 'block');
 				$('.insertModal .mDt2').css('display', 'block');
-				$('.insertModal .mStart').css('display', 'inline-block');
-				$('.insertModal .mEnd').css('display', 'inline-block');
+				$('.insertModal .mStart').css('display', 'block');
+				$('.insertModal .mEnd').css('display', 'block');
 
 				$('.insertModal #indvDt').val(arg.event.startStr.substr(0, 10)); // 클릭한 일정 시작일 알려주기용~
 				$('.insertModal #indvDt2').val(arg.event.endStr.substr(0, 10)); // 클릭한 일정 종료일 알려주기용~
@@ -824,10 +846,15 @@ function stringFormat(p_val){
 </script>
 
 	<!-- BEGIN: Page JS-->
-	<script
-		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/modal/components-modal.js"></script>
+	<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/modal/components-modal.js"></script>
+	<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/popover/popover.js"></script>
 	<!-- END: Page JS-->
-
+<script>
+  $( function () {
+    $( '[data-toggle="popover"]' ).popover()
+  } );
+</script>
 </body>
 
 </html>
+

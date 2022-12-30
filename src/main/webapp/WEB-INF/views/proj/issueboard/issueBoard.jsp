@@ -70,8 +70,10 @@
 							
 							<c:forEach var="vo" items="${vo}">
 								<tr>
-									<td>${vo.issueId}</td>
-									<td><a href="/proj/${projId}/issueDetail?issueTitle=${vo.issueTitle}">${vo.issueTitle }</a></td>
+									<td>${vo.issueId}
+										<input type="hidden" name="taskId" id="taskId" value="${vo.taskId}">
+									</td>
+									<td><a href="/proj/${projId}/issueDetail?issueId=${vo.issueId}">${vo.issueTitle}</a></td>
 									<td>${vo.writer}</td>
 									
 									<td>

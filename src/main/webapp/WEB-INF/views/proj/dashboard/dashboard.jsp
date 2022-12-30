@@ -16,6 +16,22 @@
 <style>
 .table-responsive {
 	height: 300px;
+	overflow: auto;
+}
+thead{
+	position: relative;
+	width: 100%;
+}
+
+th{
+	border-top: 2px solid grey;
+	position: sticky;
+	top: -1px;
+	background-color: white;
+	
+}
+tr{
+	padding: 15px;
 }
 </style>
 <script
@@ -31,7 +47,7 @@
 			<div id="accordionWrapa1" role="tablist" aria-multiselectable="true">
 				<div class="card accordion collapse-icon">
 					<div id="heading1" class="card-header collapsed" role="tab" data-toggle="collapse" href="#accordion1" aria-expanded="false" aria-controls="accordion1">
-						<a class="card-title lead" href="#">${projInfo.projName}(아코디언)</a>
+						<a class="card-title lead" href="#">${projInfo.projName}</a>
 					</div>
 					<div id="accordion1" role="tabpanel" data-parent="#accordionWrapa1" aria-labelledby="heading1" class="collapse" style="">
 						<div class="card-content">
@@ -150,14 +166,14 @@
 							<div class="card-content">
 								<div class="table-responsive">
 									<table id="recent-orders"
-										class="table table-hover mb-0 ps-container ps-theme-default">
+										class="table table-head-fixed table-hover mb-0 ps-container ps-theme-default">
 										<thead>
 											<tr>
-												<th>이슈 번호</th>
-												<th>이슈 제목</th>
-												<th>담당자</th>
-												<th>등록일</th>
-												<th>상태</th>
+												<th style="">이슈 번호</th>
+												<th style="">이슈 제목</th>
+												<th style="">담당자</th>
+												<th style="">등록일</th>
+												<th style="">상태</th>
 											</tr>
 										</thead>
 										<tbody id="issue">
@@ -438,10 +454,22 @@
 		        			<tr>
 								<td scope="row" align='center'>\${data[i].taskId}</td>
 								<td>\${data[i].taskTitle}</td>
-								<td>\${data[i].memCode}</td>
-								<td><span class="badge badge-success">\${data[i].taskStusCode}</span></td>
+								<td>\${data[i].memCode}</td>`
+						if(data[i].taskStusCode == 'danger'){
+						str +=	`<td><span class="badge badge-danger">높음</span></td>
 								<td>\${data[i].taskPgres}</td>
-							</tr>`
+							</tr>`							
+						}
+						if(data[i].taskStusCode == 'success'){
+						str +=	`<td><span class="badge badge-success">일반</span></td>
+								<td>\${data[i].taskPgres}</td>
+							</tr>`							
+						}
+						if(data[i].taskStusCode == 'primary'){
+						str +=	`<td><span class="badge badge-warning">낮음</span></td>
+								<td>\${data[i].taskPgres}</td>
+							</tr>`							
+						}
 		        	}
 	        	}
 	        	$("#task").html(str);
@@ -468,9 +496,15 @@
 								<td scope="row" align='center'>\${data[i].taskId}</td>
 								<td>\${data[i].issueTitle}</td>
 								<td>\${data[i].writer}</td>
-								<td>\${moment(data[i].issueRgstDate).format("yyyy-MM-DD")}</td>
-								<td><span class="badge badge-success">\${data[i].issueStusCode}</span></td>
-							</tr>`
+								<td>\${moment(data[i].issueRgstDate).format("yyyy-MM-DD")}</td>`;
+						if(data[i].issueStusCode =='해결'){							
+							str += 	`<td><span class="badge badge-success">\${data[i].issueStusCode}</span></td>
+									</tr>`
+						}		
+						if(data[i].issueStusCode =='미해결'){							
+							str += 	`<td><span class="badge badge-danger">\${data[i].issueStusCode}</span></td>
+									</tr>`
+						}		
 		        	}
 	        	}
 	        	$("#issue").html(str);
@@ -549,7 +583,7 @@
 		        		str += `
 		        			<tr>
 								<th scope="row">\${i+1}</th>
-								<td>\${data[i].erdTitle}</td>
+								<td><a href='/proj/${projId}/erd?erdNum=\${data[i].erdNum}'>\${data[i].erdTitle}</a></td>
 								<td>\${data[i].writer}</td>
 							</tr>`
 		        	}

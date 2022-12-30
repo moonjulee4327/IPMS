@@ -13,7 +13,7 @@
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-invoice.css">
 <!-- END: Page CSS-->
 <script type="text/javascript" src="/resources/js/jquery-3.6.0.js"></script>
-<script type="text/javascript" src="/resources/js/issueboard.js"></script>
+
 </head>
 <!-- END: Head-->
 
@@ -44,7 +44,7 @@
 											<div
 												class="d-flex align-items-center justify-content-end justify-content-xs-start">
 												<div class="issue-date pr-2">
-													<span><fmt:formatDate value="${list.issueRgstDate}" pattern="yyyy-MM-dd"/></span>
+													<span>작성일 : <fmt:formatDate value="${list.issueRgstDate}" pattern="yyyy-MM-dd"/></span>
 												</div>
 											</div>
 										</div>
@@ -52,16 +52,14 @@
 								</div>
 
 								<!-- invoice logo and title -->
+										작성자 : <span>${list.writer }</span>
 								<div class="invoice-logo-title row py-2">
-									<div
-										class="col-6 d-flex flex-column justify-content-center align-items-start">
-										<h2 class="text-primary"
-											style="font-family: 'MICEGothic Bold';">${list.issueCts}</h2>
-										<span>${list.writer }</span>
+									<div class="col-6 d-flex flex-column justify-content-center align-items-start">
+										<h2 class="text-primary" style="font-family: 'MICEGothic Bold';">${list.issueTitle}</h2>
 									</div>
 								</div>
 								<hr>
-								<div>일감 번호: ${list.taskId}</div>
+								<div>일감 제목 : ${list.taskTitle}</div>
 								<br>
 								<!-- 몰라서 일단 만들어만 놓음.... 클릭하면 일감 이동..?? -->
 								<hr>
@@ -93,10 +91,10 @@
 									<button type="button" class="btn btn-secondary">
 										<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
 									</button>
-									<button type="button" class="btn btn-secondary">
+									<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-secondary">
 										<i class="feather icon-edit mr-25 common-size"></i>수정
-									</button>
-									<a href="/proj/issueboard" class="btn btn-primary"><i
+									</a>
+									<a href="proj/issueboard" class="btn btn-primary"><i
 										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 								</div>
 							</div>
@@ -113,9 +111,6 @@
 										<div class='col-sm-2'>
 											<button type="button" class="btn btn-secondary" style="width: 150px;" id="repAdd">댓글 등록</button>
 										</div>
-									</div>
-									<div>
-										<input type="file" id="	" name="repfile" style="padding-top: 8px;">
 									</div>
 								</form>
 							</div>
@@ -141,11 +136,23 @@
 	<!-- BEGIN: Page JS-->
 <script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-invoice.js"></script>
 	<!-- END: Page JS-->
+<script>
+var issueId = "${issueCd}";
+var memCode = "${mvo.member.memCode}";
+var writer= "${mvo.member.memName}";
+console.log("mem: ",memCode);
+console.log(issueId);
+console.log("writer : " , writer);
 
-<!-- <script> -->
-// var auth ="${auth}";
-// var mvo = "${mvo}";
-// var authCheck = "${authCheck}";
-<!-- </script> -->
-<!-- END: Body-->
+</script>
+<script type="text/javascript" src="/resources/js/issueboard.js">
+
+
+</script>
+
+
+
+
+
+
 

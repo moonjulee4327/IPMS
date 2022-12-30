@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
@@ -28,7 +30,7 @@
 						</div>
 						<div class="card-content collapse show">
 							<div class="card-body">
-								<form class="form" action="/proj/freeBoardInsertPost" method="post">
+								<form class="form" action="/proj/${projId}/freeBoardInsertPost" method="post">
 									<div class="row justify-content-md-center">
 										<div class="col-md-6">
 											<div class="form-body">
@@ -55,15 +57,15 @@
 												<button type="submit" class="btn btn-secondary" id="insertFree">
 													<i class="fa fa-check-square-o"></i> 등록
 												</button>
-												<a href="/proj/freeboard" class="btn btn-warning mr-1">
+												<a href="/proj/${projId}/freeboard" class="btn btn-warning mr-1">
 													<i class="feather icon-x"></i> 취소
 												</a>
 											</div>
 										</div>
 									</div>
-										<input type="hidden" id="projBdId" name="projBdId" value="0" />
+<!-- 										<input type="hidden" id="projBdId" name="projBdId" /> -->
 										<input type="hidden" id="writer" name="writer" value="<sec:authentication property='principal.member.memCode'/>" />
-										<input type="hidden" id="projId" name="projId" value="P003" />
+										<input type="hidden" id="projId" name="projId" value="${projId}" />
 									<sec:authentication property="principal.member"/>
 									<sec:csrfInput />
 								</form>

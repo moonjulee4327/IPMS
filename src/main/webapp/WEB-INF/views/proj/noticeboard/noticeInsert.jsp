@@ -3,6 +3,8 @@
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
@@ -23,7 +25,8 @@
 						</div>
 						<div class="card-content collapse show">
 							<div class="card-body">
-								<form class="form" action="/proj/noticeBoardInsertPost" method="post">
+								<form class="form" action="/proj/${projId}/noticeBoardInsertPost" method="post" 
+									enctype="multipart/form-data">
 									<div class="row justify-content-md-center">
 										<div class="col-md-6">
 											<div class="form-body">
@@ -40,9 +43,10 @@
 												</div>
 
 												<div class="form-group">
-													<label>첨부파일</label><br><label for="itgrnAttachFileNum"
-														class="file center-block"> <input type="file"
-														id="itgrnAttachFileNum"> <span class="file-custom"></span>
+													<label for="itgrnAttachFileNum"
+														class="file center-block"> 
+														<input type="file" id="itgrnAttachFileNum" name="uploadFile" multiple /> 
+														<span class="file-custom"></span>
 													</label>
 												</div>
 										</div>
@@ -51,15 +55,15 @@
 												<button type="submit" class="btn btn-secondary" id="insertNt">
 													<i class="fa fa-check-square-o"></i> 등록
 												</button>
-												<a href="/proj/noticeBoard" class="btn btn-warning mr-1">
+												<a href="/proj/${projId}/noticeBoard" class="btn btn-warning mr-1">
 													<i class="feather icon-x"></i> 취소
 												</a>
 											</div>
 										</div>
 									</div>
-									<input type="hidden" id="projId" name="projId" value="P003" />
+									<input type="hidden" id="projId" name="projId" value="${projId}" />
 									<input type="hidden" id="memCode" name="memCode" value="<sec:authentication property='principal.member.memCode'/>" />
-									<sec:authentication property="principal.member"/>
+									<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 									<sec:csrfInput />
 								</form>
 							</div>

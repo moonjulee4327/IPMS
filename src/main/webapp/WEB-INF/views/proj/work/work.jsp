@@ -100,7 +100,7 @@
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<div class="app-content content">
+<div class="app-content">
 	<div class="content-overlay"></div>
 	<div class="content-wrapper">
 		<div class="content-header row"></div>
@@ -129,17 +129,22 @@
 						</div>
 						<div class="card-content position-relative ps">
 							<div id="modalresult" class="card-body">
+								<div id="writerdiv" class="form-group">
+									<label>작성자</label> 
+									<input style=" text-align:center; width:100px; height: 32px;" type="text" id="writer" name="writer" class="form-control"/>
+								</div>
+							
 								<div class="form-group">
 									<label id="cardtitle">Card Title</label> 
 									<input type="text" id="taskTitle"
 										name="taskTitle" class="form-control edit-kanban-item-title"
-										placeholder="kanban Title">
+										placeholder="일감제목 작성">
 										<input type="hidden" id="taskId" name="taskId" value=""/>
 								</div>
 
 								<div class="form-group">
 									<div>
-										<label>Start Date</label> 
+										<label>일감 시작일</label> 
 										<input type="text"
 											name="taskStrtDate" id="taskStrtDate"
 											class="form-control edit-kanban-item-date picker__input"
@@ -147,9 +152,9 @@
 											aria-haspopup="true" aria-readonly="false"
 											aria-owns="P502209161_root" />
 										
-									</div>
+									</div><br/>
 									<div>
-										<label>End Date</label> <input type="text" name="taskEndDate"
+										<label>일감 종료일</label> <input type="text" name="taskEndDate"
 											id="taskEndDate"
 											class="form-control edit-kanban-item-date picker__input"
 											placeholder="21 August, 2019" readonly="" id="P502209161"
@@ -416,7 +421,7 @@
 
 								<div class="form-group">
 									<label id="taskb">하위일감 상세내용</label>
-									<textarea id="taskCts" name="taskCts" rows="4" cols="78" style="resize: none;"></textarea>
+									<textarea placeholder="일감내용 작성" id="taskCts" name="taskCts" rows="4" cols="78" style="resize: none;"></textarea>
 								</div>
 								<!-- Compose mail Quill editor -->
 							</div>
@@ -432,23 +437,19 @@
 
 
 							<div id="totaldiv" style=" padding-left:20px;">
-								<c:if test="${authCheck eq 'true' }">
-										<div id="fdiv" style="padding-right: 4px; float: left;" >
-											<button id="approbtn" type="reset" class="btn btn-danger mr-1">
-												<i class="feather icon-trash-2 mr-50"></i> <span>반려</span>
-											</button>
+										<div id="fdiv"  style="display:flex; padding-right: 4px; float: left;" >
 											<button id="cpnbtn" class="btn btn-primary glow mr-1">
 												<i class="feather icon-play mr-50"></i><span>승인</span>
 											</button>
+											<button id="approbtn" type="reset" class="btn btn-danger mr-1">
+												<i class="feather icon-trash-2 mr-50"></i> <span>반려</span>
+											</button>
 										</div>
-								</c:if>
-								<c:if test="${authCheck ne 'true' }">
 										<div id="sdiv">
 											<button id="mbmodifybtn" type="reset" class="btn btn-warning mr-1">
 												<i class="icon-refresh mr-50"></i> <span>수정</span>
 											</button>
 										</div>	
-								</c:if>
 							</div>
 
 

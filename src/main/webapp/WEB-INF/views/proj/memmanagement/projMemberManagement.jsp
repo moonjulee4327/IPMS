@@ -1,7 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <!DOCTYPE html>
 
 <style>
@@ -41,28 +46,6 @@
         });
     }
 
-    function fn_invitationBtn(memCode, projId) {
-        alert(memCode);
-        alert(projId);
-        $.ajax({
-            url: "/proj/sendInvitation",
-            type: "post",
-            data: {"memCode": memCode, "projId": projId},
-            dataType: "json",
-            beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
-                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-            },
-            success: function (division) {
-                if (division == 1) {
-                    alert("승인완료");
-                    location.href="redirect:/proj/${projId}/memManagement";
-                } else {
-                    alert("실패");
-                    location.href = "redirect:/main/page";
-                }
-            }
-        });
-    }
 
     function fn_expulsionBtn(memCode , projId){
         alert(memCode);
@@ -85,7 +68,35 @@
             }
         });
     }
+
+
+    function fn_invitationBtn(memCode, projId , msg) {
+        alert(memCode);
+        alert(projId);
+        $.ajax({
+            url: "/proj/sendInvitation",
+            type: "post",
+            data: {"memCode": memCode, "projId": projId },
+            dataType: "json",
+            beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
+            success: function (division) {
+                if (division == 1) {
+                    alert("승인완료");
+                    var msg = "${mvo.member.memName}이 프로젝트 초대함,"+memCode;
+                    socket.send(msg);
+                    console.log(msg)
+                } else {
+                    alert("실패");
+                    location.href = "redirect:/main/page";
+                }
+            }
+        });
+    }
 </script>
+
+
 <div class="content-wrapper">
 
     <div class="content-body">
@@ -95,6 +106,7 @@
                 <div class="col-6  mt-3 mb-1 " style="height: 30px;">
                     <h3 class="text-uppercase ml-5">
                         <b>프로젝트 참여 인원</b>
+                        <div id="disp"></div>
                     </h3>
                 </div>
                 <div class="col-4  mt-3 mb-1 ml-5" style="float: left;">

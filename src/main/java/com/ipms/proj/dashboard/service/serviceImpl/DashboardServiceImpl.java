@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ipms.commons.vo.Criteria;
 import com.ipms.main.newProject.vo.ProjVO;
 import com.ipms.proj.dashboard.mapper.DashBoardMapper;
 import com.ipms.proj.dashboard.service.DashboardService;
@@ -57,5 +58,15 @@ public class DashboardServiceImpl implements DashboardService{
 	@Override
 	public Map<String, Object> selectPgres (Map<String, Object> map){
 		return dashBoardMapper.selectPgres(map);
+	}
+	
+	@Override
+	public List<TaskVO> selectTaskList (Criteria criteria){
+		return dashBoardMapper.selectTaskList(criteria);
+	}
+	
+	@Override
+	public int total(Criteria criteria) {
+		return dashBoardMapper.total(criteria);
 	}
 }
