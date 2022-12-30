@@ -145,7 +145,7 @@
 											<div class="modal-body">
 												<h5 style="text-align:center;">정말로 프로젝트를 삭제하시겠습니까?</h5>
 												<!-- 부여받은 캡차 사이트 키 -->
-												<div style="display: flex; justify-content: center;" class="g-recaptcha" data-sitekey="6LdMkrYjAAAAAB1bWwgum0vkjwkX9Z2C93BOwEXt"></div>
+												<div style="display: flex; justify-content: center;" class="g-recaptcha" data-sitekey=""></div>
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-outline-danger" onclick='return check_recaptcha();'>해산하기</button>
