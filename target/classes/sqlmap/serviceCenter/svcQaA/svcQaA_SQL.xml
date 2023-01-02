@@ -36,8 +36,6 @@
 		FROM QNA
 	</select>
 
-
-
 	<select id="svcQaADetail" parameterType="string" resultType="com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO">
 		SELECT Q.QNA_NUM
 			,  M.MEM_NAME AS WRITER
@@ -57,7 +55,7 @@
 			, QNA_TITLE
 			, QNA_CTS
 			, QNA_WRITE_DATE) 
-		VALUES(1234
+		VALUES(#{qnaNum}
 			, #{writer}
 			, #{qnaTitle}
 			, #{qnaCts}

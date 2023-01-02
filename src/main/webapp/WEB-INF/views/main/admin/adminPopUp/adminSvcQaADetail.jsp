@@ -60,47 +60,57 @@
 <link rel="stylesheet" href="/resources/css/join.css">
 </head>
 <body>
-
-	<div class="col-md-12">
-		<div class="card">
+	<div class="col-md-12" style="height: 90%; width: 100%">
+		<div class="card h-100 d-inline-block w-100">
 			<div class="card-header">
-				<div class="card-title" id="basic-layout-colored-form-control" style="font-size: 23px; color: #02b5b8; font-family: noto sans, malgun gothic, AppleGothic, dotum;">
+				<div class="card-title" id="basic-layout-colored-form-control" style="font-size: 23px; color: #455DBD; font-family: noto sans, malgun gothic, AppleGothic, dotum;">
 					${adminSvcQaAVO.qnaTitle}
 				</div>
+				<br>
 				<div>
-					${adminSvcQaAVO.writer} 
-					<br>
-					<fmt:setLocale value="ko_kr"/><fmt:formatDate value="${adminSvcQaAVO.qnaWriteDate}" pattern="yyyy-MM-dd"/>
+					<b>작성자</b> : ${adminSvcQaAVO.writer} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<b>등록 일자</b> : <fmt:setLocale value="ko_kr"/><fmt:formatDate value="${adminSvcQaAVO.qnaWriteDate}" pattern="yyyy-MM-dd"/>
 				</div>
 				<hr>
 			</div>
 			<div class="card-content collapse show">
 				<div class="card-body">
-					<form class="form">
-						<div class="form-body">
-							<div class="row">
-								<div>
-									<h4 class="form-section"
-										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #02b5b8;">
-										<i class="feather icon-user" style="color: #02b5b8;"></i> 내용
-									</h4><br>
-									<div>
-										${adminSvcQaAVO.qnaCts} 	
-									</div>
-								</div>
+					<div class="">
+						${adminSvcQaAVO.qnaCts} 	
+					</div>
+					<br><br><br>
+					<hr>
+					<form class="form-horizontal" action="/main/adminPopUp/adminSvcQaAReplyInsert" method="post">
+						<div class="row">
+							<input type="hidden" id="qnaNum" name="qnaNum" value="${adminSvcQaAVO.qnaNum}">
+							<div class='col-sm-10'>
+								<input type="text" class="form-control" id="qnaAnswCts" name="qnaAnswCts" placeholder="답변을 입력하세요." />
 							</div>
-							<br><br>
+							<div class='col-sm-2'>
+								<button type="submit" class="btn btn-secondary" style="width: 150px;" id="repAdd">답변 등록</button>
+							</div>
 						</div>
-
-							<p>댓글 넣자</p>
-
-						<div class="form-actions right">
-							<button type="reset" class="btn btn-secondary" onclick="f_close()">닫기</button>
-						</div>
+						<sec:csrfInput/>
 					</form>
-
+					<hr>
+					<div class="" style="color: #455DBD; font-size: 15px;">
+						Comments&nbsp;<i class="fa fa-comment fa"></i>
+					</div>
+					<br>
+					<div class="card">
+						<h4 class="card-title" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;"><i class="fa fa-user-o"></i>&nbsp;&nbsp;관리자&nbsp;&nbsp;<div style="font-size: 8px;"><fmt:setLocale value="ko_kr"/><fmt:formatDate value="${adminSvcQaACommentVO.qnaAnswWriteDate}" pattern="yyyy-MM-dd"/></div></h4>
+						
+						<div class="card-content">
+							${adminSvcQaACommentVO.qnaAnswCts}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<a style=' color : red; font-size: 12px; text-decoration: underline;' type='button'>삭제</a>
+                            <a style='color : grey; font-size: 12px; text-decoration: underline;' type='button'>수정</a>
+						</div>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div class="form-actions right" >
+			<button type="reset" class="btn btn-secondary" style="float: right;" onclick="f_close()">닫기</button>
 		</div>
 	</div>
 	<!-- BEGIN: Vendor JS-->

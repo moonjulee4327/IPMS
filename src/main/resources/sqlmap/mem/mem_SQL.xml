@@ -113,5 +113,8 @@
     <select id="allGetMemCode" resultType="com.ipms.main.login.vo.MemVO">
         select mem_code from mem
     </select>
+
+
+
 </mapper>
 

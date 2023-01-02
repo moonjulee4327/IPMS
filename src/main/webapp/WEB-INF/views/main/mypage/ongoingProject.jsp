@@ -41,7 +41,7 @@
     <div class="col-xl-4 col-md-6 col-12">
         <div class="card profile-card-with-cover" >
             <!--<img class="card-img-top img-fluid" src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/carousel/18.jpg" alt="Card cover image">-->
-            <div class="card-img-top img-fluid bg-cover height-200" style="background: url('/resources/stack-admin-v4.0/stack-admin/app-assets/images/carousel/18.jpg');"></div>
+            <div class="card-img-top img-fluid bg-cover height-200" style="background: url('/resources/upload/img/${item.projImgRoute}');"></div>
             <div class="profile-card-with-cover-content text-center">
                 <div class="card-body">
                     <h4 class="card-title"><a href="/proj/${item.projId}/dashboard">${item.projName}</a></h4>
@@ -52,7 +52,7 @@
                     <br>
                     <h6 class="card-subtitle text-muted">Managing Director(${item.memEmail})</h6>
                 </div>
-                
+
             </div>
         </div>
     </div>

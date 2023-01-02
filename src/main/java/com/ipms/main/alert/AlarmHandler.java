@@ -2,6 +2,7 @@ package com.ipms.main.alert;
 
 import com.ipms.main.login.mapper.MemMapper;
 import com.ipms.main.login.vo.MemVO;
+import com.ipms.proj.projMemManageMent.mapper.MemManageMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.Map;
 public class AlarmHandler extends TextWebSocketHandler {
     @Autowired
     MemMapper memMapper;
+    @Autowired
+    MemManageMapper memManageMapper;
     //소켓에 연결한 클라이언트 목록
     private List<WebSocketSession> sessions = new ArrayList<>();
 
@@ -68,12 +71,10 @@ public class AlarmHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         //받은 메시지를 String 값으로 받는다
         String msg = message.getPayload();
-        log.info("123", this.memMapper.allGetMemCode());
         List<MemVO> memCode = this.memMapper.allGetMemCode();
-        //메시지를 ','로 나눠준다
         String[] msgs = msg.split(",");
-        log.info("-=-------------", msgs[0]);
-        log.info("-=-------------", msgs[1]);
+
+
         for (int j = 0; j < memCode.size(); j++) {
             if (msgs[1].equals(memCode.get(j).getMemCode())) {
                 for (int i = 0; i < sessions.size(); i++) {

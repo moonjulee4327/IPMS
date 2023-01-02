@@ -45,21 +45,33 @@
 						<div class="table-responsive">
 							<h3 style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">회원 관리</h3>
 							<br>
-							<div class="bug-list-search" style="padding-bottom: 15px;">
-								<div class="bug-list-search-content">
-									<div class="sidebar-toggle d-block d-lg-none">
-										<i class="feather icon-menu font-large-1"></i>
-									</div>
-									<form action="#">
-										<div class="position-relative">
-											<input type="search" id="search-contacts"
-												class="form-control" placeholder="Search">
-											<div class="form-control-position">
-												<i
-													class="fa fa-search text-size-base text-muted la-rotate-270"></i>
-											</div>
+							<div>
+								<br>
+								<div class="bug-list-search" style="padding-bottom: 15px; width:600px;">
+									<div class="bug-list-search-content">
+										<div class="sidebar-toggle d-block d-lg-none">
+											<i class="feather icon-menu font-large-1"></i>
 										</div>
-									</form>
+										<form action="#">
+											<div class="position-relative">
+												<div class="row">
+													<div style="width: 15px"></div>
+														<select class="selectpicker" id="searchCategory">
+															<option value="memEmail">아이디</option>
+															<option value="memName">회원명</option>
+															<option value="memCode">회원코드</option>
+														</select>
+													<div class="col-6">
+														<input type="search" id="search-contacts"
+														class="form-control" placeholder="Search">
+													</div>
+													<div class="col-4">
+														<button type="button" class="btn btn-secondary" id="searchBtn">검색</button>
+													</div>	
+												</div>
+											</div>
+										</form>
+									</div>
 								</div>
 							</div>
 							<table id="users-contacts"
@@ -75,10 +87,7 @@
 								</colgroup>
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
-										<th class="sorting" tabindex="0"
-											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-											aria-label="Name: activate to sort column ascending"
-											style="width: 5px;">선택</th>
+										<th><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
 										<th>회원 코드</th>
 										<th>회원명</th>
 										<th>아이디</th>
@@ -117,36 +126,40 @@
 							<div class="row" style="margin: auto; padding-top:5px;">
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
-										<button type="button" class="btn"
-											style="background-color: #546E7A; color: white;">정지
+										<button type="button" class="btn btn-secondary btn-sm"
+											style="background-color: #546E7A; color: white;">탈퇴 처리
 										</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
 										id="DataTables_Table_0_paginate" style="padding-left: 455px;">
 										<ul class="pagination">
-											<li class="paginate_button page-item previous disabled"
-												id="DataTables_Table_0_previous"><a href="#"
+											<c:if test="${pageVO.prev}">
+											<li class="paginate_button page-item previous"
+												id="DataTables_Table_0_previous"><a href="/main/adminMemManagement?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 												aria-controls="DataTables_Table_0" data-dt-idx="0"
 												tabindex="0" class="page-link">이전</a></li>
-											<li class="paginate_button page-item active"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="1"
-												tabindex="0" class="page-link">1</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="2"
-												tabindex="0" class="page-link">2</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="3"
-												tabindex="0" class="page-link">3</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="4"
-												tabindex="0" class="page-link">4</a></li>
-											<li class="paginate_button page-item "><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="5"
-												tabindex="0" class="page-link">5</a></li>
+											</c:if>
+											
+											<c:forEach var="num" begin="${pageVO.startPage}" end="${pageVO.endPage}">
+											<c:choose>
+											<c:when test="${pageVO.pageNum eq num}">
+												<li class="paginate_button page-item active">
+													<a href="/main/adminMemManagement?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+												</li>
+											</c:when>
+											<c:otherwise>
+												<li class="paginate_button page-item">
+													<a href="/main/adminMemManagement?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+												</li>
+											</c:otherwise>
+											</c:choose>
+											</c:forEach>
+											<c:if test="${pageVO.next}">
 											<li class="paginate_button page-item next"
-												id="DataTables_Table_0_next"><a href="#"
-												aria-controls="DataTables_Table_0" data-dt-idx="7"
+												id="DataTables_Table_0_previous"><a href="/main/adminMemManagement?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
+												aria-controls="DataTables_Table_0" data-dt-idx="0"
 												tabindex="0" class="page-link">다음</a></li>
+											</c:if>
 										</ul>
 									</div>
 								</div>
@@ -204,6 +217,13 @@ $(document).ready(function() {
 		
 		window.open(v_open, "회원 정보", v_option);
 	}
+	
+	// 검색
+	$("#searchBtn").on("click",function(){
+		let keyword = $("#search-contacts").val();
+		let category = $("#searchCategory").val();
+		location.href = '?keyword='+keyword+'&category='+category;
+	});
 
 </script>
 

@@ -62,7 +62,7 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title" id="basic-layout-colored-form-control"
-					style="font-size: 23px; color: #02b5b8; font-family: noto sans, malgun gothic, AppleGothic, dotum;">프로젝트
+					style="font-size: 23px; color: #455DBD; font-family: noto sans, malgun gothic, AppleGothic, dotum;">프로젝트
 					정보</div>
 				<hr>
 			</div>
@@ -79,22 +79,22 @@
 								</div>
 								<div class="col-8">
 									<h4 class="form-section"
-										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #02b5b8;">
-										<i class="feather icon-monitor" style="color: #02b5b8;"></i> 기본
+										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #455DBD;">
+										<i class="feather icon-monitor" style="color: #455DBD;"></i> 기본
 										정보
 									</h4><br>
 									<div class="row">
 										<div class="col-12">
 											<div class="form-group">
 													<label for="projName">프로젝트 이름</label> <input type="text"
-														id="projName" class="form-control border-primary"
+														id="projName" class="form-control border-secondary"
 														name="projName" value="${data.projName}" disabled>
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="form-group">
 												<label for="projId">프로젝트 아이디</label> <input type="text"
-													id="projId" class="form-control border-primary"
+													id="projId" class="form-control border-secondary"
 													name="projId" value="${data.projId}" disabled>
 											</div>
 
@@ -102,7 +102,7 @@
 										<div class="col-6">
 											<div class="form-group">
 												<label for="memCode">프로젝트 생성자</label> <input type="text"
-													id="memCode" class="form-control border-primary"
+													id="memCode" class="form-control border-secondary"
 													name="memCode" value="${data.memCode}" disabled>
 											</div>
 										</div>
@@ -113,39 +113,41 @@
 								<div class="col-4">
 									<div class="form-group">
 											<label for="projCreatnDate">프로젝트 생성 일자</label> <input type="text"
-											id="projCreatnDate" class="form-control border-primary"
+											id="projCreatnDate" class="form-control border-secondary"
 											name="projCreatnDate" value="<fmt:formatDate value='${data.projCreatnDate}' pattern='yyyy-MM-dd'/>" disabled>
 									</div>
 								</div>
 								<div class="col-4">
 									<div class="form-group">
 										<label for="projStrtDate">프로젝트 시작 일자</label>
-										<input type="text" id="projStrtDate" class="form-control border-primary"
+										<input type="text" id="projStrtDate" class="form-control border-secondary"
 											name="projStrtDate" value="<fmt:formatDate value='${data.projStrtDate}' pattern='yyyy-MM-dd'/>" disabled>
 									</div>
 								</div>
 								<div class="col-4">
 									<div class="form-group">
 										<label for="projEndDate">프로젝트 종료 일자</label>
-										<input type="text" id="projEndDate" class="form-control border-primary"
+										<input type="text" id="projEndDate" class="form-control border-secondary"
 											name="projEndDate" value="<fmt:formatDate value='${data.projEndDate}' pattern='yyyy-MM-dd'/>" disabled>
 									</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="projSmry">프로젝트 개요</label> 
-								<textarea class="form-control border-primary" rows="5" id="projSmry"
-									style="resize:none;" disabled>${data.projSmry}</textarea>
+								<div class="form-control border-secondary" id="projSmry" style="width:627px; height:130px; overflow: auto; background-color:#ECEFF1">${data.projSmry}</div>
 							</div>
 								<div class="form-group">
 									<h4 class="form-section"
-										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #02b5b8;">
-										<i class="feather icon-users" style="color: #02b5b8;"></i>
+										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #455DBD;">
+										<i class="feather icon-users" style="color: #455DBD;"></i>
 										프로젝트 참여 회원
 									</h4>
 								</div>
 								<div class="form-group">
-									<div style="text-size:15px; margin-bottom: 5px;" class="badge badge-secondary">${data.memCode}</div>
+<%-- 									<div style="text-size:15px; margin-bottom: 5px;" class="badge badge-secondary">${data.memCode}</div> --%>
+									<c:forEach var="ProjManaVO" items="${memData}">
+										<a href="javascript:f_memInfo('${ProjManaVO.memCode}')" style="color: #455DBD; text-size:15px; color:white;" class="badge badge-secondary">${ProjManaVO.writer}</a>
+									</c:forEach>
 								</div>
 						</div>
 						<div class="form-actions right">
@@ -189,6 +191,19 @@
 	function f_close() {
 		
 		window.close();
+	}
+	
+
+	// 회원 정보 팝업창 띄우기
+	function f_memInfo(param) {
+		
+	//	alert(param);
+	
+		let v_open = "/main/adminMemDetail?memCode="+param;
+
+		let v_option = "width=750, height=800, top=100px, left=450px, scrollbars=yes";
+		
+		window.open(v_open, "회원 정보", v_option);
 	}
 	
 </script>

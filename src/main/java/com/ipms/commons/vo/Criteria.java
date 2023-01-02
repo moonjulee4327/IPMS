@@ -10,6 +10,9 @@ public class Criteria {
     private int pageNum;
     private int amount;
 
+    private String memEmail;
+    private String memName;
+    
     private String memCode;
     private String keyword;
     private String type;
@@ -19,6 +22,8 @@ public class Criteria {
     
     private String aprov;
     private String projId; // issueboard - 박종환 추가
+    private String projName;
+    
     private Date startDate;
     private Date endDate;
     public Criteria() {

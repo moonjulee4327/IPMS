@@ -21,27 +21,24 @@
                     </div>
 
                     <!--Search Navbar-->
-                    <div class="todo-fixed-search d-flex justify-content-between align-items-center">
-                        <div class="sidebar-toggle d-block d-lg-none">
-                            <i class="feather icon-menu"></i>
-                        </div>
-                        <fieldset class="form-group position-relative has-icon-left m-0 flex-grow-1 pl-2">
-                            <div><input type="text" class="form-control todo-search" id="todo-search"
-                                        placeholder="Search Task" style="width: 40%;float: right">
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-7"></div>
 
-                        </fieldset>
-                        <div class="todo-sort dropdown mr-1">
-                            <button class="btn dropdown-toggle sorting" type="button" id="sortDropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="feather icon-filter"></i>
-                                <span>Sort</span>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sortDropdown"
-                                 x-placement="bottom-end"
-                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(111px, 37px, 0px);">
-                                <a class="dropdown-item ascending" href="#">최신순</a>
-                                <a class="dropdown-item descending" href="#">조회순</a>
+                        <div class="col-sm-12 col-md-5">
+
+                            <div id="app-invoice-table_filter" class="dataTables_filter">
+                                <label style="float: right">
+                                    <form id="searchForm" action="/main/wholeProject" method="get">
+                                        <select name="type">
+                                            <option value="T">프로젝트 아이디</option>
+                                            <option value="C">프로젝트 이름</option>
+                                        </select>
+                                        <input type="text" class="" name="keyword">
+                                        <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
+                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+                                        <input type="submit" class="btn btn-secondary" style="height: 30px;" value="검색">
+                                    </form>
+                            </label>
                             </div>
                         </div>
                     </div>
@@ -54,12 +51,10 @@
                                 <div class="card-deck">
                                     <c:forEach var="item" items="${list}" varStatus="idx">
                                         <div class="grid-item" style="width:300px;margin-left:10px;">
-                                            <figure class="card card-img-top border-grey border-lighten"
-                                                    itemprop="associatedMedia" itemscope
-                                                    itemtype="http://schema.org/ImageObject">
+                                            <figure class="card card-img-top border-grey border-lighten" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
                                                 <a href="/main/projectDetail/${item.projId}" itemprop="contentUrl"
                                                    data-size="480x360"><img class="gallery-thumbnail card-img-top"
-                                                                            src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/1.jpg"
+                                                                            src="/resources/upload/img/${item.projImgRoute}"
                                                                             itemprop="thumbnail"
                                                                             alt="Image description">
                                                 </a>

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html class="loaded" lang="en" data-textdirection="ltr"
 	style="-vh: 9.37px;">
@@ -111,127 +114,81 @@
 
 	<div class="content-overlay" >
 		<div class="grid-hover row" style="right:125px; width:1500px;">
+		<c:forEach var="list" items="${list}">
 		<div class="contatiner row" >
 			<!-- 이거 포문 돌리기 ㄱㄱ 시작 -->
 			<div class="bookdiv" >
 				<figure class="effect-roxy"  >
-					<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
+					<div class="funcId" onclick="fn_bookmarkdel('${list.projId}')" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap">
+						<i id="bookmarkdel" class="fa fa-heart"></i>
+					</div>
 					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
 					<figcaption >
-						<h3>Middle Project</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
+						<h3>${list.projName }</h3><br/>
+						<p>기간 : <fmt:formatDate value="${list.projStrtDate}" pattern="yyyy-MM-dd"/> ~ <fmt:formatDate value="${list.projEndDate}" pattern="yyyy-MM-dd"/> </p>
 						<hr/>
-						<p>리더 : </p>
+						
+						<p>프로젝트 생성일 : <fmt:formatDate value="${list.projCreatnDate}" pattern="yyyy-MM-dd"/>  </p>
 						<hr/>
-						<p>현재인원 : </p>
+						<p>리더 : ${list.memName}</p>
 						<hr/>
-						<a href="#">View more</a>
+						<a href="/main/projectDetail/${list.projId}">View more</a>
 					</figcaption>
 				</figure>
 			</div>
 			<!-- 이거 포문 돌리기 ㄱㄱ 끗 -->
+				
 		</div>
-		<div class="contatiner row" >
-			<!-- 아래있는 div 틀 -->
-			<div  class="bookdiv" >
-				<figure class="effect-roxy"  >
-				<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
-					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
-					<figcaption >
-						<h3>Final Project</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
-						<hr/>
-						<p>리더 : </p>
-						<hr/>
-						<p>현재인원 : </p>
-						<hr/>
-						<a href="#">View more</a>
-					</figcaption>
-				</figure>
-			</div>
-			<!-- 아래있는 div 틀 -->
+		</c:forEach>
+			<!-- 페이징 버튼 -->
+				<div class="row" style="text-align: center;">
+                        <!-- 페이징 처리 버튼 시작 -->
+                        <div class="col-sm-12 col-md-7">
+                            <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
+                                <ul class="pagination"  style="text-align: center; float: right;">
+                                
+                                	 <!-- 이전 버튼 시작 -->
+                                    <c:if test="${pageVO.prev }">
+                                    <li class="paginate_button page-item previous" id="app-invoice-table_previous">
+                                        <a href="/main/bookmark?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                    </li>
+                                    </c:if>
+                                    <!-- 이전 버튼 끝 -->
+									
+                                    <!-- 페이지 블록 시작 -->
+                                    <!-- 현재페이지 -->
+                                    <c:forEach var = "num" begin = "${pageVO.startPage }" end = "${pageVO.endPage }">
+                                    <c:choose>
+                                    <c:when test="${pageVO.pageNum eq num }">
+	                                    <li class="paginate_button page-item active">
+	                                        <a href="/main/bookmark?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+	                                    </li>
+                                    </c:when>
+                                    <c:otherwise>
+                                    	<li class="paginate_button page-item">
+	                                        <a href="/main/bookmark?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+	                                    </li>
+                                    </c:otherwise>
+                                    </c:choose>
+                                    </c:forEach>
+                                    <!-- 페이지 블록 끝 -->
+
+                                    <!-- 다음 버튼 시작 -->
+                                    <c:if test="${pageVO.next }">
+                                    <li style="width: 70px;" class="paginate_button page-item next" id="app-invoice-table_next">
+                                        <a href="/main/bookmark?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+                                    </li>
+                                    </c:if>
+                                    <!-- 다음 버튼 끝 -->
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 페이징 처리 버튼 끝 -->
+                    </div>
+			<!-- 페이징 버튼 -->
 		</div>
-		<div class="contatiner row">
-			<!-- 아래있는 div 틀 -->
-			<div class="bookdiv" >
-				<figure class="effect-roxy"  >
-				<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
-					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
-					<figcaption >
-						<h3>Middle Project</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
-						<hr/>
-						<p>리더 : </p>
-						<hr/>
-						<p>현재인원 : </p>
-						<hr/>
-						<a href="#">View more</a>
-					</figcaption>
-				</figure>
-			</div>
-			<!-- 아래있는 div 틀 -->
-		</div>
-		<div class="contatiner row">
-			<!-- 아래있는 div 틀 -->
-			<div id="bookfdiv" class="bookdiv" >
-				<figure class="effect-roxy"  >
-				<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
-					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
-					<figcaption >
-						<h3>Fianl Project</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
-						<hr/>
-						<p>리더 : </p>
-						<hr/>
-						<p>현재인원 : </p>
-						<hr/>
-						<a href="#">View more</a>
-					</figcaption>
-				</figure>
-			</div>
-			<!-- 아래있는 div 틀 -->
-		</div>
-		<div class="contatiner row">
-			<!-- 아래있는 div 틀 -->
-			<div  class="bookdiv" >
-				<figure class="effect-roxy"  >
-				<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
-					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
-					<figcaption >
-						<h3>SunFlower</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
-						<hr/>
-						<p>리더 : </p>
-						<hr/>
-						<p>현재인원 : </p>
-						<hr/>
-						<a href="#">View more</a>
-					</figcaption>
-				</figure>
-			</div>
-			<!-- 아래있는 div 틀 -->
-		</div>
-		<div class="contatiner row">
-			<!-- 아래있는 div 틀 -->
-			<div class="bookdiv" >
-				<figure class="effect-roxy"  >
-				<div class="funcId" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap"><i class="feather icon-heart"></i></div>
-					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
-					<figcaption >
-						<h3>I Saw The Devil</h3><br/>
-						<p>기간 : 2022-12-07 ~ 2022-01-16</p>
-						<hr/>
-						<p>리더 : </p>
-						<hr/>
-						<p>현재인원 : </p>
-						<hr/>
-						<a href="#">View more</a>
-					</figcaption>
-				</figure>
-			</div>
-			<!-- 아래있는 div 틀 -->
-		</div>
-		</div>
+		
 	</div>
 
 	<div class="sidenav-overlay"
@@ -264,11 +221,40 @@
 </body>
 </html>
 <script>
+var header = '${_csrf.headerName}';
+var token = '${_csrf.token}';
+
 $(function(){
-	$(".funcId").on("click",function(){
-		alert("안녕");
-		console.log("zzzzzzzz");
-	});
+	
 });
+	function fn_bookmarkdel(param){
+		alert("누름ㅋ");
+		console.log("param: " ,param);
+
+		data = {
+			"projId" :  param
+		}
+		
+		console.log("data : " , data);
+
+		$.ajax({ 
+                type : 'POST',
+                url : '/main/bookMarkDel',
+                contentType : "application/json;  charset=utf-8",
+                async : false,
+                data :  JSON.stringify(data) ,
+                beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                  xhr.setRequestHeader(header, token);
+                },
+                success : function(result) {
+                  alert("삭제성공");
+              },
+              error: function (jqXHR, textStatus, errorThrown)
+              {
+                  alert("실패다");
+                    console.log(errorThrown,textStatus);
+              }
+            });
+	}
 
 </script>

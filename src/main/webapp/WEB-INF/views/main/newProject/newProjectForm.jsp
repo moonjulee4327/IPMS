@@ -19,12 +19,28 @@
     <script src="/resources/js/join.js"></script>
     <script src="/resources/js/common.js"></script>
     <script>
+
         $(document).ready(function () {
             $("#uploadBtn").on("click", function (e) {
-                var formData = new FormData(e;
+                var formData = new FormData();
                 var inputFile = $("input[name='uploadFile']");
                 var files = inputFile[0].files;
-                console.log(files);
+                for (var i = 0; i < files.length; i++) {
+                    formData.append("uploadFile", files[i]);
+                }
+                $.ajax({
+                    url: '/main/uploadAjaxAction',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'POST',
+                    beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                        xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                    },
+                    success: function (result) {
+                        alert("성공");
+                    }
+                })
             })
         })
     </script>
@@ -38,109 +54,102 @@
                     <h1 class="h1_tit">프로젝트 생성</h1>
 
                     <h2 class="tit_section fst">
-                        프로젝트 정보
+                        대표 이미지
                     </h2>
                     <div id="itemList" class="page_aticle order_goodslist">
                         <ul class="list_product">
                             <li>
                                 <div class="thumb">
-                                    <img src="https://img-cf.kurly.com/shop/data/goods/156757412839i0.jpg">
+                                    <img src="/resources/images/IPMSlogo.png">
                                 </div>
+                                <%--                                <div class='uploadResult'>--%>
+                                <%--                                    <ul>--%>
+                                <%--                                    </ul>--%>
+                                <%--                                </div>--%>
                                 <div class="name">
                                     <div class="inner_name">
-                                        <form name="fileForm" action="/main/fileupload1" method="post"
-                                              enctype="multipart/form-data">
-                                            <input type="file" name="file"/>
-                                            <input type="submit" value="전송"/>
-                                            <sec:csrfInput/>
-                                        </form>
+                                        <form action="/main/newProjectPost" method="post" enctype="multipart/form-data">
+                                            <input type='file' name='uploadFile' multiple/>
                                     </div>
                                 </div>
-                                <div class="info_price">
-                                        <span class="num">
-                                            <span class="price">
-                                                대표이미지
-                                            </span>
-                                        </span>
-                                </div>
+
                             </li>
                         </ul>
                     </div>
 
-                    <form action="/main/newProjectPost" method="post">
-                        <h2 class="tit_section" id="titFocusOrderer">프로젝트 세부 정보</h2>
 
-                        <div class="order_section data_orderer">
-                            <table class="goodsinfo_table">
-                                <tbody>
-                                <tr class="fst">
-                                    <th>프로젝트 이름</th>
-                                    <td>
-                                        <input type="text" id="projName" class="form-control border-primary"
-                                               placeholder="프로젝트 이름" name="projName" value=""/>
-                                    </td>
-                                </tr>
+                    <h2 class="tit_section" id="titFocusOrderer">프로젝트 세부 정보</h2>
+                    <div class="order_section data_orderer">
+                        <table class="goodsinfo_table">
+                            <tbody>
+                            <tr class="fst">
+                                <th>프로젝트 이름</th>
+                                <td>
+                                    <input type="text" id="projName" class="form-control border-primary"
+                                           placeholder="프로젝트 이름" name="projName" value=""/>
+                                </td>
+                            </tr>
 
-                                <tr>
-                                    <th>프로젝트 기간</th>
-                                    <td>
-                                        <div style="float: left">
-                                            <input type="date" id="projStrtDate"
-                                                   class="form-control border-primary"
-                                                   placeholder="Start Date" name="projStrtDate"/>
-                                        </div>
-                                        <div style="float:left;">
-                                            <input type="date" id="projEndDate"
-                                                   class="form-control border-primary"
-                                                   placeholder="End Date" name="projEndDate"/>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <tr>
+                                <th>프로젝트 기간</th>
+                                <td>
+                                    <div style="float: left">
+                                        <input type="date" id="projStrtDate"
+                                               class="form-control border-primary"
+                                               placeholder="Start Date" name="projStrtDate"/>
+                                    </div>
+                                    <div style="float:left;">
+                                        <input type="date" id="projEndDate"
+                                               class="form-control border-primary"
+                                               placeholder="End Date" name="projEndDate"/>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                        <h2 class="tit_section" id="divAddressWrapper">프로젝트 내용
-                            <span class="desc">기본적인 프로젝트에 대한 소개를 작성하세요. </span>
-                        </h2>
+                    <h2 class="tit_section" id="divAddressWrapper">프로젝트 내용
+                        <span class="desc">기본적인 프로젝트에 대한 소개를 작성하세요. </span>
+                    </h2>
 
-                        <div class="order_section order_address" id="dataDelivery">
-                            <div class="form-group col-12 mb-2">
+                    <div class="order_section order_address" id="dataDelivery">
+                        <div class="form-group col-12 mb-2">
                                 <textarea id="userinput8" rows="5" class="form-control" name="projSmry"
                                           placeholder="소개"></textarea>
-                            </div>
                         </div>
-                        <div class="data_method" style="margin-left: 150px;">
-                            <h2 class="tit_section" id="titFocusMethod">Precautions when writing</h2>
-                            <table class="goodsinfo_table tbl_left">
-                                <tbody>
-                                <tr>
+                    </div>
+                    <div class="data_method" style="margin-left: 150px;">
+                        <h2 class="tit_section" id="titFocusMethod">Precautions when writing</h2>
+                        <table class="goodsinfo_table tbl_left">
+                            <tbody>
+                            <tr>
 
-                                    <th>
-                                        <label class="label_radio" id="cardBenefit_kakaopay">
-                                            <span id="kakaopay">주의사항</span>
-                                        </label>
-                                    </th>
-                                    <td>
-                                        욕설과 타인을 비난 평가하는 내용이 포함시 해당 프로젝트는 관리자에 의하여 삭제됩니다.
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                <th>
+                                    <label class="label_radio" id="cardBenefit_kakaopay">
+                                        <span id="kakaopay">주의사항</span>
+                                    </label>
+                                </th>
+                                <td>
+                                    욕설과 타인을 비난 평가하는 내용이 포함시 해당 프로젝트는 관리자에 의하여 삭제됩니다.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-                        <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
-                        <input type="hidden" name="memAuthList[1].memAuth" value="ROLE_PROJECT_LEADER"/>
-                        <sec:authorize access="isAuthenticated()">
-                            <input type="hidden" name="memEmail"
-                                   value="<sec:authentication property="principal.username"/>"/>
-                            <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
-                            <input type="hidden" name="" value="${mvo.member}"/>
-                        </sec:authorize>
-                        <sec:csrfInput/>
-                        <div class="tit_section">
-                            <input type="submit" value="등록하기" class="btn_payment">
-                        </div>
+                    <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
+                    <input type="hidden" name="memAuthList[1].memAuth" value="ROLE_PROJECT_LEADER"/>
+                    <sec:authorize access="isAuthenticated()">
+                        <input type="hidden" name="memEmail"
+                               value="<sec:authentication property="principal.username"/>"/>
+                        <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
+                        <input type="hidden" name="" value="${mvo.member}"/>
+                    </sec:authorize>
+                    <sec:csrfInput/>
+                    <div class="tit_section">
+                        <input type="submit" value="등록하기" class="btn_payment">
+                    </div>
 
                     </form>
                 </div>

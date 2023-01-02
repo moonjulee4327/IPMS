@@ -4,15 +4,16 @@ import com.ipms.main.mypage.inviteAndApply.service.InviteAndApplyService;
 import com.ipms.main.mypage.mapper.MyPageMapper;
 import com.ipms.main.newProject.vo.ProjMemVO;
 import com.ipms.proj.projMemManageMent.vo.InvitationVO;
+import com.ipms.security.domain.CustomUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @RequestMapping("/main")
 @Slf4j
@@ -25,16 +26,46 @@ public class InviteAndApplyController {
 
     @GetMapping(value = "/inviteAndApply")
     @ResponseStatus(HttpStatus.OK)
-    public String inviteOrApply(Model model, Authentication authentication, ProjMemVO projMemVO) {
-        return this.inviteAndApplyService.inviteOrApply(model, authentication, projMemVO);
+    public String inviteOrApply() {
+        return "main/mypage/inviteAndApply";
     }
+    //신청한 프로젝트
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/projectsApplied")
+    public List<ProjMemVO>projectsApplied(){
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        List<ProjMemVO> projectsApplied = this.inviteAndApplyService.projectsApplied(user.getMember().getMemCode());
+        return projectsApplied;
+    }
+    //신청한 회원
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/memberWhoApplied")
+    public List<ProjMemVO>memberWhoApplied(){
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        List<ProjMemVO> memberWhoApplied = this.inviteAndApplyService.memberWhoApplied(user.getMember().getMemCode());
+        return memberWhoApplied;
+    }
+    //초대된 프로젝트
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/invitationWaitingList")
+    public List<InvitationVO>invitationWaitingList(String projId){
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        List<InvitationVO> invitationWaitingList = this.inviteAndApplyService.invitationWaitingList(user.getMember().getMemCode());
+        return invitationWaitingList;
+    }
+    
 
-
-    //신청한 회원-프로젝트 승인(신청한 회원)
+// 신청한 회원-프로젝트 승인(신청한 회원)
     @ResponseBody
     @PostMapping(value = "/approveProject")
     @ResponseStatus(HttpStatus.CREATED)
-    public int approveProject(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+    public int approveProject(Authentication authentication, ProjMemVO projMemVO) {
         return this.inviteAndApplyService.approval(projMemVO);
     }
 
@@ -42,7 +73,7 @@ public class InviteAndApplyController {
     @ResponseBody
     @PostMapping(value = "/projectCompanionship")
     @ResponseStatus(HttpStatus.CREATED)
-    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO, RedirectAttributes rttr) {
+    public int projectCompanionship(Authentication authentication, ProjMemVO projMemVO) {
         return this.inviteAndApplyService.companionProject(projMemVO);
     }
 
@@ -50,16 +81,18 @@ public class InviteAndApplyController {
     @ResponseBody
     @PostMapping(value = "/acceptInvitation")
     @ResponseStatus(HttpStatus.CREATED)
-    public int acceptInvitation(Authentication authentication,
-                                @ModelAttribute ProjMemVO projMemVO) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        projMemVO.setMemCode(this.myPageMapper.getMemCode(userDetails.getUsername()));
+    public int acceptInvitation( @ModelAttribute ProjMemVO projMemVO ,@RequestParam(name = "projId") String projId) {
+        Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+        CustomUser user = (CustomUser) authentication.getPrincipal();
+        log.info("================="+projId);
+        projMemVO.setMemCode(user.getMember().getMemCode());
+        projMemVO.setProjId(projId);
         if (this.inviteAndApplyService.invitationApproved(projMemVO) == 1) {
             this.inviteAndApplyService.invitedMemberApproval(projMemVO);
             return 1;
         }
         return 0;
-    }    //초대된 프로젝트 거절
+    }
 
     @ResponseBody
     @PostMapping(value = "/refusalInvitation")

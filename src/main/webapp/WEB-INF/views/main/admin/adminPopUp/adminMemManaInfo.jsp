@@ -62,7 +62,7 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="card-title" id="basic-layout-colored-form-control"
-					style="font-size: 23px; color: #02b5b8; font-family: noto sans, malgun gothic, AppleGothic, dotum;">회원
+					style="font-size: 23px; color: #455DBD; font-family: noto sans, malgun gothic, AppleGothic, dotum;">회원
 					정보</div>
 				<hr>
 			</div>
@@ -79,32 +79,32 @@
 								</div>
 								<div class="col-8">
 									<h4 class="form-section"
-										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #02b5b8;">
-										<i class="feather icon-user" style="color: #02b5b8;"></i> 기본
+										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #455DBD;">
+										<i class="feather icon-user" style="color: #455DBD;"></i> 기본
 										정보
 									</h4><br>
 									<div class="row">
 										<div class="col-6">
 											<div class="form-group">
 												<label for="memEmail">아이디</label> <input type="text"
-													id="memEmail" class="form-control border-primary"
+													id="memEmail" class="form-control border-secondary"
 													name="memEmail" value="${data.memEmail}" disabled>
 											</div>
 											<div class="form-group">
 												<label for="memName">회원명</label> <input type="text"
-													id="memName" class="form-control border-primary"
+													id="memName" class="form-control border-secondary"
 													name="memName" value="${data.memName}" disabled>
 											</div>
 										</div>
 										<div class="col-6">
 											<div class="form-group">
 												<label for="memPhoneNumber">연락처</label> <input type="text"
-													id="memPhoneNumber" class="form-control border-primary"
+													id="memPhoneNumber" class="form-control border-secondary"
 													name="memPhoneNumber" value="${data.memPhoneNumber}" disabled>
 											</div>
 											<div class="form-group">
 												<label for="memSgnupDate">가입 일자</label> <input type="text"
-													id="memSgnupDate" class="form-control border-primary"
+													id="memSgnupDate" class="form-control border-secondary"
 													name="memSgnupDate" value="<fmt:formatDate value='${data.memSgnupDate}' pattern='yyyy-MM-dd'/>" disabled>
 											</div>
 										</div>
@@ -113,26 +113,26 @@
 							</div>
 							<br><br>
 							<h4 class="form-section"
-								style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #02b5b8;">
-								<i class="feather icon-monitor" style="color: #02b5b8;"></i>
+								style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #455DBD;">
+								<i class="feather icon-file" style="color: #455DBD;"></i>
 								포트폴리오
 							</h4>
 
 							<div class="form-group">
 								<label for="userinput5">Email</label> <input
-									class="form-control border-primary" type="email"
+									class="form-control border-secondary" type="email"
 									placeholder="email" id="userinput5">
 							</div>
 
 							<div class="form-group">
 								<label for="userinput5">Email</label> <input
-									class="form-control border-primary" type="email"
+									class="form-control border-secondary" type="email"
 									placeholder="email" id="userinput5">
 							</div>
 
 							<div class="form-group">
 								<label for="userinput5">Email</label> <input
-									class="form-control border-primary" type="email"
+									class="form-control border-secondary" type="email"
 									placeholder="email" id="userinput5">
 							</div>
 						</div>

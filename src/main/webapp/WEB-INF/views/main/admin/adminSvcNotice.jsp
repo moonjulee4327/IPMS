@@ -24,7 +24,14 @@
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/pages/app-contacts.css">
 <!-- END: Page CSS-->
-
+<style>
+.nav.nav-tabs.nav-underline .nav-item a.nav-link:before{
+	background: #3F4E89;
+}
+.nav.nav-tabs.nav-underline .nav-item a.nav-link{
+	color: #3F4E89;
+}
+</style>
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->
@@ -38,15 +45,30 @@
 					<div class="card-body">
 						<div class="row breadcrumbs-top" >
 					        <div class="breadcrumb-wrapper col-12">
-					            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px; font-family: MICEGothic Bold">
-					                <li class="breadcrumb-item active"><a href="/main/adminSvcNotice" style="color: #3F4E89">공지사항 관리</a>
-					                </li>
-					                <li class="breadcrumb-item"><a href="/main/adminSvcFaq" style="color: gray;">자주묻는질문 관리</a>
-					                </li>
-					                <li class="breadcrumb-item"><a href="/main/adminSvcQaA" style="color: gray;">Q&A 관리</a>
-					                </li>
-					               
-					            </ol>
+     					        <ul class="nav nav-tabs nav-underline" role="tablist" style="color: #3F4E89;">
+									 <c:if test="${page eq 'faq'}">
+									<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link" id="baseIcon-tab21" aria-controls="tabIcon21" href="/main/adminSvcNotice" role="tab" aria-selected="false"><i class="feather icon-volume-1"></i>공지사항 관리</a>
+									</li>
+									<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link active" id="baseIcon-tab22" aria-controls="tabIcon22" href="/main/adminSvcFaq" role="tab" aria-selected="true"><i class="feather icon-info"></i>자주묻는질문 관리</a>
+									</li>
+									<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link" id="baseIcon-tab23" aria-controls="tabIcon23" href="/main/adminSvcQaA" role="tab" aria-selected="false"><i class="feather icon-help-circle"></i>Q&A 관리</a>
+									</li>
+								</c:if>
+								<c:if test="${page eq 'notice'}">
+								<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link active" id="baseIcon-tab21" aria-controls="tabIcon21" href="/main/adminSvcNotice" role="tab" aria-selected="false"><i class="feather icon-volume-1"></i>공지사항 관리</a>
+									</li>
+									<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link" id="baseIcon-tab22" aria-controls="tabIcon22" href="/main/adminSvcFaq" role="tab" aria-selected="true"><i class="feather icon-info"></i>자주묻는질문 관리</a>
+									</li>
+									<li class="nav-item" style="border-bottom: 1px solid #3F4E89;color: #3F4E89;">
+									<a class="nav-link" id="baseIcon-tab23" aria-controls="tabIcon23" href="/main/adminSvcQaA" role="tab" aria-selected="false"><i class="feather icon-help-circle"></i>Q&A 관리</a>
+									</li>
+								</c:if>
+								</ul>
 					        </div>
 					    </div>
 						<!-- Task List table -->

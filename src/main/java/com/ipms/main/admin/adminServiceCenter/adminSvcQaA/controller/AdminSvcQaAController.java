@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.commons.vo.PageVO;
 import com.ipms.main.admin.adminServiceCenter.adminSvcQaA.service.AdminSvcQaAService;
+import com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaACommentVO;
 import com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaAVO;
 import com.ipms.main.serviceCenter.svcQaA.vo.SvcQaAVO;
 
@@ -51,6 +53,7 @@ public class AdminSvcQaAController {
 		
 	}
 	
+	// Q&A와 댓글을 각각 조회
 	@GetMapping("/adminPopUp/adminSvcQaADetail")
 	public String adminSvcQaADetail(String qnaNum, Model model) {
 		
@@ -58,10 +61,43 @@ public class AdminSvcQaAController {
             log.info("AdminSvcQaAController - adminSvcQaADetail -> qnaNum : {}", qnaNum);
         }
 		
+		// Q&A 조회
 		AdminSvcQaAVO adminSvcQaAVO = adminSvcQaAService.adminSvcQaADetail(qnaNum);
-
+		
+		// 댓글 조회
+		AdminSvcQaACommentVO adminSvcQaACommentVO = adminSvcQaAService.adminSvcQaACommentSelect(qnaNum);
+		
         model.addAttribute("adminSvcQaAVO", adminSvcQaAVO);
+        model.addAttribute("adminSvcQaACommentVO", adminSvcQaACommentVO);
 		
 		return "main/admin/adminPopUp/adminSvcQaADetail";
 	}
+	
+	@PostMapping("/adminPopUp/adminSvcQaAReplyInsert")
+	public String adminSvcQaAReplyInsert(AdminSvcQaACommentVO adminSvcQaACommentVO) {
+		
+		if (adminSvcQaACommentVO != null) {
+            log.info("AdminSvcQaAController - adminSvcQaAReplyInsert -> adminSvcQaACommentVO : {}", adminSvcQaACommentVO);
+        }
+		
+		// 관리자 답변 등록
+		int insertResult = adminSvcQaAService.adminSvcQaACommentInsert(adminSvcQaACommentVO);
+		// 관리자 답변 후 Q&A 상태 변경
+		int updateResult = adminSvcQaAService.adminSvcQaAStatusUpdate(adminSvcQaACommentVO.getQnaNum());
+		
+		if(insertResult > 0) {
+			log.info("관리자 답변 등록 완료");
+		}else {
+			log.info("관리자 답변 등록 불가!!!");
+		}
+		
+		if(updateResult > 0) {
+			log.info("답변 상태 변경 완료");
+		}else {
+			log.info("답변 상태 변경 불가!!!");
+		}
+		
+		return "redirect:/main/adminPopUp/adminSvcQaADetail?qnaNum=" + adminSvcQaACommentVO.getQnaNum();
+	}
+	
 }

@@ -6,7 +6,8 @@
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <!DOCTYPE html>
 
 <style>
@@ -25,8 +26,6 @@
 
 <script>
     function fn_delete(memCode, projId) {
-        alert(memCode);
-        alert(projId);
         $.ajax({
             url: "/proj/dropMemListProcessing",
             type: "post",
@@ -38,6 +37,9 @@
             success: function (division) {
                 if (division == 1) {
                     alert("승인완료");
+                    setTimeout(function () {
+                        location.reload();
+                    });
                 } else {
                     alert("실패");
                     location.href = "redirect:/main/page";
@@ -47,9 +49,7 @@
     }
 
 
-    function fn_expulsionBtn(memCode , projId){
-        alert(memCode);
-        alert(projId);
+    function fn_expulsionBtn(memCode, projId) {
         $.ajax({
             url: "/proj/extractionParticipants",
             type: "post",
@@ -61,6 +61,9 @@
             success: function (division) {
                 if (division == 1) {
                     alert("승인완료");
+                    setTimeout(function () {
+                        location.reload();
+                    });
                 } else {
                     alert("실패");
                     location.href = "redirect:/main/page";
@@ -70,13 +73,13 @@
     }
 
 
-    function fn_invitationBtn(memCode, projId , msg) {
-        alert(memCode);
-        alert(projId);
+    function fn_invitationBtn(memCode, projId) {
+        var msg = "${mvo.member.memName}님이 프로젝트에 초대 하였습니다.,";
+        alert(msg);
         $.ajax({
             url: "/proj/sendInvitation",
             type: "post",
-            data: {"memCode": memCode, "projId": projId },
+            data: {"memCode": memCode, "projId": projId, "alrmCts": msg},
             dataType: "json",
             beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
                 xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
@@ -84,16 +87,19 @@
             success: function (division) {
                 if (division == 1) {
                     alert("승인완료");
-                    var msg = "${mvo.member.memName}이 프로젝트 초대함,"+memCode;
                     socket.send(msg);
-                    console.log(msg)
                 } else {
                     alert("실패");
                     location.href = "redirect:/main/page";
                 }
+                setTimeout(function () {
+                    location.reload();
+                });
             }
         });
     }
+
+
 </script>
 
 
@@ -226,7 +232,6 @@
                                                 <th>번호</th>
                                                 <th>회원코드</th>
                                                 <th>이름</th>
-                                                <th>기술스텍</th>
                                                 <th>초대</th>
                                             </tr>
                                             </thead>
@@ -236,7 +241,6 @@
                                                 <td class="text-truncate">${idx.count}</td>
                                                 <td class="text-truncate">${item.memCode}</td>
                                                 <td class="text-truncate">${item.memName}</td>
-                                                <td class="text-truncate">###</td>
                                                 <td class="text-truncate">
                                                     <button id="invitationBtn" class="badge badge-success"
                                                             onclick="fn_invitationBtn('${item.memCode}','${projId}')">초대
@@ -289,7 +293,7 @@
                                     <span class="badge badge-success">초대 완료</span>
                                 </td>
                             </tr>
-                                </c:forEach>
+                            </c:forEach>
                         </table>
                     </div>
                 </div>
@@ -316,7 +320,10 @@
                                         <td class="text-truncate">${idx.count}</td>
                                         <td class="text-truncate">${item.memCode}</td>
                                         <td class="text-truncate">${item.projId}</td>
-                                        <td class="text-truncate"><button class="badge badge-danger"  onclick="fn_expulsionBtn('${item.memCode}','${projId}')">추방</button>
+                                        <td class="text-truncate">
+                                            <button class="badge badge-danger"
+                                                    onclick="fn_expulsionBtn('${item.memCode}','${projId}')">추방
+                                            </button>
                                         </td>
                                     </tr>
                                 </c:forEach>

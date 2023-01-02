@@ -9,37 +9,64 @@
 
 <script type="text/javascript"
         src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
-
 <script>
+
     var socket = null;
     $(document).ready(function () {
-        var soc = new SockJS("/echo-ws");
-        socket = soc;
-        soc.onopen = function () {
-            var msg = "${mvo.member.memName}님이 접속했습니다,${mvo.member.memCode}";
-            socket.send(msg);
-            console.log(msg)
+        $("#ta0").on("click", function () {
+            alert("하하");
+        })
+        $.ajax({
+            url: "/main/boardList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var apd = "<div class='text-secondary'>"
+                $.each(data, function (index, obj) {
+                    let objAlamId = "'"+obj.alrmId+"'";
+                    // apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">`+obj.alrmCts+`</div>`;
+                apd+='    <a href="javascript:void(0)">';
+                apd+='        <div class="media">';
+                apd+='            <div class="media-left align-self-center">';
+                 apd+='               <i class="feather icon-plus-square icon-bg-circle bg-cyan"></i>';
+                apd+='            </div>';
+                apd+='            <div class="media-body">';
+                apd+='                <h6 class="media-heading">${obj.AlamId}</h6>';
+                    apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">`+obj.alrmCts+`</div>`;
+                  apd+='          </div>';
+                  apd+='      </div>';
+                  apd+='  </a>';
 
-        };
+                });
+                apd += "</div>";
+                $("#disp").html(apd);
+            }
+        });
 
-        //data는 send되는 값
-        soc.onmessage = function (data) {
-            //현재 시간
-            console.log(data);
-            var ctime = new Date();
-            //메시지를 받을 시 페이지 알림목록에 메시지 추가
-            var apd = "";
-            apd += "<a class='dropdown-item d-flex align-items-center mess' href='#'>";
-            apd += "<div class='mr-3'>";
-            apd += "<div class='icon-circle bg-warning'>";
-            apd += "<i class='fas fa-exclamation-triangle text-white'></i></div></div><div>";
-            apd += "<div class='small text-gray-500'>" + ctime.toLocaleString() + "</div>";/* 시간이 들어가는 부분  */
-            apd += data.data;/* 메시지가 들어가는 부분 */
-            apd += "</div></a>";
-            //알림목록 앞부분에 추가
-            $("#disp").prepend(apd);
-        };
+
     });
+
+
+    function  fn_alrm(Param){
+        alert(Param);
+        $.ajax({
+            url: "/main/deleteAlrm",
+            type: "post",
+            data: {"alrmId": Param},
+            dataType: "json",
+            beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
+            success: function (division) {
+                if (division == 1) {
+                    location.href = "/main/inviteAndApply";
+                } else {
+                    alert("실패");
+                    location.href = "redirect:/main/page";
+                }
+            }
+        });
+    }
 </script>
 <!-- Topbar -->
 <nav
@@ -70,35 +97,40 @@
                 </a></li>
 
                 <li class="nav-item dropdown" style="margin-left: 80px;margin-top: 6px;position: relative;">
-					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="border: none;font-weight: bold;color: black;font-family: noto sans,malgun gothic,AppleGothic,dotum;font-size: 1rem">
-					고객센터
-					</a>
-					<div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
-						<a class="dropdown-item" id="dropdownOption21-tab" href="/main/svcNotice" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">공지사항</a>
-						<a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcFaq" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">자주 묻는 질문</a>
-						<a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcQaA" data-toggle="pill" aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">Q&A</a>
-					</div>
-				</li>
-                
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false"
+                       style="border: none;font-weight: bold;color: black;font-family: noto sans,malgun gothic,AppleGothic,dotum;font-size: 1rem">
+                        고객센터
+                    </a>
+                    <div class="dropdown-menu" x-placement="bottom-start"
+                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                        <a class="dropdown-item" id="dropdownOption21-tab" href="/main/svcNotice" data-toggle="pill"
+                           aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">공지사항</a>
+                        <a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcFaq" data-toggle="pill"
+                           aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">자주 묻는
+                            질문</a>
+                        <a class="dropdown-item" id="dropdownOption22-tab" href="/main/svcQaA" data-toggle="pill"
+                           aria-expanded="true" style="font-family: noto sans,malgun gothic,AppleGothic,dotum;">Q&A</a>
+                    </div>
+                </li>
 
 
             </ul>
             <ul class="nav navbar-nav float-right">
                 <li class="dropdown dropdown-notification nav-item"><a
                         class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i
-                        class="ficon feather icon-bell"></i><span
-                        class="badge badge-pill badge-danger badge-up">5</span></a>
+                        class="ficon feather icon-bell"></i></a>
                     <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                         <li class="dropdown-menu-header">
                             <h6 class="dropdown-header m-0">
-                                <span class="grey darken-2">Notifications</span><span
-                                    class="notification-tag badge badge-danger float-right m-0">5
-										New</span>
+                                <span class="grey darken-2">Notifications</span>
+                                <span
+                                    class="notification-tag badge badge-danger float-right m-0"><div id="countAlrm"></div></span>
                             </h6>
                         </li>
                         <li class="scrollable-container media-list ps">
                             <a href="javascript:void(0)">
-                              <div id="disp">
+                                <div id="disp">
                             </a>
                             <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
                                 <div class="ps__thumb-x" tabindex="0"
@@ -267,10 +299,10 @@
     $("#signUpBtn").on("click", function () {
         location.href = "/main/signUpForm";
     });
-    
-    $(".dropdown-item").on("click",function(){
-    	let url = $(this).attr("href");
+
+    $(".dropdown-item").on("click", function () {
+        let url = $(this).attr("href");
 //     	console.log("url", url);
-    	location.href = url;
+        location.href = url;
     })
 </script>

@@ -42,6 +42,9 @@
         url: "/sendMailProcess",
         type: "post",
         data: fData,
+        beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+          xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+        },
         success: function (data) { //여기서 data는 controller에 list이다.
           $("#hideEmail").css('display','block');
         },

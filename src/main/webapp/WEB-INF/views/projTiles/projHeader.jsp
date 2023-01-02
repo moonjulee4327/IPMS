@@ -4,6 +4,54 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
+
+<script type="text/javascript"
+        src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script>
+
+    var socket = null;
+    $(document).ready(function () {
+        $("#ta0").on("click", function () {
+            alert("하하");
+        })
+        $.ajax({
+            url: "/main/boardList",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var apd = "<div class='text-secondary'>"
+                $.each(data, function (index, obj) {
+                    let objAlamId = "'"+obj.alrmId+"'";
+                    apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">`+obj.alrmCts+`</div>`;
+                });
+                apd += "</div>";
+                $("#disp").html(apd);
+            }
+        });
+    });
+    function  fn_alrm(Param){
+        alert(Param);
+        $.ajax({
+            url: "/main/deleteAlrm",
+            type: "post",
+            data: {"alrmId": Param},
+            dataType: "json",
+            beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+            },
+            success: function (division) {
+                if (division == 1) {
+                    location.href = "/main/inviteAndApply";
+                } else {
+                    alert("실패");
+                    location.href = "redirect:/main/page";
+                }
+            }
+        });
+    }
+</script>
 <!-- Topbar -->
 <nav class="header-navbar navbar-expand-md navbar navbar-with-menu fixed-top navbar-semi-light bg-gradient-x-grey-blue">
     <div class="navbar-wrapper">
@@ -16,7 +64,7 @@
                                         href="/main/page"><img
                         class="brand-logo" alt="stack admin logo"
                         src="/resources/logoImage/logo.jpg" alt="branding logo" style="width: 100px; height: auto;">
-                    <h2 class="brand-text"></h2> </a></li>
+                    <h2 class="brand-text"></h2></a></li>
                 <li class="nav-item d-md-none"><a
                         class="nav-link open-navbar-container" data-toggle="collapse"
                         data-target="#navbar-mobile"><i class="fa fa-ellipsis-v"></i></a></li>
@@ -120,110 +168,163 @@
                 <ul class="nav navbar-nav float-right">
 
 
-                    <li class="dropdown dropdown-notification nav-item">
-                        <a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i
-                                class="ficon feather icon-mail"></i><span
-                                class="badge badge-pill badge-warning badge-up">3</span></a>
-                        <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                            <li class="dropdown-menu-header">
-                                <h6 class="dropdown-header m-0">
-                                    <span class="grey darken-2">Messages</span><span
-                                        class="notification-tag badge badge-warning float-right m-0">4
+                    <ul class="nav navbar-nav float-right">
+                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#"
+                                                                               data-toggle="dropdown"><i
+                                class="ficon feather icon-bell"></i><span
+                                class="badge badge-pill badge-danger badge-up">5</span></a>
+                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                <li class="dropdown-menu-header">
+                                    <h6 class="dropdown-header m-0">
+                                        <span class="grey darken-2">Notifications</span><span
+                                            class="notification-tag badge badge-danger float-right m-0">5
 										New</span>
-                                </h6>
-                            </li>
-                            <li class="scrollable-container media-list ps"><a
-                                    href="javascript:void(0)">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <div class="avatar avatar-online avatar-sm rounded-circle">
-                                            <img
-                                                    src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-1.png"
-                                                    alt="avatar"><i></i>
+                                    </h6>
+                                </li>
+                                <li class="scrollable-container media-list ps">
+                                    <a href="javascript:void(0)">
+                                    </a>
+                                    <div id="disp"><a class="dropdown-item d-flex align-items-center mess"
+                                                      href="/main/inviteAndApply">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-warning"><i
+                                                    class="fas fa-exclamation-triangle text-white"></i></div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-gray-500">2022. 12. 31. 오전 11:27:35</div>
+                                            생성용님이 프로젝트에 초대 하였습니다.,
+                                        </div>
+                                    </a></div>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center"
+                                                                    href="javascript:void(0)">Read all notifications</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-notification nav-item">
+                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                                <li class="dropdown-menu-header">
+                                    <h6 class="dropdown-header m-0">
+                                        <span class="grey darken-2">Messages</span><span
+                                            class="notification-tag badge badge-warning float-right m-0">4
+										New</span>
+                                    </h6>
+                                </li>
+                                <li class="scrollable-container media-list ps"><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <div class="avatar avatar-online avatar-sm rounded-circle">
+                                                <img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-1.png"
+                                                     alt="avatar"><i></i>
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Margaret Govan</h6>
+                                            <p class="notification-text font-small-3 text-muted">I
+                                                like your portfolio, let's start.</p>
+                                            <small>
+                                                <time class="media-meta text-muted"
+                                                      datetime="2015-06-11T18:29:20+08:00">Today
+                                                </time>
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Margaret Govan</h6>
-                                        <p class="notification-text font-small-3 text-muted">I
-                                            like your portfolio, let's start.</p>
-                                        <small>
-                                            <time class="media-meta text-muted"
-                                                  datetime="2015-06-11T18:29:20+08:00">Today
-                                            </time>
-                                        </small>
-                                    </div>
-                                </div>
-                            </a><a href="javascript:void(0)">
-                                <div class="media">
-                                    <div class="media-left">
-											<span class="avatar avatar-sm avatar-busy rounded-circle"><img
+                                </a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <span class="avatar avatar-sm avatar-busy rounded-circle"><img
                                                     src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-2.png"
                                                     alt="avatar"><i></i></span>
-                                    </div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Bret Lezama</h6>
-                                        <p class="notification-text font-small-3 text-muted">I
-                                            have seen your work, there is</p>
-                                        <small>
-                                            <time class="media-meta text-muted"
-                                                  datetime="2015-06-11T18:29:20+08:00">Tuesday
-                                            </time>
-                                        </small>
-                                    </div>
-                                </div>
-                            </a><a href="javascript:void(0)">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <div class="avatar avatar-online avatar-sm rounded-circle">
-                                            <img
-                                                    src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-3.png"
-                                                    alt="avatar"><i></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Bret Lezama</h6>
+                                            <p class="notification-text font-small-3 text-muted">I
+                                                have seen your work, there is</p>
+                                            <small>
+                                                <time class="media-meta text-muted"
+                                                      datetime="2015-06-11T18:29:20+08:00">Tuesday
+                                                </time>
+                                            </small>
                                         </div>
                                     </div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Carie Berra</h6>
-                                        <p class="notification-text font-small-3 text-muted">Can
-                                            we have call in this week ?</p>
-                                        <small>
-                                            <time class="media-meta text-muted"
-                                                  datetime="2015-06-11T18:29:20+08:00">Friday
-                                            </time>
-                                        </small>
+                                </a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <div class="avatar avatar-online avatar-sm rounded-circle">
+                                                <img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-3.png"
+                                                     alt="avatar"><i></i>
+                                            </div>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Carie Berra</h6>
+                                            <p class="notification-text font-small-3 text-muted">Can
+                                                we have call in this week ?</p>
+                                            <small>
+                                                <time class="media-meta text-muted"
+                                                      datetime="2015-06-11T18:29:20+08:00">Friday
+                                                </time>
+                                            </small>
+                                        </div>
                                     </div>
-                                </div>
-                            </a><a href="javascript:void(0)">
-                                <div class="media">
-                                    <div class="media-left">
-											<span class="avatar avatar-sm avatar-away rounded-circle"><img
+                                </a><a href="javascript:void(0)">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <span class="avatar avatar-sm avatar-away rounded-circle"><img
                                                     src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-6.png"
                                                     alt="avatar"><i></i></span>
+                                        </div>
+                                        <div class="media-body">
+                                            <h6 class="media-heading">Eric Alsobrook</h6>
+                                            <p class="notification-text font-small-3 text-muted">We
+                                                have project party this saturday.</p>
+                                            <small>
+                                                <time class="media-meta text-muted"
+                                                      datetime="2015-06-11T18:29:20+08:00">last month
+                                                </time>
+                                            </small>
+                                        </div>
                                     </div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Eric Alsobrook</h6>
-                                        <p class="notification-text font-small-3 text-muted">We
-                                            have project party this saturday.</p>
-                                        <small>
-                                            <time class="media-meta text-muted"
-                                                  datetime="2015-06-11T18:29:20+08:00">last month
-                                            </time>
-                                        </small>
+                                </a>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                                     </div>
-                                </div>
-                            </a>
-                                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                    <div class="ps__thumb-x" tabindex="0"
-                                         style="left: 0px; width: 0px;"></div>
-                                </div>
-                                <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                    <div class="ps__thumb-y" tabindex="0"
-                                         style="top: 0px; height: 0px;"></div>
-                                </div>
-                            </li>
-                            <li class="dropdown-menu-footer"><a
-                                    class="dropdown-item text-muted text-center"
-                                    href="javascript:void(0)">Read all messages</a></li>
-                        </ul>
-                    </li>
+                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                                    </div>
+                                </li>
+                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center"
+                                                                    href="javascript:void(0)">Read all messages</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown dropdown-user nav-item">
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="user-profile.html"><i class="feather icon-user"></i> Edit
+                                    Profile</a><a class="dropdown-item" href="app-email.html"><i
+                                    class="feather icon-mail"></i> My Inbox</a><a class="dropdown-item"
+                                                                                  href="user-cards.html"><i
+                                    class="feather icon-check-square"></i>
+                                Task</a><a class="dropdown-item" href="app-chat.html"><i
+                                    class="feather icon-message-square"></i> Chats</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="login-with-bg-image.html"><i
+                                        class="feather icon-power"></i> Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+
+
                     <li class="dropdown dropdown-user nav-item">
                         <!-- 비로그인-->
                         <sec:authorize access="not hasRole('ROLE_MEMBER')">
@@ -242,16 +343,16 @@
                                 <div style="margin-top: 15px;">${mvo.member.memName}님</div>
                                 <%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
 
-                                    <button type="button" id="myPage" class="btn btn-outline-secondary"><i
-                                            class="fa fa-plug"></i>마이페이지
+                                <button type="button" id="myPage" class="btn btn-outline-secondary"><i
+                                        class="fa fa-plug"></i>마이페이지
+                                </button>
+
+
+                                <form action="/customLogout" method='post'>
+                                    <button class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그아웃
                                     </button>
-
-
-                                    <form action="/customLogout" method='post'>
-                                        <button class="btn btn-outline-secondary"><i class="fa fa-plug"></i>로그아웃
-                                        </button>
-                                        <sec:csrfInput/>
-                                    </form>
+                                    <sec:csrfInput/>
+                                </form>
 
                             </sec:authorize>
                         </div>
@@ -263,5 +364,4 @@
     </div>
 </nav>
 <!-- End of Topbar -->
-
 

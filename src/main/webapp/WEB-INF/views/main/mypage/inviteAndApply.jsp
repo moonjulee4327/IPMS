@@ -26,10 +26,90 @@
     <link rel="stylesheet" type="text/css"
           href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
     <script>
+        $(document).ready(function () {
+            projectsApplied();
+            memberWhoApplied();
+            invitationWaitingList();
+        });
 
-        function fn_approve(memCode, projId) {
-            console.log(memCode);
-            console.log(projId);
+        function projectsApplied() {
+            $.ajax({
+                url: "/main/projectsApplied",
+                type: "get",
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: makeView,
+                error: function () {
+                    alert("에러");
+                }
+            });
+        }
+
+        function makeView(data) {
+            var listHtml = "<table class='table table-bordered'>";
+            listHtml += "<tr>";
+            listHtml += "<td>번호</td>";
+            listHtml += "<td>프로젝트명</td>";
+            listHtml += "<td>신청인</td>";
+            listHtml += "<td>승인 여부</td>";
+            listHtml += "</tr>";
+
+            $.each(data, function (index, obj) {
+                listHtml += "<tr>";
+                listHtml += "<td>" + (index + 1) + "</td>";
+                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += "<td>" + '${mvo.member.memName}' + "</td>";
+                listHtml += '<td class="text-truncate"><span class="badge badge-warning">대기중</span>';
+                listHtml += "</tr>";
+            });
+            $("#projectsApplied").html(listHtml);
+        }
+
+
+        function memberWhoApplied() {
+            $.ajax({
+                url: "/main/memberWhoApplied",
+                type: "get",
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: memberWhoAppliedView,
+                error: function () {
+                    alert("에러");
+                }
+            });
+        }
+
+        function memberWhoAppliedView(data) {
+            var listHtml = "<table class='table table-bordered'>";
+            listHtml += "<tr>";
+            listHtml += "<td>번호</td>";
+            listHtml += "<td>프로젝트명</td>";
+            listHtml += "<td>신청인</td>";
+            listHtml += "<td>승인 여부</td>";
+            listHtml += "</tr>";
+
+            $.each(data, function (index, obj) {
+                let memCode = "'" + obj.memCode + "'";
+                let projId = "'" + obj.projId + "'";
+                listHtml += "<tr>";
+                listHtml += "<td>" + (index + 1) + "</td>";
+                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += "<td>" + obj.memName + "</td>";
+                listHtml += ' <td class="text-truncate">';
+                listHtml += '<button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_approve(' + projId + ',' + memCode + ')">승인</button>';
+                listHtml += '<button type="button" id="companionButton" class="btn btn-danger btn-sm" onclick="fn_companion(' + projId + ',' + memCode + ' )">반려</button>';
+                listHtml += '</td>';
+                listHtml += "</tr>";
+
+            });
+            $("#memberWhoAppliedView").html(listHtml);
+        }
+
+        function fn_approve(projId, memCode) {
             $.ajax({
                 url: "/main/approveProject",
                 type: "post",
@@ -41,13 +121,56 @@
                 success: function (division) {
                     if (division == 1) {
                         alert("승인완료");
-                        $("sbscrMmbtn").css('display', 'none');
+                        setTimeout(function () {
+                            location.reload();
+                        });
                     } else {
                         alert("실패");
                     }
                 }
             });
         }
+
+
+        function invitationWaitingList() {
+            $.ajax({
+                url: "/main/invitationWaitingList",
+                type: "get",
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success: invitationWaitingListView,
+                error: function () {
+                    alert("에러");
+                }
+            });
+        }
+
+        function invitationWaitingListView(data) {
+            var listHtml = "<table class='table table-bordered'>";
+            listHtml += "<tr>";
+            listHtml += "<td>번호</td>";
+            listHtml += "<td>프로젝트 이름</td>";
+            listHtml += "<td>승인 여부</td>";
+            listHtml += "</tr>";
+
+            $.each(data, function (index, obj) {
+                let memCode = "'" + obj.memCode + "'";
+                let projId = "'" + obj.projId + "'";
+                listHtml += "<tr>";
+                listHtml += "<td>" + (index + 1) + "</td>";
+                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += ' <td class="text-truncate">';
+                listHtml += '<button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_acceptInvitationBtn(' + projId + ',' + memCode + ')">승인</button>';
+                listHtml += '<button type="button" id="companionButton" class="btn btn-danger btn-sm" onclick="fn_refusalInvitation(' + projId + ',' + memCode + ')">반려</button>';
+                listHtml += '</td>';
+                listHtml += "</tr>";
+
+            });
+            $("#invitationWaitingListView").html(listHtml);
+        }
+
 
         function fn_companion(memCode, projId) {
             console.log(memCode);
@@ -70,8 +193,9 @@
             });
         }
 
-        function fn_acceptInvitationBtn(memCode , projId) {
-            alert(memCode+":"+projId);
+        function fn_acceptInvitationBtn(projId, memCode) {
+            alert(memCode);
+            alert(projId);
             $.ajax({
                 url: "/main/acceptInvitation",
                 type: "post",
@@ -84,14 +208,18 @@
                     if (division == 1) {
                         alert("승인완료");
                     } else {
+                        alert(division);
                         alert("실패");
                     }
+                    setTimeout(function () {
+                        location.reload();
+                    });
                 }
             });
         }
 
-        function fn_refusalInvitation(memCode,projId) {
-            alert(memCode+":"+projId);
+        function fn_refusalInvitation(memCode, projId) {
+            alert(memCode + ":" + projId);
             $.ajax({
                 url: "/main/refusalInvitation",
                 type: "post",
@@ -102,7 +230,7 @@
                 },
                 success: function (division) {
                     if (division == 1) {
-                        alert("승인완료");
+                        alert("취소완료");
                     } else {
                         alert("실패");
                     }
@@ -114,196 +242,82 @@
 </head>
 
 <body>
-<!-- BEGIN: Content-->
-<!-- users edit start -->
-<div style="margin-top: 50px;" class="content-header-left col-md-6 col-12 mb-2">
-    <h3 class="content-header-title mb-0"><b>초대/신청 현황 조회</b></h3>
-    <div class="row breadcrumbs-top">
-        <div class="breadcrumb-wrapper col-12"></div>
+
+<div class="card" style="width: 100%;height: 500px;margin-top: 100px;">
+    <div class="card-content">
+        <div class="card-body" style="width: 100%;overflow:auto;">
+            <ul class="nav nav-tabs mb-2" role="tablist">
+                <li class="nav-item"><a class="nav-link d-flex align-items-center active" id="invite-tab"
+                                        data-toggle="tab" href="#invite" aria-controls="invite" role="tab"
+                                        aria-selected="true"> <i class="feather icon-user mr-25"></i><span
+                        class="d-none d-sm-block">신청한 프로젝트</span>
+                </a></li>
+                <li class="nav-item"><a class="nav-link d-flex align-items-center" id="apply-tab"
+                                        data-toggle="tab" href="#apply" aria-controls="apply" role="tab"
+                                        aria-selected="false"> <i class="feather icon-info mr-25"></i><span
+                        class="d-none d-sm-block">신청한 회원</span>
+                </a></li>
+                <li class="nav-item"><a class="nav-link d-flex align-items-center" id="test-tab" data-toggle="tab"
+                                        href="#test" aria-controls="ivtProj" role="tab"
+                                        aria-selected="false"> <i class="feather icon-info mr-25"></i><span
+                        class="d-none d-sm-block">초대된 프로젝트</span>
+                </a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="invite" aria-labelledby="invite-tab" role="tabpanel">
+                    <!-- users edit account form start -->
+                    <form novalidate>
+                        <div class="col-xl-8 col-lg-12">
+                            <div class="card" style="width: 1000px; overflow: auto">
+                                <div class="card-content">
+                                    <div class="table-responsive">
+                                        <div id="projectsApplied"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="tab-pane" id="apply" aria-labelledby="apply-tab" role="tabpanel">
+                    <form novalidate>
+                        <div class="col-xl-8 col-lg-12">
+                            <div class="card" style="width: 1000px;overflow: auto">
+                                <div class="card-content">
+                                    <div class="table-responsive">
+                                        <div id="memberWhoAppliedView"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- users edit Info form ends -->
+                </div>
+
+
+                <div class="tab-pane" id="test" aria-labelledby="apply-tab" role="tabpanel">
+                    <!-- users edit Info form start -->
+                    <form novalidate>
+                        <div class="col-xl-8 col-lg-12">
+                            <div class="card" style="width: 1000px;overflow: auto">
+                                <div class="card-content">
+                                    <div class="table-responsive">
+                                        <div id="invitationWaitingListView"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- users edit Info form ends -->
+                </div>
+
+
+            </div>
+        </div>
     </div>
 </div>
-<section class="users-edit">
-    <div class="card" style="width: 65%;height: 250px">
-        <div class="card-content">
-            <div class="card-body">
-                <ul class="nav nav-tabs mb-2" role="tablist">
-                    <li class="nav-item"><a class="nav-link d-flex align-items-center active" id="account-tab"
-                                            data-toggle="tab" href="#account" aria-controls="account" role="tab"
-                                            aria-selected="true"> <i class="feather icon-user mr-25"></i><span
-                            class="d-none d-sm-block">초대된 프로젝트</span></a></li>
-                    <li class="nav-item"><a
-                            class="nav-link d-flex align-items-center" id="information-tab"
-                            data-toggle="tab" href="#information" aria-controls="information"
-                            role="tab" aria-selected="false">
-                    </a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="account"
-                         aria-labelledby="account-tab" role="tabpanel">
-                        <!-- users edit account form start -->
-                        <form novalidate>
-                            <div class="col-xl-8 col-lg-12" style="overflow: auto;">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <div class="table-responsive">
-                                            <table id="recent-orders"
-                                                   class="table table-hover mb-0 ps-container ps-theme-default">
-                                                <thead>
-                                                <tr>
-                                                    <th>번호</th>
-                                                    <th>프로젝트 아이디</th>
-                                                    <th>프로젝트 이름</th>
-                                                    <th>승인 여부</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach var="item" items="${invitationWaitingList}" varStatus="idx">
-                                                    <tr>
-                                                        <td class="text-truncate">${idx.count}</td>
-                                                        <td class="text-truncate"><a href="#">${item.projId}</a></td>
-                                                        <td class="text-truncate">${item.projName}</td>
-                                                        <td class="text-truncate">
-                                                            <button type="button" class="btn btn-success btn-sm"
-                                                                    onclick="fn_acceptInvitationBtn('${item.memCode}','${item.projId}' )">수락</button>
-                                                            <button type="button" class="btn btn-danger btn-sm"
-                                                                    onclick="fn_refusalInvitation('${item.memCode}','${item.projId}' )">거절
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- users edit account form ends -->
-                    </div>
-
-
-                    <!---------------------------------------------------------------------------------------------------->
-                    <div class="tab-pane" id="information"
-                         aria-labelledby="information-tab" role="tabpanel">
-                        <!-- users edit Info form start -->
-                        <!-- users edit Info form ends -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="card" style="width: 65%;height: 250px;margin-top: 100px;">
-        <div class="card-content">
-            <div class="card-body">
-                <ul class="nav nav-tabs mb-2" role="tablist">
-                    <li class="nav-item"><a
-                            class="nav-link d-flex align-items-center active" id="invite-tab"
-                            data-toggle="tab" href="#invite" aria-controls="invite"
-                            role="tab" aria-selected="true"> <i
-                            class="feather icon-user mr-25"></i><span
-                            class="d-none d-sm-block">신청한 프로젝트</span>
-                    </a></li>
-                    <li class="nav-item"><a
-                            class="nav-link d-flex align-items-center" id="apply-tab"
-                            data-toggle="tab" href="#apply" aria-controls="apply" role="tab"
-                            aria-selected="false"> <i class="feather icon-info mr-25"></i><span
-                            class="d-none d-sm-block">신청한 회원</span>
-                    </a></li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="invite"
-                         aria-labelledby="invite-tab" role="tabpanel">
-                        <!-- users edit account form start -->
-                        <form novalidate>
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="card" style="">
-                                    <div class="card-content">
-                                        <div class="table-responsive">
-                                            <table id="recent-orders"
-                                                   class="table table-hover mb-0 ps-container ps-theme-default">
-                                                <thead>
-                                                <tr>
-                                                    <th>번호</th>
-                                                    <th>프로젝트명</th>
-                                                    <th>신청인</th>
-                                                    <th>승인 여부</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <c:forEach var="item" items="${projectsApplied}" varStatus="status">
-                                                    <tr>
-                                                        <td class="text-truncate">${status.count}</td>
-                                                        <td class="text-truncate"><a href="#">${item.projId}</a></td>
-                                                        <td class="text-truncate">${mvo.member.memName}</td>
-                                                        <td class="text-truncate"><span
-                                                                class="badge badge-warning">대기중</span>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- users edit account form ends -->
-                    </div>
-                    <div class="tab-pane" id="apply" aria-labelledby="apply-tab"
-                         role="tabpanel">
-                        <!-- users edit Info form start -->
-                        <form novalidate>
-                            <div class="col-xl-8 col-lg-12">
-                                <div class="card" style="">
-                                    <div class="card-content">
-                                        <div class="table-responsive">
-                                            <table id="recent-orders"
-                                                   class="table table-hover mb-0 ps-container ps-theme-default">
-                                                <thead>
-                                                <tr>
-                                                    <th>번호</th>
-                                                    <th>프로젝트명</th>
-                                                    <th>신청인</th>
-                                                    <th>초대 승인</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                <c:forEach var="item" items="${memberWhoApplied}" varStatus="status">
-                                                    <div>
-                                                    </div>
-                                                    <tr>
-                                                        <td class="text-truncate">&nbsp;${status.count}</td>
-                                                        <td class="text-truncate">${item.projId}</td>
-                                                        <td class="text-truncate">${mvo.member.memName}</td>
-                                                        <td class="text-truncate">
-                                                            <button type="button" id="sbscrMmbtn"
-                                                                    class="btn btn-success btn-sm"
-                                                                    onclick="fn_approve('${item.memCode}','${item.projId}' )">
-                                                                승인
-                                                            </button>
-                                                            <button type="button" id="companionButton"
-                                                                    class="btn btn-danger btn-sm"
-                                                                    onclick="fn_companion('${item.memCode}','${item.projId}' )">
-                                                                반려
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <!-- users edit Info form ends -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
+</body>
 
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>

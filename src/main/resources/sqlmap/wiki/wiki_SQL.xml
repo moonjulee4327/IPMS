@@ -19,7 +19,8 @@
 	<insert id="insertWiki" parameterType="com.ipms.proj.wiki.vo.WikiVO">
 	
 		<selectKey keyProperty="wikiId" order="BEFORE" resultType="string"> 
-		select NVL((max(wiki_id)+1),0) from wiki
+		SELECT NVL(MAX(WIKI_ID+1),1)
+		FROM wiki
 		</selectKey>
 		
 		INSERT INTO wiki (

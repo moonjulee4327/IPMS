@@ -22,8 +22,8 @@ textarea:disabled {
 
 /*month/week/day*/
   .fc-button-active{
-	border-color: #FFE1E6 		!important;
-	background-color: #FFE1E6 	!important;
+	border-color: #02b5b8 		!important;
+	background-color: #02b5b8 	!important;
 	color: #000 				!important;
 	font-weight: bold 			!important;
 }
@@ -131,7 +131,7 @@ function stringFormat(p_val){
 	   					start:list[i]['indvSchdStrtDate'],		// 시작일
 	   					end:list[i]['indvSchdEndDate'],			// 종료일
 	   					indvSchdCts:list[i]['indvSchdCts'],		// 내용
-	   					color: '#EEBACB'
+	   					color: '#02b5b8'
 		   			  	});//end arr
 		   			  	
 		   			  	
@@ -201,11 +201,16 @@ function stringFormat(p_val){
 </script>
 </head>
 <body>
-	<button type="button" class="btn btn-secondary btn-round mr-1 mb-1" data-toggle="popover" data-placement="right" data-container="body" 
-	data-original-title="캘린더 이용 안내" data-content="개인의 프로젝트 상·하위 일감 및 일정을 확인할 수 있습니다. 상위 일감은 보라색, 하위 일감은 하늘색, 개인 일정은 분홍색으로 표시됩니다. 일정은 시간 관리가 가능하며, 일감은 조회만 가능합니다.">
-    <i class="fa fa-question-circle"></i></button>
-	<div id="calendar"
-		style="width: 1000px; margin: auto; background-color: white;"></div>
+		<div>
+			<button type="button" class="btn btn-secondary btn-round mr-1 mb-1" data-toggle="popover" data-placement="right" data-container="body" 
+			data-original-title="캘린더 이용 안내" data-content="개인의 프로젝트 상·하위 일감 및 일정을 확인할 수 있습니다. 프로젝트 일감은 조회만 가능합니다. 개인 일정은 시간 관리가 가능하며, 클릭 또는 드래그하여 날짜를 선택할 수 있습니다.">
+			<i class="fa fa-question-circle"></i></button>
+			<span class="fc-daygrid-event-dot" style="background-color: #8299D8; border-color: #8299D8; color: white;">상위 일감</span>
+			<span class="fc-daygrid-event-dot" style="background-color: #CFE4F2; border-color: #CFE4F2; color: #135C94">하위 일감</span>
+			<span class="fc-daygrid-event-dot" style="background-color: rgb(2, 181, 184); border-color: rgb(2, 181, 184); color: white;">개인 일정</span>
+		</div>
+	<div class="row" id="calendar"
+		style="width: 1050px; margin: auto; background-color: white;"></div>
 
 	<!-- 일정 등록 모달 창 시작 -->
 	<!-- insertModal -->
@@ -235,7 +240,7 @@ function stringFormat(p_val){
 					</div>
 					<div class="col-3">
 					<div class="form-group mStart">
-						<label for="indvSchdStrtDate">종료 시간</label>
+						<label for="indvSchdStrtDate">시작 시간</label>
 						<select class="form-control" id="indvSchdStrtDate" onchange="startChange()">
 							<option value="06:00">06:00</option>
 							<option value="06:30">06:30</option>
@@ -407,7 +412,7 @@ function stringFormat(p_val){
 		// 이미 등록된 일정을 클릭할 경우 - (일감: only 조회 / 개인 일정: 조회,수정(저장),삭제 가능
 		console.log("g_arg: ",g_arg);
 		if(g_arg.event != undefined) {
-			alert("일정 이미 있음");
+// 			alert("일정 이미 있음");
 
 			console.log("일정 있음 event:",g_arg.event);
 			console.log("일정 제목",$('.insertModal #taskId').val());
@@ -417,7 +422,7 @@ function stringFormat(p_val){
 			// taskId 정보가 없으면 일감
 			if(g_arg.event.extendedProps.taskId != undefined) {
 
-				alert("이것은 일감!")
+// 				alert("이것은 일감!")
 
 				$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일감 조회</h4>");
 				$('#mTitle').html("<label for='taskTitle'>일감 제목</label><input type='text' class='form-control' id='taskTitle' name='taskTitle' disabled>");
@@ -439,7 +444,7 @@ function stringFormat(p_val){
 				
 			// taskId가 없으면 개인 일정으로 인식
 			} else {
-				alert("개인 일정");
+// 				alert("개인 일정");
 				console.log("else문",$('.insertModal #taskId').val());
 
 				$('#modalTitle').html("<h4 class='modal-title' id='modalTitle'>일정 조회");
@@ -471,7 +476,7 @@ function stringFormat(p_val){
 
 		// 새 일정(빈 곳 클릭)을 추가하는 경우 - 일정 새로 추가 가능	
 		} else {
-			alert("일정 새로 추가");
+// 			alert("일정 새로 추가");
 
 			let indvDt = g_arg.startStr.substr(0, 10); // 클릭한 날짜 시작일 띄우기!!! (ex) 26일 누르면 2022-12-26
 			let indvDt2 = g_arg.endStr.substr(0, 10); // 클릭한 날짜 종료일 띄우기!!!
@@ -533,8 +538,8 @@ function stringFormat(p_val){
 		$('.insertModal .closeBtn').css('display', 'none');
 		$('.insertModal .mDt').css('display', 'block');
 		$('.insertModal .mDt2').css('display', 'block');
-		$('.insertModal .mStart').css('display', 'inline-block');
-		$('.insertModal .mEnd').css('display', 'inline-block');
+		$('.insertModal .mStart').css('display', 'block');
+		$('.insertModal .mEnd').css('display', 'block');
 	}
 	
 	// 모달창 show

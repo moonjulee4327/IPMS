@@ -49,18 +49,38 @@
 		AND QNA_NUM = #{qnaNum}
 	</select>
 	
-<!-- 	<update id="adminSvcQaAUpdate" parameterType="com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaAVO"> -->
+<!-- 	<select id="adminSvcQaACommentSelect"> -->
+		
+<!-- 	</select> -->
+	
+	<insert id="adminSvcQaACommentInsert" parameterType="com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaACommentVO">
+		INSERT INTO QNA_ANSW(QNA_NUM
+			, QNA_ANSW_CTS
+			, QNA_ANSW_WRITE_DATE) 
+		VALUES(#{qnaNum}
+			, #{qnaAnswCts}
+			, SYSDATE)
+	</insert>
+	
+	<select id="adminSvcQaACommentSelect" parameterType="string" resultType="com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaACommentVO">
+		SELECT QNA_NUM
+		    , QNA_ANSW_CTS
+		    , QNA_ANSW_WRITE_DATE
+		FROM QNA_ANSW
+		WHERE QNA_NUM = #{qnaNum}
+	</select>
+<!-- 	<update id="adminSvcQaAUpdate" parameterType="string"> -->
 <!-- 		UPDATE QNA  -->
 <!-- 		SET	QNA_TITLE = #{qnaTitle} -->
 <!-- 			, QNA_CTS = #{qnaCts} -->
 <!-- 		WHERE QNA_NUM = #{qnaNum} -->
 <!-- 	</update> -->
 	
-<!-- 	<update id="adminSvcQaADelete" parameterType="com.ipms.main.admin.adminServiceCenter.adminSvcQaA.vo.AdminSvcQaAVO"> -->
-<!-- 		UPDATE QNA  -->
-<!-- 		SET	DELETE_YN = 'y' -->
-<!-- 		WHERE QNA_NUM = #{qnaNum} -->
-<!-- 	</update> -->
+	<update id="adminSvcQaAStatusUpdate" parameterType="int">
+		UPDATE QNA 
+		SET	QNA_STATUS = '응답완료'
+		WHERE QNA_NUM = #{qnaNum}
+	</update>
 	
 </mapper>
 

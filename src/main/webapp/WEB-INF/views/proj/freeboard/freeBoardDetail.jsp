@@ -6,7 +6,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<input type="hidden" id="projBdId0" name="projBdId0" value="${param.projBdId}" />
+<%-- <input type="hidden" id="projBdId0" name="projBdId0" value="${param.projBdId}" /> --%>
 <input type="hidden" id="writer0" name="writer0" value="<sec:authentication property='principal.member.memCode'/>" />
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/join.css">
@@ -147,22 +147,16 @@
 											 <span style="font-size: 8px; color: grey;"><fmt:formatDate value="${freeboardCmtVO.projBdCmtWriteDate}" pattern="yyyy-MM-dd HH:mm" /></span>
 												<span id="fnEdit${stat.index}">
 												<!-- 로그인한 회원과 댓글 작성자가 일치하면 수정,삭제 버튼 보이게 -->
-												<c:if test="${freeboardCmtVO.writer eq mvo.member.memCode}">
+												<c:if test="${freeboardCmtVO.memCode eq mvo.member.memCode}">
 													<a style='font-size: 12px; text-decoration: underline;' 
 														onclick='fn_reCmt()' type='button' >댓글작성</a>
 													<a style="color : red; font-size: 12px; text-decoration: underline;" 
 														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')" type="button" id="cmtModify">수정</a>
 													<a style="color : grey; font-size: 12px; text-decoration: underline;" 
 														onclick="fn_delete(${freeboardCmtVO.projBdCmtId})" type="button" id="cmtDelete">삭제</a>
-<!-- 													<button type="button" class="btn btn-danger btn-sm cmtDelete" style="float:right;" id="cmtDelete"  -->
-<%-- 														onclick="fn_delete(${freeboardCmtVO.projBdCmtId})">삭제</button>&nbsp; --%>
-<!-- 													<button type="button" class="btn btn-warning btn-sm cmtModify" style="float:right; margin-right:3px;" id="cmtModify"  -->
-<%-- 														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')">수정</button> --%>
 												</c:if>
 												</span>
 												<span id="fnSave${stat.index}" style="display:none;">
-<!-- 													<button type="button" class="btn btn-secondary btn-sm" style="float:right;"  -->
-<%-- 													onclick="fn_updateGo(${freeboardCmtVO.projBdCmtId}, '${stat.index}')">등록</button>&nbsp; --%>
 													<a onclick="fn_updateGo(${freeboardCmtVO.projBdCmtId}, '${stat.index}')" style=" text-decoration: underline; width:33px; float:right;">등록</a>
 													<a href="/proj/${projId}/freeBoardDetail?projBdId=${param.projBdId}" style="text-decoration: underline; width:33px; float:right;">취소</a>
 												</span>
@@ -174,9 +168,6 @@
 												style="display:none; width:500px; height:35px;" />
 										</div>
 										<br>
-										<div style="padding-top: 10px;">
-<!-- 											<button type="button" class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button> -->
-										</div>
 										<hr>
 										<input type="hidden" class="form-control" id="projBdCmtId" name="projBdCmtId" value="${freeboardCmtVO.projBdCmtId}">
 										<input type="hidden" id="writer" name="writer" value="<sec:authentication property='principal.member.memCode'/>" />
@@ -252,7 +243,7 @@
 			
 			alert("댓글 등록 떠라");
 			
-			let projBdId = $("#projBdId0").val();						// 게시글 번호
+			let projBdId = $("#projBdId").val();						// 게시글 번호
  			let writerCmt = $("#writer0").val();						// 댓글 작성자
  			let projBdCmtCts = $("#projBdCmtCts").val();				// 댓글 내용
  			//let projBdCmtId = $("#projBdCmtId").val();					// 댓글 번호

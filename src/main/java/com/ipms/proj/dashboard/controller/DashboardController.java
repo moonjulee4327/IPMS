@@ -96,7 +96,7 @@ public class DashboardController {
 			criteria.setKeyword("%"+keyword+"%");
 		}
 		Date startDate = null;
-		if(strDate != null && !strDate.equals("undefined")) {			
+		if(strDate != null && !strDate.equals("")) {			
 			try {
 				startDate = format.parse(strDate);
 				criteria.setStartDate(startDate);;
@@ -109,7 +109,7 @@ public class DashboardController {
 		}
 		
 		Date edDate = null;
-		if(endDate !=null &&!endDate.equals("undefined")) {			
+		if(endDate !=null && !endDate.equals("")) {			
 			try {
 				edDate = format.parse(endDate);
 				criteria.setStartDate(edDate);
@@ -128,11 +128,31 @@ public class DashboardController {
 		}
 		criteria.setProjId(projId);
 		criteria.setAmount(15);
+		criteria.setAprov(aprov);
+		
 		List<TaskVO> taskList = dashBoardService.selectTaskList(criteria);
+		int finish = dashBoardService.selectTaskFinish(projId);
+		int middel = dashBoardService.selectTaskMiddle(projId);
+		int aprovResult = dashBoardService.selectTaskAprove(projId);
+		int notAprov = dashBoardService.selectTaskNot(projId);
 		
 		int total = dashBoardService.total(criteria);
 		PageVO pageVO = new PageVO(criteria, total);
-		
+		log.info("pageVO---------------------------"+pageVO);
+		/*
+		  	String keyword,String strDate,
+			String endDate,String memCode,
+			String aprov
+		 */
+		model.addAttribute("finish",finish);
+		model.addAttribute("middle",middel);
+		model.addAttribute("aprovResult",aprovResult);
+		model.addAttribute("notAprov",notAprov);
+		model.addAttribute("keyword",keyword);
+		model.addAttribute("strDate",strDate);
+		model.addAttribute("endDate",endDate);
+		model.addAttribute("memCode",memCode);
+		model.addAttribute("aprov",aprov);
 		model.addAttribute("taskList",taskList);
 		model.addAttribute("pageVO",pageVO);
 		return "proj/dashboard/taskList";
@@ -144,6 +164,25 @@ public class DashboardController {
 		Map<String, Object> map = new HashedMap();
 		map.put("projId", projId);
 		List<TaskVO> taskList = dashBoardService.selectTask(map);
+		for (TaskVO taskVO : taskList) {
+			int index = 0;
+			if(taskVO.getHighTaskId() == null) {
+				String taskId = taskVO.getTaskId(); 
+				int prges = 0;
+				int taskSeq = 0;
+				for (TaskVO taskVO2 : taskList) {
+					if(taskId.equals(taskVO2.getHighTaskId())) {
+						prges += taskVO2.getTaskPgres();
+						taskSeq++;
+					}
+				}
+				int resultPgres = (prges / taskSeq);
+				taskVO.setTaskPgres(resultPgres);
+				taskList.set(index, taskVO);
+				index++;
+			}
+		}
+		log.info("----------------taskList: "+taskList.get(0).toString());
 		return taskList;
 	}
 	

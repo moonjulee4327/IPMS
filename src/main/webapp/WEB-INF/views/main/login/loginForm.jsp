@@ -15,7 +15,7 @@
 <script>
     $(document).ready(function(){
         if(${param.error!=null}){
-           alert("다시 입력하세요");
+            alert("다시 입력하세요");
         }
     });
 </script>
@@ -79,9 +79,9 @@
                             </form>
 
                             <form action="/login" method="post">
-                            <input type="hidden" name="memEmail" value="java">
-                            <input type="hidden" name="memPasswd" value="1234">
-                            <input type="submit" value="로그인 버튼(프로젝트 리더)">
+                                <input type="hidden" name="memEmail" value="java">
+                                <input type="hidden" name="memPasswd" value="1234">
+                                <input type="submit" value="로그인 버튼(프로젝트 리더)">
                                 <sec:csrfInput/>
                             </form>
                         </div>

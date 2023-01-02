@@ -48,50 +48,77 @@
 					</div>
 					<div>
 						<table class="table table-striped table-bordered base-style table-hover">
+						<c:if test="${authCheck eq 'true' }">
 						<colgroup>
 					    	<col width="5%" />
 					        <col width="5%" />
-					        <col width="60%" />
-					        <col width="15%" />
+					        <col width="70%" />
+					        <col width="10%" />
 					        <col width="15%" />
 					    </colgroup>
 							<thead>
 								<tr role="row">
-									<c:if test="${authCheck eq 'true' }">
 										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Name: activate to sort column ascending"
-										style="width: 5px;"><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
-									</c:if>
+										aria-label="Name: activate to sort column ascending">
+										<input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
 										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Name: activate to sort column ascending"
-										style="width: 5px;">글번호</th>
+										aria-label="Name: activate to sort column ascending">글번호</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Position: activate to sort column ascending"
-										style="width: 450px;">제목</th>
+										aria-label="Position: activate to sort column ascending">제목</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Office: activate to sort column ascending"
-										style="width: 30px;">작성자</th>
+										aria-label="Office: activate to sort column ascending">작성자</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Age: activate to sort column ascending"
-										style="width: 250px;">작성일자</th>
+										aria-label="Age: activate to sort column ascending">작성일자</th>
 								</tr>
 							</thead>
+						</c:if>
+						<c:if test="${authCheck eq 'false' }">
+						<colgroup>
+					        <col width="10%" />
+					        <col width="65%" />
+					        <col width="10%" />
+					        <col width="20%" />
+					    </colgroup>
+							<thead>
+								<tr role="row">
+										<th class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Name: activate to sort column ascending">글번호</th>
+									<th class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Position: activate to sort column ascending">제목</th>
+									<th class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Office: activate to sort column ascending">작성자</th>
+									<th class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Age: activate to sort column ascending">작성일자</th>
+								</tr>
+							</thead>
+						</c:if>
 							<tbody>
 								<c:forEach var="noticeBoardVO" items="${ntSelect}" varStatus="stat">
 								<tr>
 									<c:if test="${authCheck eq 'true' }">
-									<td><input type='checkbox' id="ckbox" name="ckbox" data-projNtNum="${noticeBoardVO.projNtNum}" value="${noticeBoardVO.projNtNum}"></td>
+										<td><input type='checkbox' id="ckbox" name="ckbox" data-projNtNum="${noticeBoardVO.projNtNum}" value="${noticeBoardVO.projNtNum}"></td>
+										<td>${stat.count}</td>
+										<td style="text-align:left; color: #02b5b8;"><a href="/proj/${projId}/noticeBoardDetail?projNtNum=${noticeBoardVO.projNtNum}">${noticeBoardVO.projNtTitle}</a></td>
+										<td>${noticeBoardVO.memCode}</td>
+										<td><fmt:formatDate value="${noticeBoardVO.projNtWriteDate}"
+											pattern="yyyy-MM-dd"/></td>
 									</c:if>
-									<td>${stat.count}</td>
-									<td style="text-align:left; color: #02b5b8;"><a href="/proj/${projId}/noticeBoardDetail?projNtNum=${noticeBoardVO.projNtNum}">${noticeBoardVO.projNtTitle}</a></td>
-									<td>${noticeBoardVO.memCode}</td>
-									<td><fmt:formatDate value="${noticeBoardVO.projNtWriteDate}"
-										pattern="yyyy-MM-dd"/></td>
+									<c:if test="${authCheck eq 'false' }">
+										<td>${stat.count}</td>
+										<td style="text-align:left; color: #02b5b8;"><a href="/proj/${projId}/noticeBoardDetail?projNtNum=${noticeBoardVO.projNtNum}">${noticeBoardVO.projNtTitle}</a></td>
+										<td>${noticeBoardVO.memCode}</td>
+										<td><fmt:formatDate value="${noticeBoardVO.projNtWriteDate}"
+											pattern="yyyy-MM-dd"/></td>
+									</c:if>
 								</tr>
 								</c:forEach>
 						</table>
