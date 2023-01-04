@@ -65,7 +65,9 @@
 				 >위키 등록</a>
 				
 <!-- 			<div id="tree"></div> -->
+			<div id="treeContent" style="position: absolute;">
 			<ul id="tree" class="ztree"></ul>
+			</div>
 		</div>
 		
 	</div>
@@ -76,6 +78,7 @@
 	    var position = $(document).scrollTop();
 	    $("#treeContent").css('top',  position+45 );     
 	});
+	
 	var treeArray = new Array();
 	$('select').select2();
 	 $.ajax({
@@ -91,9 +94,9 @@
           treeArray.push({id:"-1",name:"위키홈",web:"/proj/${projId}/wiki"});
 		  for(var i=0; i<data.length ;i++){
 			if(data[i].highWikiId == null){
-				treeArray.push({id:data[i].wikiId,name:data[i].wikiTitle,web:"?wikiId="+data[i].wikiId});
+				treeArray.push({id:data[i].wikiId,name:data[i].wikiTitle.replaceAll("&nbsp;","").replaceAll("-",""),web:"?wikiId="+data[i].wikiId,open:true});
 			}else{
-				treeArray.push({id:data[i].wikiId,pId:data[i].highWikiId, name:data[i].wikiTitle,web:"?wikiId="+data[i].wikiId});
+				treeArray.push({id:data[i].wikiId,pId:data[i].highWikiId, name:data[i].wikiTitle.replaceAll("&nbsp;","").replaceAll("-",""),web:"?wikiId="+data[i].wikiId,open:true});
 			}
 			 var setting = {
 				        data: {
@@ -103,7 +106,7 @@
 				        },
 				        view: {
 				            showIcon: false,
-				            dblClickExpand: false,
+				            dblClickExpand: false
 				          },
 				        callback: {
 				            beforeClick: beforeClick  // 마우스 클릭 콜백함수 지정

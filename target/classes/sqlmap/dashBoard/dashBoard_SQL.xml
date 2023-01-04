@@ -199,9 +199,16 @@
         <if test="endDate != null">
         	AND B.TASK_END_DATE = #{endDate}
         </if>
-        <if test="aprov != null || aprov == '' ">
+        <if test="memCode != null">
+        	AND B.MEM_CODE = #{memCode}
+        </if>
+        <if test='aprov == "y"'>
+        	AND APROV_WHTH = 'y' 
+        </if>
+        <if test='aprov == "n"'>
         	AND APROV_WHTH = 'n' 
         </if>
+       
       	  	AND B.DELETE_YN = 'n'
        		ORDER BY B.TASK_STRT_DATE DESC
   		  ) A
@@ -229,7 +236,10 @@
         <if test="memCode != null">
         	AND MEM_CODE = #{memCode}
         </if>
-        <if test="aprov != null">
+        <if test="aprov.equals('y')">
+        	AND APROV_WHTH = 'y' 
+        </if>
+        <if test="aprov.equals('n')">
         	AND APROV_WHTH = 'n' 
         </if>
 		AND

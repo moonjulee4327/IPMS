@@ -64,7 +64,7 @@ public class ProjManagementController {
 		
 		log.info("ProjManaVO: " + ProjManaVO);
 
-		int total = projManagementService.getTotal();
+		int total = projManagementService.getTotal(criteria);
 		
 		ProjManaPageVO projManaPageVO = new ProjManaPageVO(criteria, total);
 		
@@ -105,6 +105,23 @@ public class ProjManagementController {
 		for(String projId : ckArr) {
 			projManaVO.setProjId(projId);
 			projManagementService.ckDelProj(projManaVO);
+		}
+		result = 1;
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@PostMapping("/ckRestoreProj")
+	public int ckRestoreProj(@RequestParam(value = "ckbox[]") List<String> ckArr, ProjManaVO projManaVO) {
+		
+		log.info("선택 복구---------------------");
+		
+		int result = 0;
+		
+		for(String projId : ckArr) {
+			projManaVO.setProjId(projId);
+			projManagementService.ckRestoreProj(projManaVO);
 		}
 		result = 1;
 		

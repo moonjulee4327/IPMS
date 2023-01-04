@@ -65,7 +65,7 @@ $("#sendbtn").on("click",function(){
               xhr.setRequestHeader(header, token);
             },
       success : function(data){
-        location.herf = "/proj/"+projId[4]+"/issueboard";
+        location.href = "/proj/"+projId[4]+"/issueboard";
 
 
 

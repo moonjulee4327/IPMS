@@ -10,10 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -70,7 +68,7 @@ public class DashboardController {
 			String pageNum,String amount,
 			String keyword,String strDate,
 			String endDate,String memCode,
-			String aprov) {
+			@RequestParam(defaultValue = "") String aprov) {
 		Criteria criteria;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		log.info("startDate: "+strDate);
@@ -121,16 +119,43 @@ public class DashboardController {
 			edDate = null;
 		}
 		
-		if(memCode != null && !memCode.equals("") && memCode.equals("my")) {
+		if(memCode != null && memCode.equals("my")) {
 			criteria.setMemCode(user.getMember().getMemCode());	
 		}else {
 			criteria.setMemCode(null);		
 		}
+		
+		if(aprov.equals("y")) {
+			criteria.setAprov("y");			
+		}else if(aprov.equals("n")) {
+			criteria.setAprov("n");
+		}else {
+			criteria.setAprov("");
+		}
 		criteria.setProjId(projId);
 		criteria.setAmount(15);
-		criteria.setAprov(aprov);
-		
+		log.info("aprov-------------------"+criteria.getAprov());
 		List<TaskVO> taskList = dashBoardService.selectTaskList(criteria);
+		if(taskList.size() == 0) {
+		for (TaskVO taskVO : taskList) {
+			int index = 0;
+			if(taskVO.getHighTaskId() == null) {
+				String taskId = taskVO.getTaskId(); 
+				int prges = 0;
+				int taskSeq = 0;
+				for (TaskVO taskVO2 : taskList) {
+					if(taskId.equals(taskVO2.getHighTaskId())) {
+						prges += taskVO2.getTaskPgres();
+						taskSeq++;
+					}
+				}
+				int resultPgres = (prges / taskSeq);
+				taskVO.setTaskPgres(resultPgres);
+				taskList.set(index, taskVO);
+				index++;
+				}
+			}
+		}
 		int finish = dashBoardService.selectTaskFinish(projId);
 		int middel = dashBoardService.selectTaskMiddle(projId);
 		int aprovResult = dashBoardService.selectTaskAprove(projId);

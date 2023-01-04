@@ -119,8 +119,8 @@
 			<!-- 이거 포문 돌리기 ㄱㄱ 시작 -->
 			<div class="bookdiv" >
 				<figure class="effect-roxy"  >
-					<div class="funcId" onclick="fn_bookmarkdel('${list.projId}')" style="position: absolute; z-index: 9999999999; right: 3px; margin-right: 10px; margin-top: 10px; " class="fonticon-wrap">
-						<i id="bookmarkdel" class="fa fa-heart"></i>
+					<div class="funcId" onclick="fn_bookmarkdel('${list.projId}')" style="position: absolute; z-index: 1400; right: 3px; margin-right: 10px; margin-top: 290px; " class="fonticon-wrap">
+						<i style="color:pink;" id="bookmarkdel" class="fa fa-heart"></i>
 					</div>
 					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
 					<figcaption >
@@ -140,16 +140,16 @@
 				
 		</div>
 		</c:forEach>
+	</div>
 			<!-- 페이징 버튼 -->
-				<div class="row" style="text-align: center;">
+				<div style="margin-bottom:50px; margin-left:570px; text-align: center;">
                         <!-- 페이징 처리 버튼 시작 -->
-                        <div class="col-sm-12 col-md-7">
                             <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
-                                <ul class="pagination"  style="text-align: center; float: right;">
+                                <ul class="pagination">
                                 
                                 	 <!-- 이전 버튼 시작 -->
                                     <c:if test="${pageVO.prev }">
-                                    <li class="paginate_button page-item previous" id="app-invoice-table_previous">
+                                    <li style="width:100px;" class="paginate_button page-item previous" id="app-invoice-table_previous">
                                         <a href="/main/bookmark?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                     </li>
                                     </c:if>
@@ -183,13 +183,11 @@
 
                                 </ul>
                             </div>
-                        </div>
                         <!-- 페이징 처리 버튼 끝 -->
                     </div>
 			<!-- 페이징 버튼 -->
 		</div>
 		
-	</div>
 
 	<div class="sidenav-overlay"
 		style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></div>

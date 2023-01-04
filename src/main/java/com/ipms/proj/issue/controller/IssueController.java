@@ -19,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,14 +41,23 @@ public class IssueController {
 	
 	@Autowired
 	IssueService issueservice;
-
+	
+	
 	@GetMapping("/{projId}/issueboard")
-	public ModelAndView issueboard(ModelAndView mav , String pageNum , String amount , @PathVariable String projId , Authentication authentication) {
-		
-		Criteria criteria;
+	public ModelAndView issueboard(
+			  @RequestParam(value="keyword", required=false,defaultValue = "") String keyword 
+			, @RequestParam(value="comple" , required=false,defaultValue = "") String comple
+			, @RequestParam(value="noncomple" , required=false,defaultValue = "") String noncomple
+			, Criteria criteria 
+			, ModelAndView mav 
+			, String pageNum 
+			, String amount 
+			, @PathVariable String projId 
+			, Authentication authentication) {
 		
 		
 		log.info("pageNum : {} , amount : {}", pageNum, amount);
+		log.info("keyword : {}", keyword);
 		
 		if(pageNum == null && amount == null) { // 처음 들어왔을 때
 			criteria = new Criteria();
@@ -58,18 +69,26 @@ public class IssueController {
 			criteria = new Criteria(Integer.parseInt( pageNum ), Integer.parseInt( amount ));
 			log.info("두번쨰 페이지 pageNum : {}",criteria.getPageNum());
 		}
+	
+		criteria.setKeyword(keyword);
+		criteria.setComple(comple);
+		criteria.setNoncomple(noncomple);
 		criteria.setProjId(projId);
 		
-		
+		log.info("criteriaVO : {}" , criteria.toString());
 		List<IssueVO> vo = this.issueservice.issuePage(criteria);
 		
 		
-		int total = issueservice.totalNum();
+		int total = issueservice.totalNum(criteria);
 		
 		PageVO pageVO = new PageVO(criteria, total);
 		
 		mav.addObject("vo", vo);
 		mav.addObject("pageVO", pageVO);
+		mav.addObject("comple", comple);
+		mav.addObject("noncomple", noncomple);
+		mav.addObject("keyword", keyword);
+		
 //		mav.addObject("vo", vo);
 		mav.setViewName("proj/issueboard/issueBoard");
 		
@@ -217,6 +236,30 @@ public class IssueController {
 		return obj ;
 	}
 	
+	@ResponseBody
+	@PostMapping("/issueStatusCompl")
+	public int issueStatusCompl(@RequestBody IssueVO vo) {
+		log.info("issueStatusUpdate VO  : {} ",vo.toString());
+		int result = this.issueservice.issueStatusCompl(vo);
+		
+		log.info("issueStatusUpdate result  : {} ",result);
+		
+		
+		return result;
+	}
+
+	@ResponseBody
+	@PostMapping("/issueStatusnonCompl")
+	public int issueStatusNonCompl(@RequestBody IssueVO vo ) {
+		log.info("issueStatusUpdate VO  : {} ",vo.toString());
+		int result = this.issueservice.issueStatusCompl(vo);
+		
+		log.info("issueStatusUpdate result  : {} ",result);
+		
+		
+		return result;
+	}
+	
 	public String getFolder() {
 		//format 지정
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -248,9 +291,6 @@ public class IssueController {
 		}
 		return false;
 	}
-	
-	
-	
-	
+
 	
 }

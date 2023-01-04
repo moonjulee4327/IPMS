@@ -118,7 +118,12 @@
                                             ${adminSvcQaA.writer}
                                         </td> 
                                         <td style=""> <!-- 답변 유무 -->
+                                        	<c:if test="${adminSvcQaA.qnaStatus eq '응답중'}">
                                             <span class="badge badge-warning">${adminSvcQaA.qnaStatus}</span>
+                                            </c:if>
+                                        	<c:if test="${adminSvcQaA.qnaStatus eq '응답완료'}">
+                                            <span class="badge badge-success">${adminSvcQaA.qnaStatus}</span>
+                                            </c:if>
                                             <!-- <span class="badge badge-success">${adminSvcQaA.qnaStatus}</span> -->
                                         </td>
                                         <td> <!-- 등록 일자 -->

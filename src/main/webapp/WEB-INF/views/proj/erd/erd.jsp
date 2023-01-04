@@ -1,8 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
@@ -35,6 +34,7 @@
 		<div class="col-7"></div>
 		<div class="col-2">
 			<select class="custom-select block" id="customSelect" onchange="fn_change()">
+				<c:if test="${fn:length(listErdVer) != 0 }">
 				<c:forEach items="${listErdVer}" var="item" varStatus="status">
 					<c:if test="${param.erdNum == null}">
 					<c:if test="${status.last == true}">
@@ -53,6 +53,7 @@
 					</c:if>					
 					</c:if>
 				</c:forEach>
+				</c:if>
 			</select>
 		</div>
 

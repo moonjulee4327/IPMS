@@ -78,17 +78,6 @@
                             </div>
                         </div>
 
-                        <form id="searchForm" action="/main/wholeProject" method="get">
-                            <select name="type">
-                                <option value="T">프로젝트 아이디</option>
-                                <option value="C">프로젝트 이름</option>
-                            </select>
-                            <input type="text" name="keyword">
-                            <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
-                            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                            <input type="submit" value="검색">
-                        </form>
-
                         <div class="text-center">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination pagination-separate pagination-round pagination-flat"

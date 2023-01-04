@@ -43,8 +43,8 @@ public class IssueServiceImpl implements IssueService {
 	}
 
 	@Override
-	public int totalNum() {
-		return this.issuemapper.totalNum();
+	public int totalNum(Criteria criteria) {
+		return this.issuemapper.totalNum(criteria);
 	}
 
 	@Override
@@ -72,6 +72,16 @@ public class IssueServiceImpl implements IssueService {
 	@Override
 	public String getUserName(String userEmail) {
 		return this.issuemapper.getUserName(userEmail);
+	}
+
+	@Override
+	public int issueStatusCompl(IssueVO vo) {
+		return this.issuemapper.issueStatusCompl(vo); 
+	}
+
+	@Override
+	public int issueStatusNonCompl(IssueVO vo) {
+		return this.issuemapper.issueStatusNonCompl(vo);
 	}
 	
 	

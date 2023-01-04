@@ -248,8 +248,8 @@ tr{
 							<div class="card-header">
 								<h3 class="content-header-title mb-0">공지사항</h3>
 								<p>
-									<span class="float-right"><a href="project-summary.html"
-										target="_blank">더보기 <i class="feather icon-arrow-right"></i>
+									<span class="float-right"><a href="/proj/${projId}/noticeBoard"
+										>더보기 <i class="feather icon-arrow-right"></i>
 									</a></span>
 								</p>
 							</div>
@@ -300,8 +300,8 @@ tr{
 								<a class="heading-elements-toggle"><i
 									class="fa fa-ellipsis-v font-medium-3"></i></a>
 								<p>
-									<span class="float-right"><a href="project-summary.html"
-										target="_blank">더보기 <i class="feather icon-arrow-right"></i>
+									<span class="float-right"><a href="/proj/${projId}/freeboard"
+										>더보기 <i class="feather icon-arrow-right"></i>
 									</a></span>
 								</p>
 							</div>
@@ -450,26 +450,49 @@ tr{
 	        		str += "<br>"
 	        	}else{
 		        	for(let i=0;i<data.length;i++){
-		        		str += `
-		        			<tr>
-								<td scope="row" align='center'>\${data[i].taskId}</td>
-								<td>\${data[i].taskTitle}</td>
-								<td>\${data[i].memCode}</td>`
-						if(data[i].taskStusCode == 'danger'){
-						str +=	`<td><span class="badge badge-danger">높음</span></td>
-								<td>\${data[i].taskPgres}</td>
-							</tr>`							
-						}
-						if(data[i].taskStusCode == 'success'){
-						str +=	`<td><span class="badge badge-success">일반</span></td>
-								<td>\${data[i].taskPgres}</td>
-							</tr>`							
-						}
-						if(data[i].taskStusCode == 'primary'){
-						str +=	`<td><span class="badge badge-warning">낮음</span></td>
-								<td>\${data[i].taskPgres}</td>
-							</tr>`							
-						}
+		        		if(data[i].highTaskId == null){
+		        			str += `
+			        			<tr>
+									<td scope="row" align='center'>\${i+1}</td>
+									<td><span class="badge">상위</span>\${data[i].taskTitle}</td>
+									<td>\${data[i].memCode}</td>`
+							if(data[i].taskStusCode == 'danger'){
+							str +=	`<td><span class="badge badge-danger">높음</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+							if(data[i].taskStusCode == 'primary'){
+							str +=	`<td><span class="badge badge-primary">일반</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+							if(data[i].taskStusCode == 'secondary'){
+							str +=	`<td><span class="badge badge-secondary">낮음</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+		        		}else{		
+			        		str += `
+			        			<tr>
+									<td scope="row" align='center'>\${i+1}</td>
+									<td>\${data[i].taskTitle}</td>
+									<td>\${data[i].memCode}</td>`
+							if(data[i].taskStusCode == 'danger'){
+							str +=	`<td><span class="badge badge-danger">높음</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+							if(data[i].taskStusCode == 'success'){
+							str +=	`<td><span class="badge badge-success">일반</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+							if(data[i].taskStusCode == 'primary'){
+							str +=	`<td><span class="badge badge-warning">낮음</span></td>
+									<td>\${data[i].taskPgres}%</td>
+								</tr>`							
+							}
+		        		}
 		        	}
 	        	}
 	        	$("#task").html(str);
@@ -493,8 +516,8 @@ tr{
 		        	for(let i=0;i<data.length;i++){
 		        		str += `
 		        			<tr>
-								<td scope="row" align='center'>\${data[i].taskId}</td>
-								<td>\${data[i].issueTitle}</td>
+								<td scope="row" align='center'>\${i+1}</td>
+								<td><a href='/proj/${projId}/issueDetail?issueId=\${data[i].taskId}'>\${data[i].issueTitle}</a></td>
 								<td>\${data[i].writer}</td>
 								<td>\${moment(data[i].issueRgstDate).format("yyyy-MM-DD")}</td>`;
 						if(data[i].issueStusCode =='해결'){							
@@ -529,7 +552,7 @@ tr{
 		        		str += `
 		        			<tr>
 								<td scope="row" align='center'>\${i+1}</td>
-								<td>\${data[i].projNtTitle}</td>
+								<td><a href='/proj/${projId}/noticeBoardDetail?projNtNum=\${data[i].projNtNum}'>\${data[i].projNtTitle}</a></td>
 								<td>\${data[i].memCode}</td>
 								<td>\${moment(data[i].projNtWriteDate).format("yyyy-MM-DD")}</td>
 							</tr>`
@@ -556,7 +579,7 @@ tr{
 		        		str += `
 		        			<tr>
 								<td scope="row" align='center'>\${i+1}</td>
-								<td>\${data[i].projBdTitle}</td>
+								<td><a href='/proj/${projId}/freeBoardDetail?projBdId=\${data[i].projBdId}'>\${data[i].projBdTitle}</a></td>
 								<td>\${data[i].writer}</td>
 								<td>\${moment(data[i].projBdWriteDate).format("yyyy-MM-DD")}</td>
 							</tr>`

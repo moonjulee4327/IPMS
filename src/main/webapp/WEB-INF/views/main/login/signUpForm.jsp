@@ -322,16 +322,14 @@
                                             <c:forEach var="item" items="${list}" varStatus="idx">
                                                 ${idx.count}
                                                 <option value="${item.commonCodeValue}" name="techStackVOList[${idx.count-1}].techStackCode">${item.commonCodeValue}</option>
-                                                <label>
-                                                </label>
                                             </c:forEach>
+                                                <input type="hidden" id="techCode" name="techStackVOList[0].techStackCode" value=""/>
                                         </optgroup>
                                     </select>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        <input type="hidden" id="techCode" name="techStackVOList[0].techStackCode" value=""/>
                         <input type="hidden" name="memAuthList[0].memAuth" value="ROLE_MEMBER"/>
                         <sec:csrfInput/>
                         <div id="formSubmit" class="form_footer" style="border-top: 1px solid #333;">
@@ -341,7 +339,6 @@
                 </div>
             </div>
         </div>
-        <input type="text" id="slider" data-asd>
     </div>
 </div>
 </body>
@@ -351,13 +348,12 @@
         const texts = [];
         var opts = ph.options;
         for (i = 0; i < opts.length; i++) {
-            // console.log(opts[i].selected);
             if (opts[i].selected) {
                 values.push(opts[i].value);
                 texts.push(opts[i].value);
             }
         }
-        $("#techCode").val(values.join());
+        $("#techCode").val(values);
         console.log(values);
     }
 </script>

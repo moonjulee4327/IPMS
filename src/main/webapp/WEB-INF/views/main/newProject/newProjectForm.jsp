@@ -19,30 +19,6 @@
     <script src="/resources/js/join.js"></script>
     <script src="/resources/js/common.js"></script>
     <script>
-
-        $(document).ready(function () {
-            $("#uploadBtn").on("click", function (e) {
-                var formData = new FormData();
-                var inputFile = $("input[name='uploadFile']");
-                var files = inputFile[0].files;
-                for (var i = 0; i < files.length; i++) {
-                    formData.append("uploadFile", files[i]);
-                }
-                $.ajax({
-                    url: '/main/uploadAjaxAction',
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    type: 'POST',
-                    beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
-                        xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-                    },
-                    success: function (result) {
-                        alert("성공");
-                    }
-                })
-            })
-        })
     </script>
 </head>
 <body>
@@ -59,13 +35,6 @@
                     <div id="itemList" class="page_aticle order_goodslist">
                         <ul class="list_product">
                             <li>
-                                <div class="thumb">
-                                    <img src="/resources/images/IPMSlogo.png">
-                                </div>
-                                <%--                                <div class='uploadResult'>--%>
-                                <%--                                    <ul>--%>
-                                <%--                                    </ul>--%>
-                                <%--                                </div>--%>
                                 <div class="name">
                                     <div class="inner_name">
                                         <form action="/main/newProjectPost" method="post" enctype="multipart/form-data">
@@ -147,7 +116,7 @@
                         <input type="hidden" name="" value="${mvo.member}"/>
                     </sec:authorize>
                     <sec:csrfInput/>
-                    <div class="tit_section">
+                    <div class="tit_section" style="margin-left: 400px;">
                         <input type="submit" value="등록하기" class="btn_payment">
                     </div>
 

@@ -136,9 +136,7 @@
 							
 								<div class="form-group">
 									<label id="cardtitle">Card Title</label> 
-									<input type="text" id="taskTitle"
-										name="taskTitle" class="form-control edit-kanban-item-title"
-										placeholder="일감제목 작성">
+									<input type="text" id="taskTitle" name="taskTitle" class="form-control edit-kanban-item-title" placeholder="일감제목 작성">
 										<input type="hidden" id="taskId" name="taskId" value=""/>
 								</div>
 
@@ -400,9 +398,9 @@
 										<div id="imbtn" class="form-group">
 											<label>중요도</label> 
 											<select onchange="chageLangSelect(this.value)" name="taskStusCode" id="taskStusCode" class="form-control text-white bg-primary">
-												<option value="primary" class="bg-primary" selected="selected">일반</option>
-												<option value="danger" class="bg-danger">높음</option>
-												<option value="secondary" class="bg-secondary">낮음</option>
+												<option id="nomal" value="primary" class="bg-primary" selected="selected">일반</option>
+												<option id="high" value="danger" class="bg-danger">높음</option>
+												<option id="low" value="secondary" class="bg-secondary">낮음</option>
 											</select>
 										</div>
 									</div>
@@ -449,15 +447,21 @@
 											<button id="mbmodifybtn" type="reset" class="btn btn-warning mr-1">
 												<i class="icon-refresh mr-50"></i> <span>수정</span>
 											</button>
-										</div>	
+											<button id="mbmodimode" type="reset" class="btn btn-warning mr-1">
+												<i class="icon-refresh mr-50"></i> <span>수정모드 전환</span>
+											</button>
+										</div>
+										<div>	
+											<button id="btndel" type="reset" class="btn btn-danger mr-1">
+												<i class="feather icon-trash-2 mr-50"></i> <span>삭제</span>
+											</button>
+										</div>
 							</div>
 
 
 						<!-- 기존에 있던 버튼 -->
 						<div id="tdiv" class="card-footer">
-							<button id="btndel" type="reset" class="btn btn-danger mr-1">
-								<i class="feather icon-trash-2 mr-50"></i> <span>삭제</span>
-							</button>
+							
 							<button id="btnsave" class="btn btn-primary glow">
 								<i class="feather icon-play mr-50"></i> <span>저장</span>
 							</button>

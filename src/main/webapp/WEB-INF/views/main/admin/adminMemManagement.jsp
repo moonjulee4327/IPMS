@@ -126,7 +126,7 @@
 							<div class="row" style="margin: auto; padding-top:5px;">
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
-										<button type="button" class="btn btn-secondary btn-sm"
+										<button type="button" class="btn btn-secondary btn-sm" id="selectDel"
 											style="background-color: #546E7A; color: white;">탈퇴 처리
 										</button>
 									</div>
@@ -224,6 +224,55 @@ $(document).ready(function() {
 		let category = $("#searchCategory").val();
 		location.href = '?keyword='+keyword+'&category='+category;
 	});
+	
+	$(function(){
+		
+		// 체크박스 전체 선택
+		$("#allCkbox").on("click",function(){
+			
+			if($("#allCkbox").prop("checked")) {
+			//	$("#ckbox").prop("checked", true);
+				$("input[type=checkbox]").prop("checked",true);
+			} else {
+			//	$("#ckbox").prop("checked", false);
+				$("input[type=checkbox]").prop("checked",false);
+			}
+		});
+
+		// 선택 삭제 ---------------------------
+		$("#selectDel").on("click",function(){
+			
+			var confirmDel = confirm("선택한 회원을 탈퇴 처리 하시겠습니까?");
+
+			if(confirmDel) {
+				
+				var ckArr = new Array();
+
+				$("input[id='ckbox']:checked").each(function(){
+					ckArr.push($(this).attr("data-projId"));
+				});
+
+				$.ajax({
+					url: "/main/ckDelMem",
+					type: "post",
+					data: {ckbox : ckArr},
+					beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+			                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		 			},
+					success: function(result){
+						if(result == 1) {
+							alert("탈퇴 처리 하였습니다.")
+							location.reload();
+						} else {
+							alert("실패");
+						}
+					}
+				});	// ajax end
+			} // if end
+		});
+		
+	});
+		
 
 </script>
 

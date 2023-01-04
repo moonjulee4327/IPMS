@@ -54,12 +54,12 @@
                     , PROJ_IMG_ROUTE
                     , DELETE_WHTH
                     FROM PROJ P
-                    <if test="keyword =! null || keyword != ''">
+                    <if test="keyword != null and keyword != ''">
                     	<if test="category.equals('projName')">
                     		WHERE PROJ_NAME LIKE #{keyword}
                     	</if>
                     	<if test="category.equals('memCode')">
-                    		WHERE MEM_CODE LIKE #{keyword}
+                    		WHERE MEM_CODE IN (SELECT MEM_CODE FROM MEM WHERE MEM_NAME LIKE #{keyword})
                     	</if>
                     </if>
                     ORDER BY PROJ_CREATN_DATE DESC) A )
@@ -73,10 +73,10 @@
 		FROM PROJ
 		<if test="keyword != null and keyword != ''">
 			<if test="category.equals('projName')">
-				WHERE PROJ_NAME LIKE #{projName}
+				WHERE PROJ_NAME LIKE #{keyword}
 			</if>
 			<if test="category.equals('memCode')">
-				WHERE MEM_CODE LIKE #{memCode}
+				WHERE MEM_CODE LIKE #{keyword}
 			</if>
 		</if>
 	</select>
@@ -127,6 +127,13 @@
 	<update id="ckDelProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
 		UPDATE PROJ
 		SET DELETE_WHTH = 'y'
+		WHERE PROJ_ID = #{projId}
+	</update>
+	
+	<!-- 체크박스 복구 -->
+	<update id="ckRestoreProj" parameterType="com.ipms.main.admin.projManagement.vo.ProjManaVO">
+		UPDATE PROJ
+		SET DELETE_WHTH = 'n'
 		WHERE PROJ_ID = #{projId}
 	</update>
 	

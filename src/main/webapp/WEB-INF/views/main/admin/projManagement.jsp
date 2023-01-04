@@ -63,7 +63,10 @@
 														<input type="search" id="search-contacts"
 														class="form-control" placeholder="Search">
 													</div>
-													<div class="col-4">
+													<div class="col-3">
+														<input type="date" class="form-control" id="searchDate">
+													</div>
+													<div class="col-1">
 														<button type="button" class="btn btn-secondary" id="searchBtn">검색</button>
 													</div>	
 												</div>
@@ -76,7 +79,7 @@
 										<button type="button"
 											class="btn btn-outline-secondary dropdown-toggle"
 											data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false">진행 여부 선택</button>
+											aria-expanded="false">진행 상태 정렬</button>
 										<div class="dropdown-menu" x-placement="bottom-start"
 											style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
 											<a class="dropdown-item" href="#">취소</a> <a
@@ -132,8 +135,10 @@
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
 									<div style="float: left;">
-										<button type="button" class="btn btn-secondary btn-sm" id="selectDel"
-											style="background-color: #546E7A; color: white;">선택 삭제</button>
+										<button type="button" class="btn btn-danger btn-sm" id="selectDel"
+											style="background-color: #546E7A; color: white;">삭제</button>
+										<button type="button" class="btn btn-secondary btn-sm" id="ckRestoreProj"
+											style="background-color: #546E7A; color: white;">복구</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
 										id="DataTables_Table_0_paginate" style="padding-left: 470px;">
@@ -162,6 +167,7 @@
 										<c:if test="${pageVO.next}">
 										<li class="paginate_button page-item next"
 											id="DataTables_Table_0_previous"><a href="/main/projManagement?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
+														
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
 											tabindex="0" class="page-link">다음</a></li>
 										</c:if>
@@ -197,11 +203,6 @@
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/pages/app-contacts.js"></script>
 	<!-- END: Page JS-->
 
-</body>
-<!-- END: Body-->
-
-</html>
-
 <script>
 
 	function f_projInfo(param) {
@@ -218,6 +219,7 @@
 	$("#searchBtn").on("click",function(){
 		let keyword = $("#search-contacts").val();
 		let category = $("#searchCategory").val();
+	//	let date = $("#searchDate").val();
 		location.href = '?keyword='+keyword+'&category='+category;
 	});
 	
@@ -265,11 +267,45 @@
 					}
 				});	// ajax end
 			} // if end
+		});
+			
+		// 선택 복구 ---------------------------
+		$("#ckRestoreProj").on("click",function(){
+			
+			var confirmDel = confirm("선택한 프로젝트를 복구하시겠습니까?");
+
+			if(confirmDel) {
+				
+				var ckArr = new Array();
+
+				$("input[id='ckbox']:checked").each(function(){
+					ckArr.push($(this).attr("data-projId"));
+				});
+
+				$.ajax({
+					url: "/main/ckRestoreProj",
+					type: "post",
+					data: {ckbox : ckArr},
+					beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+			                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		 			},
+					success: function(result){
+						if(result == 1) {
+							alert("복구하였습니다.")
+							location.reload();
+						} else {
+							alert("복구 실패");
+						}
+					}
+				});	// ajax end
+			} // if end
 
 		}); // ---------------------------------
-
+		
 	});
-
-
-
 </script>
+
+</body>
+<!-- END: Body-->
+
+</html>

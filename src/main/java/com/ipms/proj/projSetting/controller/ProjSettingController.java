@@ -31,13 +31,20 @@ public class ProjSettingController {
         return this.projSettingService.projectCreate(projVO, uploadFile);
     }
 
+    //프로젝트 탈퇴하기
+    @ResponseBody
+    @GetMapping(value = "/withdrawalProject")
+    public int withdrawalProject(String projId){
+        return this.projSettingService.withdrawalProject(projId);
+    }
+
 
     @ResponseBody
-    @RequestMapping(value = "/VerifyRecaptcha", method = RequestMethod.POST)
+    @RequestMapping(value = "/VerifyReCapcha", method = RequestMethod.POST)
     public int VerifyRecaptcha(HttpServletRequest request) {
 
         // 시크릿 키를 캡챠를 받아올수 있는 Class에 보내서 그곳에서 값을 출력한다
-        VerifyReCapcha.setSecretKey(""); // 개인 고유 시크릿 키라서 유출되면 안 돼요!!!
+        VerifyReCapcha.setSecretKey("6LdMkrYjAAAAAHaxLoHA7pqQ0Vcs3w5WS5wEzd5W"); // 개인 고유 시크릿 키라서 유출되면 안 돼요!!!
 
         String gRecaptchaResponse = request.getParameter("recaptcha");
 

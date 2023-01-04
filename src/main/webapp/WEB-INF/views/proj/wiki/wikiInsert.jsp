@@ -74,11 +74,11 @@ $(document).ready(function() {
 		<input type="hidden" name="projId" value="${projId}">
 		<input type="hidden" name="memCode" value="${mvo.member.memCode}">
 		<div class="form-actions right">
-			<button type="reset" class="btn btn-warning mr-1">
-				<i class="feather icon-x"></i> Cancel
+			<button type="reset" class="btn btn-warning mr-1" onclick="location.href = document.referrer;">
+				<i class="feather icon-x"></i> 뒤로가기
 			</button>
-			<button type="submit" class="btn btn-primary">
-				<i class="fa fa-check-square-o"></i> Save
+			<button type="submit" class="btn btn-secondary">
+				<i class="fa fa-check-square-o"></i> 저장
 			</button>
 		</div>
 	</form>

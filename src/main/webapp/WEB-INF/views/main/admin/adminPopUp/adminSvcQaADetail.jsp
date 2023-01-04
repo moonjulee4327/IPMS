@@ -56,6 +56,7 @@
 <!-- END: Custom CSS-->
 <script type="text/javascript"
 	src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/join.css">
 </head>
@@ -80,24 +81,22 @@
 					</div>
 					<br><br><br>
 					<hr>
-					<form class="form-horizontal" action="/main/adminPopUp/adminSvcQaAReplyInsert" method="post">
-						<div class="row">
-							<input type="hidden" id="qnaNum" name="qnaNum" value="${adminSvcQaAVO.qnaNum}">
-							<div class='col-sm-10'>
-								<input type="text" class="form-control" id="qnaAnswCts" name="qnaAnswCts" placeholder="답변을 입력하세요." />
-							</div>
-							<div class='col-sm-2'>
-								<button type="submit" class="btn btn-secondary" style="width: 150px;" id="repAdd">답변 등록</button>
-							</div>
+					<div class="row">
+						<input type="hidden" id="qnaNum" name="qnaNum" value="${adminSvcQaAVO.qnaNum}">
+						<div class='col-sm-10'>
+							<input type="text" class="form-control" id="qnaAnswCts" name="qnaAnswCts" placeholder="답변을 입력하세요." />
 						</div>
-						<sec:csrfInput/>
-					</form>
+						<div class='col-sm-2'>
+							<button type="submit" class="btn btn-secondary" style="width: 150px;" id="repAdd">답변 등록</button>
+						</div>
+					</div>
 					<hr>
 					<div class="" style="color: #455DBD; font-size: 15px;">
 						Comments&nbsp;<i class="fa fa-comment fa"></i>
 					</div>
 					<br>
-					<div class="card">
+					<div id="replyDiv" class="card">
+					<c:if test="${adminSvcQaACommentVO.qnaAnswCts ne null}">
 						<h4 class="card-title" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;"><i class="fa fa-user-o"></i>&nbsp;&nbsp;관리자&nbsp;&nbsp;<div style="font-size: 8px;"><fmt:setLocale value="ko_kr"/><fmt:formatDate value="${adminSvcQaACommentVO.qnaAnswWriteDate}" pattern="yyyy-MM-dd"/></div></h4>
 						
 						<div class="card-content">
@@ -105,6 +104,7 @@
 							<a style=' color : red; font-size: 12px; text-decoration: underline;' type='button'>삭제</a>
                             <a style='color : grey; font-size: 12px; text-decoration: underline;' type='button'>수정</a>
 						</div>
+					</c:if>
 					</div>
 				</div>
 			</div>
@@ -137,11 +137,47 @@
 		src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/ui/breadcrumbs-with-stats.js"></script>
 	<!-- END: Page JS-->
 	<script>
-		// 팝업 창 닫기~~
+		// 팝업 창 닫기
 		function f_close() {
-		
 			window.close();
 		}
+	
+		// 관리자 Q&A 댓글  
+		let repAddBtn = document.getElementById("repAdd");
+		let replyDiv = document.getElementById("replyDiv");
+		let xhr;
+
+		repAddBtn.addEventListener("click", () => {
+			let qnaAnswCts = document.getElementById("qnaAnswCts").value;
+			let qnaNum = document.getElementById("qnaNum").value;
+
+			let data = JSON.stringify({
+				"qnaNum" : qnaNum,
+				"qnaAnswCts" : qnaAnswCts
+			});
+
+			let token = "${_csrf.token}";
+			let header = "${_csrf.headerName}";
+
+			xhr = new XMLHttpRequest();
+
+			xhr.open("post", "/main/adminPopUp/adminSvcQaAReplyInsert", true);
+			
+			xhr.setRequestHeader(header, token);
+			xhr.setRequestHeader('Content-Type', 'application/json');
+			xhr.send(data);
+
+			xhr.onload = () => {
+				if(xhr.status == 200){
+					console.log(xhr.response);
+					console.log("댓글 작성 완료");
+					location.reload();
+					opener.location.reload();
+				}
+			}
+
+		})
+
 	</script>
 </body>
 </html>

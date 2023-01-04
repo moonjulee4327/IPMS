@@ -8,6 +8,32 @@ console.log("projId : " + projId[4]);
 
 $(function(){
 
+  $("#statuschange").on("change" , function(){
+    data = {
+      issueStusCode :  $("#statuschange").val()
+    }
+
+
+	$.ajax({ 
+	    type : 'POST',
+	    url : '/proj/'+projId[4]+'/IssueStusChange',
+	    contentType : "application/json;  charset=utf-8",
+	    async : false,
+	    data :  JSON.stringify(data) ,
+	    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+	      xhr.setRequestHeader(header, token);
+	    },
+	    success : function(result) {
+	      location.reload();
+	  },
+	  error: function (jqXHR, textStatus, errorThrown)
+	  {
+	      alert("실패다");
+	        console.log(errorThrown,textStatus);
+	  }
+	});
+})
+
   $("#repAdd").on("click", function(){
     // alert("댓글 등록 이벤트 IN")
     
@@ -332,3 +358,70 @@ $("#issueupbtn").on("click", function(){
   location.href = '/proj/'+projId[4]+'/issueUpdate';
 })
 
+$("#comple").on("click",function(){ // 해결
+  data ={
+    "issueId" : $("#issueId").text() ,
+    "issueStusCode" : $("#comple").text()
+  }
+  
+  console.log("data : " , data);
+  
+  $.ajax({ 
+    type : 'POST',
+    url : '/proj/issueStatusCompl',
+    contentType : "application/json;  charset=utf-8",
+    async : false,
+    data :  JSON.stringify(data) ,
+    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+      xhr.setRequestHeader(header, token);
+    },
+    success : function(result) {
+      if(result == 1 )
+        {
+          $("#noncomple").removeAttr("active");
+          $("#comple").attr("class","active");
+        }
+        
+        location.reload();
+      },
+      error: function (jqXHR, textStatus, errorThrown)
+    {
+      alert("실패다");
+          console.log(errorThrown,textStatus);
+        }
+      });
+})
+
+$("#noncomple").on("click",function(){ // 미해결
+  data ={
+    "issueId" : $("#issueId").text(),
+    "issueStusCode" : $("#noncomple").text()
+  }
+
+  console.log("data : " , data);
+
+    $.ajax({ 
+      type : 'POST',
+      url : '/proj/issueStatusnonCompl',
+      contentType : "application/json;  charset=utf-8",
+      async : false,
+      data :  JSON.stringify(data) ,
+      beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+        xhr.setRequestHeader(header, token);
+      },
+      success : function(result) {
+        if(result == 1 )
+        {
+          $("#noncomple").attr("class","active");
+          $("#comple").removeAttr("active");
+        }
+
+        location.reload();
+    },
+    error: function (jqXHR, textStatus, errorThrown)
+    {
+        alert("실패다");
+          console.log(errorThrown,textStatus);
+    }
+  });
+})

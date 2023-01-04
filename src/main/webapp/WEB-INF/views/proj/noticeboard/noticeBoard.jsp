@@ -35,9 +35,12 @@
 						<div
 							style="float: right; padding-right: 10px; padding-bottom: 10px;"
 							class="input-group col-3">
+							<select class="selectpicker" id="searchCategory">
+								<option value="projNtTitle">제목</option>
+								<option value="projNtCts">내용</option>
+							</select>
 							<input type="text"
-								class="form-control form-control-xl input-xl border-grey border-lighten-1 "
-								name="keyword">
+								class="form-control form-control-xl input-xl border-grey border-lighten-1" id="search-contacts">
 							<span class="input-group-append" id="button-addon2">
 								<button class="btn btn-secondary border-grey border-lighten-1"
 									type="button" id="searchBtn">
@@ -137,7 +140,7 @@
 									<ul class="pagination">
 										<c:if test="${pageVO.prev}">
 										<li class="paginate_button page-item previous"
-											id="DataTables_Table_0_previous"><a href="/proj/${projId}/noticeBoard?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}"
+											id="DataTables_Table_0_previous"><a href="/proj/${projId}/noticeBoard?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
 											tabindex="0" class="page-link">이전</a></li>
 										</c:if>
@@ -146,19 +149,19 @@
 										<c:choose>
 										<c:when test="${pageVO.pageNum eq num}">
 											<li class="paginate_button page-item active">
-												<a href="/proj/${projId}/noticeBoard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+												<a href="/proj/${projId}/noticeBoard?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
 											</li>
 										</c:when>
 										<c:otherwise>
 											<li class="paginate_button page-item">
-												<a href="/proj/${projId}/noticeBoard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+												<a href="/proj/${projId}/noticeBoard?pageNum=${num}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
 											</li>
 										</c:otherwise>
 										</c:choose>
 										</c:forEach>
 										<c:if test="${pageVO.next}">
 										<li class="paginate_button page-item next"
-											id="DataTables_Table_0_previous"><a href="/proj/${projId}/noticeBoard?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}"
+											id="DataTables_Table_0_previous"><a href="/proj/${projId}/noticeBoard?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
 											tabindex="0" class="page-link">다음</a></li>
 										</c:if>
@@ -228,6 +231,15 @@ $(function(){
 });
 
 
+</script>
+
+<script>
+
+	$("#searchBtn").on("click",function(){
+		let keyword = $("#search-contacts").val();
+		let category = $("#searchCategory").val();
+		location.href = '?keyword='+keyword+'&category='+category;
+	});
 </script>
 
 

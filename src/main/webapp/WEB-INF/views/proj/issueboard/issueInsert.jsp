@@ -5,12 +5,20 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
 <script type="text/javascript" src="/resources/js/jquery-3.6.0.js"></script>
 <script type="text/javascript" src="/resources/js/issueboardInsert.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
+<script
+	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
 <head>
 <style>
 .ck-editor__editable {
     min-height: 300px;
 }
+
+taskId {
+		max-width: 30%%;
+	}
 </style>
 
 </head>
@@ -47,21 +55,23 @@
 												</div>
 
 									<!-- 체크박스로 일감 관련된 이슈/관련없는 이슈 나눠서 일감관련에 체크할 경우에만 일감을 선택하여 연결할 수 있는 div를 밑에 뜨게 했으면 좋겠다는 의견 -->
-												<div class="form-group">
+												<br/><div class="form-group">
+												<label for="eventInput1">제목</label>
 													<div>
-														<label for="eventInput2"> 관련 일감</label><br/>
-														<select id="taskId" name="taskId"> 
-																			
-														</select>
-														
-														<span class="select2 select2-container select2-container--default" dir="ltr" data-select2-id="1" style="width: 210px;">
-														<span class="selection">
-														<span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-searchWikiId-container">
-														<span class="select2-selection__rendered" id="select2-searchWikiId-container" role="textbox" aria-readonly="true" title="검색">검색</span
-														><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-														
-														
-													</div>		
+													<!--  -->			
+													<div class="row">
+													<div class="col-4">
+													<select class="form-control" name="taskId" id="taskId">
+														<option value="" selected>검색</option>
+													</select>
+													</div>
+													<div class="col-4">
+													<button type="button" id="searchBtn" class="btn btn-icon btn-secondary mr-1 mb-1"><i class="ficon feather icon-search"></i>검색</button>
+													
+													</div>
+													</div>
+											
+													<!--  -->												
 													<br/>
 												<div class="form-group">
 													<label for="eventInput3">내용</label> 
@@ -103,5 +113,5 @@
 
 <script>
 CKEDITOR.replace('issueCts');
-
+$('select').select2();
 </script>

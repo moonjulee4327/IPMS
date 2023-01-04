@@ -44,7 +44,7 @@
 											<div
 												class="d-flex align-items-center justify-content-end justify-content-xs-start">
 												<div class="issue-date pr-2">
-													<span>작성일 : <fmt:formatDate value="${list.issueRgstDate}" pattern="yyyy-MM-dd"/></span>
+													<span>작성일  :  <fmt:formatDate value="${list.issueRgstDate}" pattern="yyyy-MM-dd"/></span>
 												</div>
 											</div>
 										</div>
@@ -54,9 +54,15 @@
 								<!-- invoice logo and title -->
 										작성자 : <span>${list.writer }</span>
 								<div class="invoice-logo-title row py-2">
-									<div class="col-6 d-flex flex-column justify-content-center align-items-start">
+									<div class="col-10 d-flex flex-column justify-content-center align-items-start">
 										<h2 class="text-primary" style="font-family: 'MICEGothic Bold';">${list.issueTitle}</h2>
 									</div>
+									
+										<div id="comnoncombtn" class="col-2" style=" display:none; float: right;">
+											<button style="width:80px;" id="comple" type="button" class="btn btn-outline-success">해결</button>
+											<button style="width:80px;" id="noncomple" type="button" class="btn btn-outline-danger">미해결</button>	
+										</div>
+									
 								</div>
 								<hr>
 								<div>일감 제목 : ${list.taskTitle}</div>
@@ -65,7 +71,9 @@
 								<hr>
 								<div>
 								<!-- 파일경로 -->
-								<img alt="사진ㅋ" src="/resources${list.filePath}">
+									<c:if test="${list.fileType eq 'image/png' || list.fileType eq 'image/jpeg' }">
+										<img alt="사진ㅋ" src="/resources${list.saveFileName}">
+									</c:if>
 								</div>
 
 								<!-- 글 내용 -->
@@ -79,22 +87,24 @@
 								<c:if test="${list.filePath != null }">
 									<div>
 										<i class="feather icon-link"></i> 첨부파일:
-										<a href="/resources${list.filePath}" download="${list.fileName}">"${list.fileName}"</a>
+										<a href="/resources${list.saveFileName}" download="${list.fileName}">"${list.fileName}"</a>
 									</div>
 								</c:if>
 								<c:if test="${list.filePath == null }">
 									<div>
-										등록된 첨부파일이 없습니다.
+										<i class="feather icon-link"></i> &nbsp;등록된 첨부파일이 없습니다.
 									</div>
 								</c:if>
 								<div style="float: right;">
-									<button type="button" class="btn btn-secondary">
-										<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
-									</button>
-									<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-secondary">
-										<i class="feather icon-edit mr-25 common-size"></i>수정
-									</a>
-									<a href="proj/issueboard" class="btn btn-primary"><i
+									<c:if test="${list.writer eq mvo.member.memName}">
+										<button type="button" class="btn btn-secondary">
+											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
+										</button>
+										<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-secondary">
+											<i class="feather icon-edit mr-25 common-size"></i>수정
+										</a>
+									</c:if>
+									<a href="/proj/${list.projId}/issueboard" class="btn btn-primary"><i
 										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 								</div>
 							</div>
@@ -138,17 +148,57 @@
 	<!-- END: Page JS-->
 <script>
 var issueId = "${issueCd}";
+var gwriter = "${list.writer}";
 var memCode = "${mvo.member.memCode}";
 var writer= "${mvo.member.memName}";
 console.log("mem: ",memCode);
-console.log(issueId);
 console.log("writer : " , writer);
+console.log(issueId);
+
+let btncheck = "${list.issueStusCode}";
+if(btncheck == '해결'){
+	$("#comple").attr("class","btn btn-outline-success active");
+}else{
+	$("#noncomple").attr("class","btn btn-outline-danger active");
+}
+
+if(gwriter == writer){
+	$("#comnoncombtn").css("display","block");
+}
+
+// if( ){
+// 	alert("해결");
+// 	console.log("해결");
+// }else{
+// 	alert("미해결");
+// 	console.log("미해결");
+// }
+
+// $("#statuschange").on("change" , function(){
+// 	$.ajax({ 
+// 	    type : 'POST',
+// 	    url : '/proj/'+projId[4]+'/IssueHighCmtInsert',
+// 	    contentType : "application/json;  charset=utf-8",
+// 	    async : false,
+// 	    data :  JSON.stringify(data) ,
+// 	    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+// 	      xhr.setRequestHeader(header, token);
+// 	    },
+// 	    success : function(result) {
+// 	      location.reload();
+// 	  },
+// 	  error: function (jqXHR, textStatus, errorThrown)
+// 	  {
+// 	      alert("실패다");
+// 	        console.log(errorThrown,textStatus);
+// 	  }
+// 	});
+// })
+	
+
 
 </script>
-<script type="text/javascript" src="/resources/js/issueboard.js">
-
-
-</script>
+<script type="text/javascript" src="/resources/js/issueboard.js"></script>
 
 
 

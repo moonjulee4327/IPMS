@@ -73,15 +73,22 @@
 		FROM MEM
 		<if test="keyword != null and keyword != ''">
 			<if test="category.equals('memEmail')">
-				WHERE MEM_EMAIL LIKE #{memEmail}
+				WHERE MEM_EMAIL LIKE #{keyword}
 			</if>
 			<if test="category.equals('memName')">
-				WHERE MEM_NAME LIKE #{memName}
+				WHERE MEM_NAME LIKE #{keyword}
 			</if>
 			<if test="category.equals('memCode')">
-				WHERE MEM_CODE LIKE #{memCode}
+				WHERE MEM_CODE LIKE #{keyword}
 			</if>
 		</if> 
 	</select>
+	
+	<!-- 체크박스 삭제 -->
+	<update id="ckDelMem" parameterType="com.ipms.main.admin.memManagement.vo.AdminMemVO">
+		UPDATE MEM
+		SET MEM_WHDRL_YN = 'y'
+		WHERE MEM_EMAIL = #{memEmail}
+	</update>
 	
 </mapper>

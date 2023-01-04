@@ -4,8 +4,7 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<script type="text/javascript"
-        src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/common.css">
 <link rel="stylesheet" href="/resources/css/join.css">

@@ -7,12 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ipms.commons.vo.Criteria;
 import com.ipms.main.admin.memManagement.service.AdminMemManagementService;
 import com.ipms.main.admin.memManagement.vo.AdminMemPageVO;
 import com.ipms.main.admin.memManagement.vo.AdminMemVO;
+import com.ipms.main.admin.projManagement.vo.ProjManaVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,7 +59,7 @@ public class AdminMemManagementController {
 		
 		log.info("adminMemListVO: " + adminMemListVO);
 		
-		int total = adminMemManagementService.getTotal();
+		int total = adminMemManagementService.getTotal(criteria);
 		
 		AdminMemPageVO adminMemPageVO = new AdminMemPageVO(criteria, total);
 		
@@ -82,6 +86,21 @@ public class AdminMemManagementController {
 		
 	}
 	
-
+	@ResponseBody
+	@PostMapping("/ckDelMem")
+	public int ckDelMem(@RequestParam(value = "ckbox[]") List<String> ckArr, AdminMemVO adminMemVO) {
+		
+		log.info("선택 삭제 ---------------------");
+		
+		int result = 0;
+		
+		for(String memCode : ckArr) {
+			adminMemVO.setMemCode(memCode);
+			adminMemManagementService.ckDelMem(adminMemVO);
+		}
+		result = 1;
+		
+		return result;
+	}
 	
 }

@@ -20,16 +20,37 @@
     <script src="/resources/js/order.js"></script>
     <script src="/resources/js/join.js"></script>
     <script src="/resources/js/common.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script>
-
-
         function handleOnChange(e) {
-            // 선택된 데이터 가져오기
             const value = e.value;
-
-            // 데이터 출력
             document.getElementById('result').val(value);
         }
+<!-- 
+        function fn_wthdrPrjct(projId){
+            alert(projId);
+            $.ajax({
+                type : 'get',
+                url : '/proj/withdrawalProject',
+                dataType : 'json',
+                data : {"projId": projId},
+                beforeSend : function(xhr) {
+                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+                },
+                success : function(data) {
+                    if(data==1){
+                        alert("프로젝트를 탈퇴 하였습니다.");
+                        location.href="/main/page";
+                    }else{
+                        alert(data);
+                        setTimeout(function(){
+                            location.reload();
+                        });
+                    }
+                }
+            });
+        }
+-->
     </script>
 </head>
 <body>
@@ -68,7 +89,7 @@
                                                     <option value='y'>공개</option>
                                                     <option value='n'>비공개</option>
                                                 </select>
-                                                <input type="hidden" id="projOpnWhth" name="projOpnWhth" value="">
+                                                <input type="hidden" id="projOpnWhth" name="projOpnWhth" value="y">
                                             </td>
                                         </tr>
 
@@ -101,10 +122,37 @@
                                 <sec:csrfInput/>
                                 <input type="hidden" name="projId" value="${projId}">
                                 <input type="submit" id="modifyBtn" value="수정하기" class="btn btn-secondary"/>
-                                <input type="button" value="탈퇴하기" class="btn btn-danger"/>
+                                <input type="button" value="해산하기" class="btn btn-danger" 
+                                	data-toggle="modal" data-target="#danger"/>
                             </c:forEach>
                         </form>
                     </div>
+                    <!------------------------------ 프로젝트 해산 Modal ---------------------------- -->
+					<div class="modal fade text-left" id="danger" tabindex="-1"
+						role="dialog" aria-labelledby="myModalLabel10"
+						aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header bg-danger white">
+									<h4 class="modal-title" id="myModalLabel10" style="text-align:center;">프로젝트 중도 해산</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<h5 style="text-align:center; padding-bottom:5px;">정말로 프로젝트를 중도 해산하시겠습니까?</h5><br>
+									<!-- 부여받은 캡차 사이트 키 -->
+									<div style="display: flex; justify-content: center;" id="iRecaptcha" class="g-recaptcha" data-sitekey="6LdMkrYjAAAAAB1bWwgum0vkjwkX9Z2C93BOwEXt"></div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-outline-danger" id="projDel" style="" onclick="check_recaptcha('${projId}')">해산하기</button>
+									<button type="button" class="btn grey btn-outline-secondary"
+										data-dismiss="modal">취소</button>
+								</div>
+							</div>
+						</div>
+					</div>
                 </div>
             </div>
         </div>
@@ -113,4 +161,42 @@
 </html>
 <script>
     CKEDITOR.replace('userinput8');
+</script>
+
+<script>
+
+
+	function check_recaptcha(projId){
+		
+		var v = grecaptcha.getResponse();
+		
+	//	alert(projId);
+	
+		if (v.length ==0) {
+			alert ("'로봇이 아닙니다.'를 체크해주세요.");
+			return false;
+			
+		}else {
+	          $.ajax({
+	                type : 'get',
+	                url : '/proj/withdrawalProject',
+	                dataType : 'json',
+	                data : {"projId": projId},
+	                beforeSend : function(xhr) {
+	                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+	                },
+	                success : function(data) {
+	                    if(data==1){
+	                        alert("프로젝트를 해산하였습니다.");
+	                        location.href="/main/page";
+	                    }else{
+	                        alert(data);
+	                        setTimeout(function(){
+	                            location.reload();
+	                        });
+	                    }
+	                }
+	            });
+		}
+	}
 </script>

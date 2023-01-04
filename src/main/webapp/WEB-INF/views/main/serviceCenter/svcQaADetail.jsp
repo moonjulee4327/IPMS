@@ -90,24 +90,24 @@
 					</form>
 					</div>
 				</div>
-				<div class="card mb-2" style="width: 1200px; height: 85px;">
-					<div class="card-body">
-						<div>
-							<form class="form-horizontal">
-								<div class="row">
-									<div class='col-sm-10'>
-										<input type="text" class="form-control" id="repInsert"
-											placeholder="댓글을 입력하세요." />
-									</div>
-									<div class='col-sm-2'>
-										<button type="button" class="btn btn-secondary"
-											style="width: 150px;">댓글 등록</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+<!-- 				<div class="card mb-2" style="width: 1200px; height: 85px;"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div> -->
+<!-- 							<form class="form-horizontal"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class='col-sm-10'> -->
+<!-- 										<input type="text" class="form-control" id="repInsert" -->
+<!-- 											placeholder="댓글을 입력하세요." /> -->
+<!-- 									</div> -->
+<!-- 									<div class='col-sm-2'> -->
+<!-- 										<button type="button" class="btn btn-secondary" -->
+<!-- 											style="width: 150px;">댓글 등록</button> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</form> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 				<div
 					class="card mb-2 card border-top-info border-top-2 box-shadow-0"
 					style="width: 1200px; height: auto;">
@@ -116,32 +116,20 @@
 						Comments&nbsp;<i class="fa fa-comment fa"></i>
 					</div>
 					<div class="card-body">
-						<form class="form-horizontal">
-							<div class="user-block">
-								<div>
-									<div style="padding-bottom: 5px;">
-										<img class="img-circle img-bordered-sm"
-											src="/resources/images/repTest.png" alt="user image"
-											style="width: 30px;"> <span class="username"> <a
-											href="#">&nbsp;김효정</a> <a href="#"
-											class="float-right btn-box-tool replyDelBtn"
-											data-toggle="modal" data-target="#delModal"><i
-												class="fa fa-times" style="color: #D32F2F;">삭제</i> </a><a
-											href="#" class="float-right btn-box-tool replyModBtn"
-											data-toggle="modal" data-target="#modModal"> <i
-												class="fa fa-edit" style="color: #00838F;">수정</i>
-										</a>
-										</span> <span class="description"></span>
-									</div>
-									<div id="repContent">ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</div>
-									<div style="padding-top: 10px;">
-										<button type="button"
-											class="btn mr-1 mb-1 btn-secondary btn-sm">ㄴ 댓글</button>
-									</div>
-									<hr>
-								</div>
+						<div id="replyDiv" class="card">
+						<c:if test="${svcQaACommentSelect.qnaAnswCts eq null}">
+							<div class="card-content">
+								아직 답변이 작성되지 않았습니다.
 							</div>
-						</form>
+						</c:if>
+						<c:if test="${svcQaACommentSelect.qnaAnswCts ne null}">
+							<h4 class="card-title" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;"><i class="fa fa-user-o"></i>&nbsp;&nbsp;관리자&nbsp;&nbsp;<div style="font-size: 8px;"><fmt:setLocale value="ko_kr"/><fmt:formatDate value="${svcQaACommentSelect.qnaAnswWriteDate}" pattern="yyyy-MM-dd"/></div></h4>
+							
+							<div class="card-content">
+								${svcQaACommentSelect.qnaAnswCts}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</div>
+						</c:if>
+						</div>
 					</div>
 				</div>
 

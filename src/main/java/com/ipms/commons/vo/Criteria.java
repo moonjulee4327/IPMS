@@ -19,6 +19,8 @@ public class Criteria {
     private String category;
     private Date searchDate;
     private String[] typeArr;
+    private String comple;
+    private String noncomple;
     
     private String aprov;
     private String projId; // issueboard - 박종환 추가

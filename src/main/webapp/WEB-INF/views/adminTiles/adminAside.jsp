@@ -50,7 +50,12 @@
 				<div class="d-inline mr-25">
 					<i class="fa fa-users"></i> &nbsp;&nbsp;전체 회원 관리
 				</div> 
-			</a> 
+			</a>
+			</a> <a href="/main/techStackManager" class="list-group-item">
+			<div class="d-inline mr-25">
+				<i class="fa fa-users"></i> &nbsp;&nbsp;기술스텍 관리
+			</div>
+		</a>
 		</div>
 		<!-- sidebar menu  end-->
 	</div>

@@ -30,9 +30,9 @@ public class ProjManagementImpl implements ProjManagementService {
 	}
 
 	@Override
-	public int getTotal() {
+	public int getTotal(Criteria criteria) {
 		
-		return this.projManagementMapper.getTotal();
+		return this.projManagementMapper.getTotal(criteria);
 	}
 
 	@Override
@@ -52,7 +52,12 @@ public class ProjManagementImpl implements ProjManagementService {
 		
 		return this.projManagementMapper.ckDelProj(projManaVO);
 	}
-	
+
+	@Override
+	public int ckRestoreProj(ProjManaVO projManaVO) {
+		
+		return this.projManagementMapper.ckRestoreProj(projManaVO);
+	}
 	
 
 }

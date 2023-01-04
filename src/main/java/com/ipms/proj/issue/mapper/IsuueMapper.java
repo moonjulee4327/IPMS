@@ -16,7 +16,7 @@ public interface IsuueMapper {
 	
 	public List<IssueVO> issuePage(Criteria criteria);
 	
-	public int totalNum();
+	public int totalNum(Criteria criteria);
 	
 	public IssueVO IssueDetail(IssueVO vo);
 	
@@ -27,4 +27,8 @@ public interface IsuueMapper {
 	public String getMemCode(String userName);
 	
 	public String getUserName(String userEmail);
+	
+	public int issueStatusCompl(IssueVO vo);
+	
+	public int issueStatusNonCompl(IssueVO vo);
 }

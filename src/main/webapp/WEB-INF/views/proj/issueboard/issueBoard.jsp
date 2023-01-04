@@ -4,12 +4,15 @@
 	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!-- BEGIN: Vendor CSS-->
-<link rel="stylesheet" type="text/css"
-	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css">
+<!-- <link rel="stylesheet" type="text/css" -->
+<!-- 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/vendors.min.css"> -->
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/tables/datatable/datatables.min.css">
-
-
+<script src="/resources/js/issueboardSearch.js"></script>
+<script>
+var header = '${_csrf.headerName}';
+var token = '${_csrf.token}';
+</script>
 <div class="content-body">
 	<!-- Base style table -->
 	<div class="row" style="text-align: center;">
@@ -26,20 +29,21 @@
 					</div>
 					<div>
 						<div><a href="/proj/${projId}/issueInsert" class="mr-1 mb-1 btn btn-outline-secondary btn-min-width">이슈 등록 <i class="icon-pencil"></i></a></div>
-						<div
-							style="float: right; padding-right: 10px; padding-bottom: 10px;"
-							class="input-group col-3">
-							<input type="text"
-								class="form-control form-control-xl input-xl border-grey border-lighten-1 "
-								placeholder="Search..." aria-describedby="button-addon2">
-							<span class="input-group-append" id="button-addon2">
-								<button class="btn btn-secondary border-grey border-lighten-1"
-									type="button">
-									<i class="feather icon-search"></i>
-								</button>
+						<form  action="/proj/${projId}/issueboard" method="get">
+						<div style="float: right; padding-right: 10px; padding-bottom: 10px;" class="input-group col-3">
+							<div style="margin-top: 10px;">
+							<input type="checkbox" name="comple" id="comple" value="comple" ><label>해결</label>
+							<input type="checkbox" name="noncomple" value="noncomple"><label>미해결</label>
+							</div>&nbsp;&nbsp;
+								<input id="keyword" name="keyword" type="text" class="form-control form-control-xl input-xl border-grey border-lighten-1 "placeholder="제목을 입력하세요" aria-describedby="button-addon2">
+								<span class="input-group-append" id="button-addon2">
+									<button id="searchbtn" class="btn btn-secondary border-grey border-lighten-1">
+										<i class="feather icon-search"></i>
+									</button>
 							</span>
 						</div>
 					</div>
+						</form>
 					<div>
 						<table class="table table-striped table-bordered base-style table-hover">
 							<thead>
@@ -68,12 +72,12 @@
 							</thead>
 							<tbody>
 							
-							<c:forEach var="vo" items="${vo}">
+							<c:forEach varStatus="status" var="vo" items="${vo}">
 								<tr>
-									<td>${vo.issueId}
-										<input type="hidden" name="taskId" id="taskId" value="${vo.taskId}">
-									</td>
-									<td><a href="/proj/${projId}/issueDetail?issueId=${vo.issueId}">${vo.issueTitle}</a></td>
+									<td>${status.count} </td>
+									
+									<td><a href="/proj/${projId}/issueDetail?issueId=${vo.issueId}&taskId=${vo.taskId}">${vo.issueTitle}</a></td>
+									
 									<td>${vo.writer}</td>
 									
 									<td>
@@ -98,7 +102,7 @@
                                     <!-- 이전 버튼 시작 -->
                                     <c:if test="${pageVO.prev }">
                                     <li class="paginate_button page-item previous" id="app-invoice-table_previous">
-                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum - 1}&keyword=${keyword}&amount=${pageVO.amount}&comple=${comple}&noncomple=${noncomple}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
                                     </li>
                                     </c:if>
                                     <!-- 이전 버튼 끝 -->
@@ -109,12 +113,12 @@
                                     <c:choose>
                                     <c:when test="${pageVO.pageNum eq num }">
 	                                    <li class="paginate_button page-item active">
-	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
+	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&keyword=${keyword}&amount=${pageVO.amount}&comple=${comple}&noncomple=${noncomple}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link info">${num}</a>
 	                                    </li>
                                     </c:when>
                                     <c:otherwise>
                                     	<li class="paginate_button page-item">
-	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
+	                                        <a href="/proj/${projId}/issueboard?pageNum=${num}&keyword=${keyword}&amount=${pageVO.amount}&comple=${comple}&noncomple=${noncomple}" aria-controls="app-invoice-table" data-dt-idx="1" tabindex="0" class="page-link">${num}</a>
 	                                    </li>
                                     </c:otherwise>
                                     </c:choose>
@@ -124,7 +128,7 @@
                                     <!-- 다음 버튼 시작 -->
                                     <c:if test="${pageVO.next }">
                                     <li class="paginate_button page-item next" id="app-invoice-table_next">
-                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+                                        <a href="/proj/${projId}/issueboard?pageNum=${pageVO.pageNum + 1}&keyword=${keyword}&amount=${pageVO.amount}&comple=${comple}&noncomple=${noncomple}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
                                     </li>
                                     </c:if>
                                     <!-- 다음 버튼 끝 -->
@@ -142,8 +146,8 @@
 </div>
 
 <!-- BEGIN: Vendor JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script>
+<!-- <script -->
+<!-- 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/vendors.min.js"></script> -->
 <!-- BEGIN Vendor JS-->
 
 <!-- BEGIN: Page Vendor JS-->
@@ -151,17 +155,13 @@
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/tables/datatable/datatables.min.js"></script>
 <!-- END: Page Vendor JS-->
 
-<!-- BEGIN: Theme JS-->
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app-menu.js"></script>
-<script
-	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/core/app.js"></script>
-<!-- END: Theme JS-->
-
 <!-- BEGIN: Page JS-->
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/tables/datatables/datatable-styling.js"></script>
 <!-- END: Page JS-->
 
 <!-- END: Body-->
+<script>
+
+</script>
 
