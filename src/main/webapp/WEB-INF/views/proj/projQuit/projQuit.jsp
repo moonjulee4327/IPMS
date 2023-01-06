@@ -30,7 +30,7 @@
 				<div class="col-12 mt-3 mb-1"></div>
 			</div>
 			<div class="row match-height">
-				<div class="col-md-6 col-sm-8" style="margin: auto;">
+				<div class="col-md-6 col-sm-8" style="margin: auto;margin-top: 100px;">
 					<div class="card border-secondary text-center bg-transparent">
 						<div class="card-content">
 							<div class="card-body pt-3">
@@ -41,13 +41,14 @@
 								<h4 style="color: #404e67;">GET OFF PROJECT</h4>
 								<hr class="my-hr2">
 								<br>
-								<form action="/proj/projQuitProcess" method="post">
+								<form action="/proj/${projId}/projQuitProcess" method="post">
 								<input type="hidden" name="projId" value="${projId}"/>
 								<input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
 								<p class="card-text">프로젝트를 하차하시려면 버튼을 누르세요.</p>
 								<br> <br> <br> <br>
 								<button id="quitBtn" class="btn btn-secondary">하차하기</button>
 								<br> <br>
+									<input type="hidden" name="projId" value="${projId}"/>
 									<sec:csrfInput/>
 								</form>
 							</div>

@@ -30,6 +30,7 @@
 <!-- END: Custom CSS-->
 
 <script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/popover/popover.js"></script>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -46,7 +47,8 @@
 		<div class="card">
 			<div class="card-head">
 				<div class="card-header">
-					<h1 class="card-title" style="font-family: 'MICEGothic Bold'">문서함</h1>
+					<h1 class="card-title" style="font-family: 'MICEGothic Bold';">문서함&nbsp;&nbsp;<button type="button" data-toggle="popover" data-placement="right" data-container="body" 
+					data-original-title="문서함 이용 안내" data-content="ㅋㅋ"><i class="fa fa-question-circle"></i></button></h1>
 					<div class="heading-elements mt-0">
 						<button id="newdir" class="btn btn-primary btn-md" data-toggle="modal"
 							data-target="#AddFoder">
@@ -265,7 +267,6 @@
 <!-- END: Page JS-->
 
 <script type="text/javascript" defer="defer">
-	
 	let treeData = [];
 	let id = 1;
 	let dataToJson = null;
@@ -281,7 +282,7 @@
 		let projId = $("#projId").data("projid");
 		console.log("projId : ", projId);
 		$.ajax({
-			url : "/proj/docTest",
+			url : "/proj/${projId}/docTest",
 			method : "get",
 			data : {
 				path : projId
@@ -307,6 +308,7 @@
 				if( !(treeData.length > 0) ) return;
 				dataToJson = JSON.stringify(treeData);
 				fn_bindJstree(dataToJson);
+				
 			}
 		});
 		
@@ -372,6 +374,7 @@
 
 	// jstree 선택시 비동기 통신
 	treeArea.on('select_node.jstree', function(e, data) {
+		console.log(data);
 		treeArea.jstree("open_node", treeArea
 				.jstree("get_selected"));
 		let parents = data.node.parents;
@@ -389,7 +392,7 @@
 		console.log("thisParent", thisParent);
 		console.log(data);
 		$.ajax({
-			url : "/proj/docTest",
+			url : "/proj/${projId}/docTest",
 			method : "get",
 			data : {
 				path : path
@@ -576,7 +579,7 @@
 
 	function fn_ajaxMoveDir(path){
 		$.ajax({
-			url : "/proj/docTest",
+			url : "/proj/${projId}/docTest",
 			method : "get",
 			data : {
 				path : path
@@ -643,7 +646,7 @@
 			beforeSend : function(xhr){
 				xhr.setRequestHeader(header, token);
 			},
-			url : "/proj/dirDocTest",
+			url : "/proj/${projId}/dirDocTest",
 			method : "post",
 			data : {path : path, dirName : dirName},
 			dataType : "json",
@@ -794,7 +797,7 @@
 				complete: function() {
 					$('#ajax_indicator').fadeOut();
 				},
-				url : "/proj/uploadFileTest",
+				url : "/proj/${projId}/uploadFileTest",
 				method : "post",
 				data : data,
 				contentType : false,
@@ -842,11 +845,11 @@
 			return;
 		}
 
-		if($("#coldivision").html() == "폴더"){
-			alert("폴더는 다운할 수 없습니다.");
-			$("input:checkbox[class='checkbx']").prop("checked", false);
-			return;
-		}
+// 		if($("#coldivision").html() == "폴더"){
+// 			alert("폴더는 다운할 수 없습니다.");
+// 			$("input:checkbox[class='checkbx']").prop("checked", false);
+// 			return;
+// 		}
 
 		for(let i=0;i<checkBoxs.length;i++){
 			fn_fileDownload(path, checkBoxs[i].value);
@@ -867,7 +870,7 @@
 		
 		const xhr = new XMLHttpRequest();
 		
-		xhr.open("POST", "/proj/fileDownload");
+		xhr.open("POST", "/proj/${projId}/fileDownload");
 		xhr.setRequestHeader(header, token);
 		xhr.responseType = "blob";
 		xhr.setRequestHeader('Content-Type', 'application/json');
@@ -935,7 +938,7 @@
 				complete: function() {
 					$('#ajax_indicator').fadeOut();
 				},
-				url : "/proj/removeFile",
+				url : "/proj/${projId}/removeFile",
 				method : "post",
 				data : data,
 				dataType : "json",
@@ -974,4 +977,10 @@
 	}
 
 
+</script>
+
+<script>
+  $( function () {
+    $( '[data-toggle="popover"]' ).popover()
+  } );
 </script>

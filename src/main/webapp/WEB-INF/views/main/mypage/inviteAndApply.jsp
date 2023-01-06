@@ -4,7 +4,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
-<script type="text/javascript" src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/resources/stack-admin-v4.0/stack-admin/src/js/core/libraries/jquery.min.js"></script>
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/common.css">
 <link rel="stylesheet" href="/resources/css/join.css">
@@ -58,7 +59,7 @@
             $.each(data, function (index, obj) {
                 listHtml += "<tr>";
                 listHtml += "<td>" + (index + 1) + "</td>";
-                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += "<td>" + obj.projName + "</td>";
                 listHtml += "<td>" + '${mvo.member.memName}' + "</td>";
                 listHtml += '<td class="text-truncate"><span class="badge badge-warning">대기중</span>';
                 listHtml += "</tr>";
@@ -96,7 +97,7 @@
                 let projId = "'" + obj.projId + "'";
                 listHtml += "<tr>";
                 listHtml += "<td>" + (index + 1) + "</td>";
-                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += "<td>" + obj.projName + "</td>";
                 listHtml += "<td>" + obj.memName + "</td>";
                 listHtml += ' <td class="text-truncate">';
                 listHtml += '<button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_approve(' + projId + ',' + memCode + ')">승인</button>';
@@ -159,7 +160,7 @@
                 let projId = "'" + obj.projId + "'";
                 listHtml += "<tr>";
                 listHtml += "<td>" + (index + 1) + "</td>";
-                listHtml += "<td>" + obj.projId + "</td>";
+                listHtml += "<td>" + obj.projName + "</td>";
                 listHtml += ' <td class="text-truncate">';
                 listHtml += '<button type="button" id="sbscrMmbtn" class="btn btn-success btn-sm" onclick="fn_acceptInvitationBtn(' + projId + ',' + memCode + ')">승인</button>';
                 listHtml += '<button type="button" id="companionButton" class="btn btn-danger btn-sm" onclick="fn_refusalInvitation(' + projId + ',' + memCode + ')">반려</button>';
@@ -193,8 +194,6 @@
         }
 
         function fn_acceptInvitationBtn(projId, memCode) {
-            alert(memCode);
-            alert(projId);
             $.ajax({
                 url: "/main/acceptInvitation",
                 type: "post",
@@ -217,8 +216,7 @@
             });
         }
 
-        function fn_refusalInvitation(memCode, projId) {
-            alert(memCode + ":" + projId);
+        function fn_refusalInvitation(projId, memCode) {
             $.ajax({
                 url: "/main/refusalInvitation",
                 type: "post",
@@ -227,12 +225,10 @@
                 beforeSend: function (xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
                     xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
                 },
-                success: function (division) {
-                    if (division == 1) {
-                        alert("취소완료");
-                    } else {
-                        alert("실패");
-                    }
+                success: function (data) {
+                    setTimeout(function () {
+                        location.reload();
+                    });
                 }
             });
         }

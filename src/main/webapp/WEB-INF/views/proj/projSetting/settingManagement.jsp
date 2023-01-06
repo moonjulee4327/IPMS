@@ -26,12 +26,12 @@
             const value = e.value;
             document.getElementById('result').val(value);
         }
-<!-- 
+
         function fn_wthdrPrjct(projId){
             alert(projId);
             $.ajax({
                 type : 'get',
-                url : '/proj/withdrawalProject',
+                url : '/proj/${projId}/withdrawalProject',
                 dataType : 'json',
                 data : {"projId": projId},
                 beforeSend : function(xhr) {
@@ -50,7 +50,7 @@
                 }
             });
         }
--->
+
     </script>
 </head>
 <body>
@@ -61,7 +61,7 @@
                 <div class="user_form">
                     <h1 class="h1_tit">프로젝트 설정</h1>
                     <div id="itemList" class="page_aticle order_goodslist">
-                        <form action="/proj/modifyProjectSettings" method="post" enctype="multipart/form-data">
+                        <form action="/proj/${projId}/modifyProjectSettings" method="post" enctype="multipart/form-data">
                             <c:forEach var="item" items="${listProjectSettings}">
                                 <div class="order_section data_orderer">
                                     <table class="goodsinfo_table">
@@ -122,8 +122,7 @@
                                 <sec:csrfInput/>
                                 <input type="hidden" name="projId" value="${projId}">
                                 <input type="submit" id="modifyBtn" value="수정하기" class="btn btn-secondary"/>
-                                <input type="button" value="해산하기" class="btn btn-danger" 
-                                	data-toggle="modal" data-target="#danger"/>
+                                <input type="button" value="해산하기" class="btn btn-danger" data-toggle="modal" data-target="#danger"/>
                             </c:forEach>
                         </form>
                     </div>
@@ -146,9 +145,9 @@
 									<div style="display: flex; justify-content: center;" id="iRecaptcha" class="g-recaptcha" data-sitekey="6LdMkrYjAAAAAB1bWwgum0vkjwkX9Z2C93BOwEXt"></div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-outline-danger" id="projDel" style="" onclick="check_recaptcha('${projId}')">해산하기</button>
-									<button type="button" class="btn grey btn-outline-secondary"
-										data-dismiss="modal">취소</button>
+									<button type="button" class="btn btn-outline-danger" id="projDel" style="" onclick="check_recaptcha('${projId}')">확인</button>
+                                    <button type="button" class="btn btn-outline-danger" id="projId" style="display: none" onclick="fn_wthdrPrjct('${projId}')">해산하기</button>
+									<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">취소</button>
 								</div>
 							</div>
 						</div>
@@ -170,33 +169,15 @@
 		
 		var v = grecaptcha.getResponse();
 		
-	//	alert(projId);
+		alert("탈퇴 후 프로젝트 복원을 원하시면 관리자에게 문의하세요.\n 탈퇴를 원하시면 해산하기를 누르세요");
 	
 		if (v.length ==0) {
 			alert ("'로봇이 아닙니다.'를 체크해주세요.");
 			return false;
 			
 		}else {
-	          $.ajax({
-	                type : 'get',
-	                url : '/proj/withdrawalProject',
-	                dataType : 'json',
-	                data : {"projId": projId},
-	                beforeSend : function(xhr) {
-	                    xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
-	                },
-	                success : function(data) {
-	                    if(data==1){
-	                        alert("프로젝트를 해산하였습니다.");
-	                        location.href="/main/page";
-	                    }else{
-	                        alert(data);
-	                        setTimeout(function(){
-	                            location.reload();
-	                        });
-	                    }
-	                }
-	            });
+	        $("#projId").css("display","block");
+	        $("#projDel").css("display","none");
 		}
 	}
 </script>

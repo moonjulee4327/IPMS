@@ -28,7 +28,6 @@
 				<div id="contentWrap">
 					<div id="contentCover">
 						<div id="chatWrap">
-							<div id="chatHeader">1234</div>
 							<div id="chatLog">
 <!-- 								<div class="anotherMsg"> -->
 <!-- 									<span class="anotherName">Jo</span> -->
@@ -101,13 +100,14 @@
 				</div>
 				<script type="text/javascript">
 				$(function(){
-					
+				window.scrollTo(0, document.body.scrollHeight);
 				 feather.replace();
 				})
 					let roomNo = "${projId}"
 					let fileReader = new FileReader();
 					let fileJson = {};
-
+					
+					//message나 file이 안담겨 있을때 유효성 체크
 					$("#sendBtn").click(function () {
 						if($("#message").val() == "" && $("#fileData").val() == ""){
 							alert("메시지를 입력해주세요");
@@ -120,12 +120,13 @@
 						$("#message").prop("type","text");
 						$("#fileName").prop("type","hidden");
 					});
-
+					
 					$("#userIdSet").click(function () {
 						$("#userIdSet").attr("hidden", true);
 						$("#userId").attr("hidden", true);
 					});
 					
+					//input file에 데이터가 들어왔을때 메시지 창에 file이름을 뛰어줌
 					$("#fileData").on("change",function(param){
 						let fileName = "";
 						$("message").attr("readonly",true);
@@ -139,7 +140,8 @@
 						console.log("change: ",param.target.files);
 					});
 					
-					let sock = new SockJS("http://192.168.142.7/echo/" + "?roomId=" + roomNo);
+					//스프링 웹소켓의 URL roomId를 같이 넘김
+					let sock = new SockJS("http://192.168.142.9/echo/" + "?roomId=" + roomNo);
 					sock.onmessage = onMessage;
 					sock.onclose = onClose;
 					sock.onOpen = onOpen;
@@ -168,6 +170,9 @@
 							console.log(jsonMassage);
 							sock.send(JSON.stringify(jsonMassage));
 						} else {
+							//input file에 파일이 들어있을때 가상 form에 담아
+							//FileUploadUtil을 통해 파일 저장 후 통합첨부 파일 vo list
+							//로 만들어 db에 저장
 							let formData = new FormData();
 							let inputFile = $("input[name='fileData']");
 							let files = inputFile[0].files;
@@ -251,10 +256,7 @@
 						console.log(data.filePath);
 						if (data.id == $("#userId").val()) { //내가 보낸 파일
 							for(let i=0;i<data.fileData.length;i++){
-								if(data.fileType =="image/jpg" && data.fileType =="image/png"){
-									str += `
-										<image src="/resources/upload\${data.filePath[i]}" style="width:150px;height:150px;">
-									`;
+								
 									str += `
 										<div class="myMsg">
 										<span>
@@ -265,40 +267,14 @@
 											 \${data.fileData[i]}</a></span>
 										</div>
 									`;
-								}else{
-									if(data.fileType =="image/jpg" && data.fileType =="image/png"){
-										str += `
-											<image src="/resources/upload\${data.filePath[i]}" style="width:150px;height:150px;">
-										`;
-										str += `
-											<div class="myMsg">
-											<span>
-												\${data.date}
-											</span>
-											<span class="msg"><a href="/resources/upload\${data.filePath[i]}" download="\${data.fileData[i]}"
-												 style="font-color: white;"><i data-feather='file' class="feather icon-download"></i>
-												 \${data.fileData[i]}</a></span>
-											</div>
-										`;
-									}else{
-										str += `
-											<div class="myMsg">
-											<span>
-												\${data.date}
-											</span>
-											<span class="msg"><a href="/resources/upload\${data.filePath[i]}" download="\${data.fileData[i]}"
-												 style="font-color: white;"><i data-feather='file' class="feather icon-download"></i>
-												 \${data.fileData[i]}</a></span>
-											</div>
-										`;
-									}
+								
 								}
-							}
+							
 							
 							$("#chatLog").append(str);
 							str = "";
 							$('#chatLog').scrollTop($('#chatLog')[0].scrollHeight);
-						}else{	//파일이 넘어올때 상대 파일
+						}else{	//상대방 파일이 넘어올때
 							for(let i=0;i<data.fileData.length;i++){
 							str += `
 								<div class="anotherMsg">
@@ -316,7 +292,7 @@
 						}
 					}
 						feather.replace();
-				};
+				}
 					// 서버와 연결을 끊었을 때
 					function onClose(evt) {
 						console.log(evt);

@@ -78,7 +78,13 @@ http://www.springframework.org/schema/websocket http://www.springframework.org/s
     
 	<beans:bean id="echoHandler" class="com.ipms.proj.chat.controller.EchoHandler"></beans:bean>
 	<beans:bean id="AlarmHandler" class="com.ipms.main.alert.AlarmHandler"></beans:bean>
-
+	
+	<interceptors>
+		<interceptor>
+           <mapping path="/proj/**"/>
+           <beans:bean id="commonInterceptor" class="com.ipms.aop.ProjInterceptor"/>
+       </interceptor>
+	</interceptors>
 </beans:beans>
 
 

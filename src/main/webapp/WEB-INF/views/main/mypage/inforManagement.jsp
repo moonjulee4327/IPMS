@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
@@ -16,7 +17,10 @@
 <script src="/resources/js/jquery-3.6.0.js"></script>
 <script src="/resources/js/join.js"></script>
 <script src="/resources/js/common.js"></script>
-<!-- BEGIN: Head-->
+
+<script type="text/javascript">
+
+</script>
 <head>
 
     <title>마이페이지 - 개인 정보 관리(수정)</title>
@@ -36,10 +40,9 @@
     <link rel="stylesheet" type="text/css"
           href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/pickers/daterange/daterange.css">
     <!-- END: Page CSS-->
-
+    <script>
+    </script>
 </head>
-<!-- END: Head-->
-<!-- BEGIN: Body-->
 
 <body>
 <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
@@ -70,12 +73,10 @@
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <div class="controls">
-                                                        <label for="account-username">이름</label> <input type="text"
-                                                                                                        name="memCode"
-                                                                                                        class="form-control"
-                                                                                                        value="${mvo.member.memName}"
-                                                                                                        id="account-username"
-                                                                                                        readonly>
+                                                        <label for="account-username">이름</label>
+                                                        <input type="text" name="memCode" class="form-control"
+                                                               value="${mvo.member.memName}" id="account-username"
+                                                               readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,26 +118,33 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <div class="controls">
-                                                        <label>기술 스택</label> <select
-                                                            class="select2 form-control select2-hidden-accessible"
-                                                            multiple="" data-select2-id="12" tabindex="-1"
-                                                            aria-hidden="true">
-                                                        <optgroup label="보유한 기술 스택을 선택하세요.">
-                                                            <option value="spring">SPRING</option>
-                                                            <option value="vue">Vue</option>
-                                                            <option value="js">JS</option>
-                                                            <option value="mysql">MYSQL</option>
-                                                        </optgroup>
-                                                    </select>
-                                                    </div>
-                                                </div>
-                                            </div>
+
+
+
+                                            <select id="selectedBox" name="selectedBox" class="select2 form-control select2-hidden-accessible" multiple data-select2-id="12" tabindex="-1" aria-hidden="true"
+                                                    onchange="handleOnChange(this)">
+                                                <optgroup label="보유한 기술 스택을 선택하세요.">
+                                                    <c:forEach var="item" items="${list}" varStatus="idx">
+                                                        <c:forEach var="tech" items="${techList}" varStatus="stat">
+                                                            <c:if test="${item.commonCodeValue eq tech}">
+                                                                <option  value="${item.commonCodeValue}" name="techStackVOList[${idx.count-1}].techStackCode" selected>${item.commonCodeValue}</option>
+                                                            </c:if>
+                                                            <c:if test="${item.commonCodeValue ne tech}">
+                                                                <option  value="${item.commonCodeValue}" name="techStackVOList[${idx.count-1}].techStackCode">${item.commonCodeValue}</option>
+                                                            </c:if>
+                                                        ${idx.count}
+
+                                                        </c:forEach>
+                                                    </c:forEach>
+                                                    <input type="hidden" id="techCode" name="techStackVOList[0].techStackCode" value=""/>
+                                                </optgroup>
+                                            </select>
+
                                             <div
                                                     class="col-12 d-flex flex-sm-row flex-column justify-content-end">
-                                                <button type="submit" class="btn btn-primary mr-sm-1 mb-1 mb-sm-0" disabled>저장</button>
+                                                <button type="submit" class="btn btn-primary mr-sm-1 mb-1 mb-sm-0"
+                                                        disabled>저장
+                                                </button>
                                                 <button type="reset" class="btn btn-light">취소</button>
                                             </div>
                                         </div>
@@ -175,7 +183,6 @@
 <script
         src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/forms/select/form-select2.js"></script>
 <!-- END: Page JS-->
-
 </body>
 <!-- END: Body-->
 

@@ -113,14 +113,14 @@
 		</div>
 
 	<div class="content-overlay" >
-		<div class="grid-hover row" style="right:125px; width:1500px;">
-		<c:forEach var="list" items="${list}">
-		<div class="contatiner row" >
+		<div class="grid-hover row" style="right:125px; width:1000px;">
+		<c:forEach var="list" items="${list}" varStatus="status">
+<!-- 		<div class="contatiner row" > -->
 			<!-- 이거 포문 돌리기 ㄱㄱ 시작 -->
-			<div class="bookdiv" >
+			<div class="bookdiv" style="width:330px;" >
 				<figure class="effect-roxy"  >
-					<div class="funcId" onclick="fn_bookmarkdel('${list.projId}')" style="position: absolute; z-index: 1400; right: 3px; margin-right: 10px; margin-top: 290px; " class="fonticon-wrap">
-						<i style="color:pink;" id="bookmarkdel" class="fa fa-heart"></i>
+					<div class="funcId" onclick="fn_bookmarkdel('${list.projId}')" style="position: absolute; z-index: 1400; right: 3px; margin-right: 10px; margin-top: 250px; " class="fonticon-wrap">
+						<i onmouseover="mouseover(${status.count})" onmouseout="mouseout(${status.count})" style="color:pink;" id="bookmarkdel${status.count}" class="fa fa-heart"></i>
 					</div>
 					<img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/gallery/15.jpg" alt="img15">
 					<figcaption >
@@ -138,11 +138,11 @@
 			</div>
 			<!-- 이거 포문 돌리기 ㄱㄱ 끗 -->
 				
-		</div>
+<!-- 		</div> -->
 		</c:forEach>
 	</div>
 			<!-- 페이징 버튼 -->
-				<div style="margin-bottom:50px; margin-left:570px; text-align: center;">
+				<div style="margin-bottom:50px; margin-left:480px; text-align: center;">
                         <!-- 페이징 처리 버튼 시작 -->
                             <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
                                 <ul class="pagination">
@@ -225,8 +225,16 @@ var token = '${_csrf.token}';
 $(function(){
 	
 });
+
+	function mouseover(param){
+ 	$("#bookmarkdel"+param).attr("class","feather icon-heart")
+	}
+	
+	function mouseout(param){
+ 	$("#bookmarkdel"+param).attr("class","fa fa-heart")
+	
+	}	
 	function fn_bookmarkdel(param){
-		alert("누름ㅋ");
 		console.log("param: " ,param);
 
 		data = {
@@ -245,11 +253,11 @@ $(function(){
                   xhr.setRequestHeader(header, token);
                 },
                 success : function(result) {
-                  alert("삭제성공");
+                  alert("북마크 제거완료");
+                  location.href="/main/bookmark";
               },
               error: function (jqXHR, textStatus, errorThrown)
               {
-                  alert("실패다");
                     console.log(errorThrown,textStatus);
               }
             });

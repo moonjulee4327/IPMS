@@ -57,7 +57,7 @@ function fn_replyreplyinput(param){
   $("#taskCmtCts"+param).append(`
           <div class="row" style="padding-top:7px; padding-bottom:7px;">
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="taskCmtCts${param}" name="taskCmtCts" placeholder="댓글을 입력하세요.">
+              <input type="text" class="form-control" id="lowtaskCmtCts${param}" name="taskCmtCts" placeholder="댓글을 입력하세요.">
             </div>
             <div class="col-sm-2">
               <button onclick="fn_replyAdd(${param})" type="button" class="btn btn-secondary" style="width: 450px;" id="repAdd${param}">댓글 작성</button>
@@ -70,8 +70,9 @@ function fn_replyAdd(param){
     
     data = {
       "highCmtId" : param ,
-      "taskCmtCts" : $("#taskCmtCts"+param).val(),
-      "writer" : memCode
+      "taskCmtCts" : $("#lowtaskCmtCts"+param).val(),
+      "writer" : memCode,
+      "taskId" : $("#taskId").text()
     }
     console.log("data " , data);
 

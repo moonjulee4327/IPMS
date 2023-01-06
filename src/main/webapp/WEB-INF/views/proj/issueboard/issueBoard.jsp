@@ -35,7 +35,7 @@ var token = '${_csrf.token}';
 							<input type="checkbox" name="comple" id="comple" value="comple" ><label>해결</label>
 							<input type="checkbox" name="noncomple" value="noncomple"><label>미해결</label>
 							</div>&nbsp;&nbsp;
-								<input id="keyword" name="keyword" type="text" class="form-control form-control-xl input-xl border-grey border-lighten-1 "placeholder="제목을 입력하세요" aria-describedby="button-addon2">
+								<input id="keyword" name="keyword" type="text" class="form-control form-control-xl input-xl border-grey border-lighten-1 "placeholder="제목입력" aria-describedby="button-addon2">
 								<span class="input-group-append" id="button-addon2">
 									<button id="searchbtn" class="btn btn-secondary border-grey border-lighten-1">
 										<i class="feather icon-search"></i>
@@ -51,7 +51,7 @@ var token = '${_csrf.token}';
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Name: activate to sort column ascending"
-											style="width: 5px;">이슈번호</th>
+											style="width: 5px;">번호</th>
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Position: activate to sort column ascending"
@@ -96,7 +96,7 @@ var token = '${_csrf.token}';
 						<div class="row">
                         <!-- 페이징 처리 버튼 시작 -->
                         <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
+                            <div style="margin-right: 5px;" class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
                                 <ul class="pagination"  style="text-align: center; float: right;">
 
                                     <!-- 이전 버튼 시작 -->

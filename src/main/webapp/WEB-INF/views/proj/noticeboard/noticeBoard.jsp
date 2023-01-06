@@ -67,7 +67,7 @@
 										<input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
 										<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
-										aria-label="Name: activate to sort column ascending">글번호</th>
+										aria-label="Name: activate to sort column ascending">번호</th>
 									<th class="sorting" tabindex="0"
 										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 										aria-label="Position: activate to sort column ascending">제목</th>
@@ -135,8 +135,7 @@
 									</button>
 								</div>
 							</c:if>
-								<div class="dataTables_paginate paging_simple_numbers"
-									id="DataTables_Table_0_paginate" style="float:right;">
+								<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate" style="float:right; margin-right: 108px;">
 									<ul class="pagination">
 										<c:if test="${pageVO.prev}">
 										<li class="paginate_button page-item previous"

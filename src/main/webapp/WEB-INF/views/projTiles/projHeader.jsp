@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+ <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
@@ -13,8 +13,11 @@
 
     var socket = null;
     $(document).ready(function () {
+        $("#myPage").on("click", function(){
+            location.href="/main/inforManagement";
+        })
+
         $("#ta0").on("click", function () {
-            alert("하하");
         })
         $.ajax({
             url: "/main/boardList",
@@ -23,16 +26,41 @@
             success: function (data) {
                 var apd = "<div class='text-secondary'>"
                 $.each(data, function (index, obj) {
-                    let objAlamId = "'"+obj.alrmId+"'";
-                    apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">`+obj.alrmCts+`</div>`;
+                    let objAlamId = "'" + obj.alrmId + "'";
+                    // apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">`+obj.alrmCts+`</div>`;
+                    apd += '    <a href="javascript:void(0)">';
+                    apd += '        <div class="media">';
+                    apd += '            <div class="media-left align-self-center">';
+                    apd += '               <i class="feather icon-plus-square icon-bg-circle bg-cyan"></i>';
+                    apd += '            </div>';
+                    apd += '            <div class="media-body">';
+                    apd += '                <h6 class="media-heading">${obj.AlamId}</h6>';
+                    apd += `<div id="ta\${index}" onclick="fn_alrm(\${objAlamId})">` + obj.alrmCts + `</div>`;
+                    apd += '          </div>';
+                    apd += '      </div>';
+                    apd += '  </a>';
+
                 });
                 apd += "</div>";
                 $("#disp").html(apd);
             }
         });
+
+
+        $.ajax({
+            url: "/main/countAlrm",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var result = data;
+                var count = `<span class='badge badge-pill badge-danger badge-up'>\${data}</span>`
+                $("#countAlrm").html(count);
+            }
+        });
     });
-    function  fn_alrm(Param){
-        alert(Param);
+
+
+    function fn_alrm(Param) {
         $.ajax({
             url: "/main/deleteAlrm",
             type: "post",
@@ -71,7 +99,7 @@
             </ul>
         </div>
 
-        <div class="navbar-container content">
+        <div class="navbar-container content" style="height: 20px;">
             <div class="collapse navbar-collapse" id="navbar-mobile">
                 <ul class="nav navbar-nav mr-auto float-left">
                     <li class="nav-item d-none d-md-block"><a
@@ -146,8 +174,7 @@
                                         <ul class="mega-component-list">
                                             <li class="mega-component-item"><a class="mb-1 mb-xl-2"
                                                                                href="component-dropdowns.html"
-                                                                               target="_blank">Drop
-                                                Down</a></li>
+                                                                               target="_blank">Drop Down</a></li>
                                             <li class="mega-component-item"><a class="mb-1 mb-xl-2"
                                                                                href="component-list-group.html"
                                                                                target="_blank">List
@@ -169,149 +196,40 @@
 
 
                     <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#"
-                                                                               data-toggle="dropdown"><i
-                                class="ficon feather icon-bell"></i><span
-                                class="badge badge-pill badge-danger badge-up">5</span></a>
+                        <li class="dropdown dropdown-notification nav-item">
+                            <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                                <i class="ficon feather icon-bell"></i>
+                                <div id="countAlrm"></div>
+                                <%--                        <span class="badge badge-pill badge-danger badge-up">5</span>--%>
+                            </a>
                             <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                                 <li class="dropdown-menu-header">
                                     <h6 class="dropdown-header m-0">
-                                        <span class="grey darken-2">Notifications</span><span
-                                            class="notification-tag badge badge-danger float-right m-0">5
-										New</span>
+                                        <span class="grey darken-2">Notifications</span>
+                                        <span
+                                                class="notification-tag badge badge-danger float-right m-0"><div
+                                                id="countAlrm"></div></span>
                                     </h6>
                                 </li>
                                 <li class="scrollable-container media-list ps">
                                     <a href="javascript:void(0)">
+                                        <div id="disp">
                                     </a>
-                                    <div id="disp"><a class="dropdown-item d-flex align-items-center mess"
-                                                      href="/main/inviteAndApply">
-                                        <div class="mr-3">
-                                            <div class="icon-circle bg-warning"><i
-                                                    class="fas fa-exclamation-triangle text-white"></i></div>
-                                        </div>
-                                        <div>
-                                            <div class="small text-gray-500">2022. 12. 31. 오전 11:27:35</div>
-                                            생성용님이 프로젝트에 초대 하였습니다.,
-                                        </div>
-                                    </a></div>
                                     <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                                        <div class="ps__thumb-x" tabindex="0"
+                                             style="left: 0px; width: 0px;"></div>
                                     </div>
                                 </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center"
-                                                                    href="javascript:void(0)">Read all notifications</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-notification nav-item">
-                            <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                                <li class="dropdown-menu-header">
-                                    <h6 class="dropdown-header m-0">
-                                        <span class="grey darken-2">Messages</span><span
-                                            class="notification-tag badge badge-warning float-right m-0">4
-										New</span>
-                                    </h6>
-                                </li>
-                                <li class="scrollable-container media-list ps"><a href="javascript:void(0)">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <div class="avatar avatar-online avatar-sm rounded-circle">
-                                                <img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-1.png"
-                                                     alt="avatar"><i></i>
-                                            </div>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">Margaret Govan</h6>
-                                            <p class="notification-text font-small-3 text-muted">I
-                                                like your portfolio, let's start.</p>
-                                            <small>
-                                                <time class="media-meta text-muted"
-                                                      datetime="2015-06-11T18:29:20+08:00">Today
-                                                </time>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a><a href="javascript:void(0)">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <span class="avatar avatar-sm avatar-busy rounded-circle"><img
-                                                    src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-2.png"
-                                                    alt="avatar"><i></i></span>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">Bret Lezama</h6>
-                                            <p class="notification-text font-small-3 text-muted">I
-                                                have seen your work, there is</p>
-                                            <small>
-                                                <time class="media-meta text-muted"
-                                                      datetime="2015-06-11T18:29:20+08:00">Tuesday
-                                                </time>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a><a href="javascript:void(0)">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <div class="avatar avatar-online avatar-sm rounded-circle">
-                                                <img src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-3.png"
-                                                     alt="avatar"><i></i>
-                                            </div>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">Carie Berra</h6>
-                                            <p class="notification-text font-small-3 text-muted">Can
-                                                we have call in this week ?</p>
-                                            <small>
-                                                <time class="media-meta text-muted"
-                                                      datetime="2015-06-11T18:29:20+08:00">Friday
-                                                </time>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a><a href="javascript:void(0)">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <span class="avatar avatar-sm avatar-away rounded-circle"><img
-                                                    src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-6.png"
-                                                    alt="avatar"><i></i></span>
-                                        </div>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">Eric Alsobrook</h6>
-                                            <p class="notification-text font-small-3 text-muted">We
-                                                have project party this saturday.</p>
-                                            <small>
-                                                <time class="media-meta text-muted"
-                                                      datetime="2015-06-11T18:29:20+08:00">last month
-                                                </time>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </a>
-                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                                    </div>
-                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                        <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                        <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
-                                    </div>
-                                </li>
-                                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center"
-                                                                    href="javascript:void(0)">Read all messages</a></li>
+                                <li class="dropdown-menu-footer"><a
+                                        class="dropdown-item text-muted text-center"
+                                        href="javascript:void(0)">Read all notifications</a></li>
                             </ul>
                         </li>
                         <li class="dropdown dropdown-user nav-item">
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="user-profile.html"><i class="feather icon-user"></i> Edit
-                                    Profile</a><a class="dropdown-item" href="app-email.html"><i
+                                <a class="dropdown-item" href="user-profile.html"><i
+                                        class="feather icon-user"></i> Edit Profile</a><a
+                                    class="dropdown-item" href="app-email.html"><i
                                     class="feather icon-mail"></i> My Inbox</a><a class="dropdown-item"
                                                                                   href="user-cards.html"><i
                                     class="feather icon-check-square"></i>
@@ -340,11 +258,12 @@
                         <div class="row">
                             <sec:authorize access="hasRole('ROLE_MEMBER')">
 
-                                <div style="margin-top: 15px;">${mvo.member.memName}님</div>
+                                <div style="margin-top: 15px;">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>${mvo.member.memName}님</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
                                 <%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
 
-                                <button type="button" id="myPage" class="btn btn-outline-secondary"><i
-                                        class="fa fa-plug"></i>마이페이지
+                                <button type="button" id="myPage" class="btn btn-outline-secondary" ><i class="fa fa-plug"></i>마이페이지
                                 </button>
 
 

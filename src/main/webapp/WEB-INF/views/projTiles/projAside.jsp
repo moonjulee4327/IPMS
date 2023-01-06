@@ -87,6 +87,9 @@
                 </a>
             </li>
 <%--            <sec:authorize access="hasRole()">--%>
+			<%String leaderCheck = (String)request.getAttribute("leaderCheck"); %>
+			<%if(leaderCheck.equals("true")){ %>
+			
                 <li class=" nav-item">
                     <a href="/proj/${projId}/memManagement">
                         <i class="icon-users"></i>
@@ -99,6 +102,7 @@
                         <span class="menu-title" data-i18n="Kanban Application">프로젝트 설정 관리</span>
                     </a>
                 </li>
+                <%} %>
 <%--            </sec:authorize>--%>
 
         </ul>

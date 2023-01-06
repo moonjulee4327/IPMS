@@ -15,7 +15,7 @@
 <br>
 <div class="content-left ml-5" style="width: 12%">
 <div class="card-head">
-		<div class="form-group form-group-compose">
+		<div class="form-group form-group-compose" style="width: 200px">
             <!-- compose button  -->
             <a href="/main/customerServiceMana" class="btn btn btn-glow btn-block my-2 compose-btn" style="background:#3F4E89; color:white;">
                 <i class="fa fa-pencil-square-o"></i>
@@ -25,12 +25,12 @@
 	<div class="media p-1">
 	    <div class="media-left pr-1"></div>
 	    <div class="media-body media-middle">
-	        <h5 class="media-heading" style="padding-left: 37px">관리자님 </h5>
+	        <h5 class="media-heading" style="padding-left: 40px;font-family: noto sans, malgun gothic, AppleGothic, dotum;">관리자님 </h5>
 	        <h4 class="media-heading" style="font-size: 15px"></h4>	        
 	    </div>
 	</div>
 </div>
-	<div class="sidebar-menu-list">
+	<div class="sidebar-menu-list" style="width: 200px">
 		<!-- sidebar menu  -->
 		<div class="list-group" >
 			<a href="/main/adminSvcNotice" class="list-group-item" id="inbox-menu">
@@ -51,12 +51,11 @@
 					<i class="fa fa-users"></i> &nbsp;&nbsp;전체 회원 관리
 				</div> 
 			</a>
-			</a> <a href="/main/techStackManager" class="list-group-item">
+			 <a href="/main/techStackManager" class="list-group-item">
 			<div class="d-inline mr-25">
-				<i class="fa fa-users"></i> &nbsp;&nbsp;기술스텍 관리
+				<i class="fa fa-star"></i> &nbsp;&nbsp;기술스텍 관리
 			</div>
 		</a>
 		</div>
-		<!-- sidebar menu  end-->
 	</div>
 </div>

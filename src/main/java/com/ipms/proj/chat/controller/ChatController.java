@@ -3,6 +3,7 @@ package com.ipms.proj.chat.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class ChatController {
 	@Autowired
 	ChatService chatService;
 	
+	@Autowired 
+	private ServletContext servletContext;
+	
 	@GetMapping("/{projId}/chat")
 	public String chat2(@PathVariable(name = "projId") String projId,Model model,String memId) {
 
@@ -55,7 +59,7 @@ public class ChatController {
 		log.info("chatVO: "+chatVO.toString());
 		
 		//int result = chatService.insertChat(chatVO);
-		List<IntgAttachFileVO> list = FileUploadUtil.fileUploadAction(uploadFile,chatVO.getChatRoomId(), chatVO.getWriter());
+		List<IntgAttachFileVO> list = FileUploadUtil.fileUploadAction(uploadFile,chatVO.getChatRoomId(), chatVO.getWriter(), servletContext);
 		for(int i = 0;i<list.size();i++) {
 			int attachNum = chatService.selectChatNum();
 			chatVO.setItgrnAttachFileNum(attachNum);

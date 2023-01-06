@@ -60,7 +60,7 @@
         width: 100%;
         }
         .swiper-pagination{
-        margin-bottom: 7%;
+        margin-top: 200px;
         }
        
         .grid-hover figure figcaption{
@@ -88,19 +88,20 @@
 </sec:authorize>
 
 <sec:authorize access="isAuthenticated()">
-<div class="row" style="margin-top: 2%;padding-left: 19%;">
-    <div class="col-3"><h1>진행중인 프로젝트</h1></div>
+<div class="row" style="margin-top: 3%;padding-left: 19%;">
+    <div class="col-3"><h1 style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">진행중인 프로젝트</h1></div>
 </div>
-<div class="row" style="padding-left: 20%; height: 30%;width: 80%;">
-	  <div class="swiper mySwiper1">
+<br>
+<div class="row" style="padding-left: 20%; height: 35%;width: 85%;">
+	  <div class="swiper mySwiper1" style="height:250px">
       <div class="swiper-wrapper">
       <c:forEach items="${projList}" var="proj">
         <div class="swiper-slide"  style="width: 100%;height: 100%" onclick="location.href='/proj/${proj.projId}/dashboard'">
           <figure class="effect-sadie" style="width: 100%;height: 100%;overflow: hidden;">
-            <img src="/resources/upload/img/${proj.projImgRoute}" alt="img02" style="width: 100%;height: 100%">
+            <img src="/upload/file/upload/img/${proj.projImgRoute}" alt="img02" style="width: 100%;height: 100%">
             <figcaption>
-                <h2><span style="text-align: center;">${proj.projName}</span></h2>
-<%--                 <p> <fmt:formatDate value="${}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${}" pattern="yyyy-MM-dd"/> --%>
+                <h2 style="text-align: center;"><span style="text-align: center;font-family: noto sans, malgun gothic, AppleGothic, dotum;">${proj.projName}</span></h2>
+                <p style="color: white; text-align: center;"> <fmt:formatDate value="${proj.projStrtDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${proj.projEndDate}" pattern="yyyy-MM-dd"/>
             </figcaption>
           </figure>
         	<!-- <p style="position: absolute;">${proj.projName}</p>
@@ -108,31 +109,28 @@
         </div>
       </c:forEach>
       </div>
-      <div class="swiper-button-next"></div>
+      <div class="swiper-button-next" style=""></div>
       <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"  style="position: absolute;"></div>
+	  <div class="swiper-pagination" style="position: absolute;"></div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
 
   <!-- 위 아래 -->
   <c:if test="${bookMarkList != null}">
-<div class="row" style="margin-top:3%; padding-left: 19%;">
-    <div class="col-3"><h1>북마크</h1></div>
+<div class="row" style="margin-top:10px; padding-left: 19%;">
+    <div class="col-3"><h1 style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">북마크된 프로젝트</h1></div>
 </div>
-<div class="row" style="padding-left: 20%; height: 32%;width: 80%;">
-	  <div class="swiper mySwiper2">
+<br>
+<div class="row" style="padding-left: 20%; height: 32%;width: 85%;">
+	  <div class="swiper mySwiper2" style="height:250px">
       <div class="swiper-wrapper">
       <c:forEach items="${bookMarkList}" var="bookMark">
         <div class="swiper-slide" style="width: 100%;height: 100%" onclick="location.href='/main/projectDetail/${bookMark.projId}'">
         <figure class="effect-sadie" style="width: 100%;height: 100%;overflow: hidden;">
-        	<img src="/resources/upload/img/${bookMark.projImgRoute}" style="width: 100%;height: 100%;">
+        	<img src="/upload/file/upload/img/${bookMark.projImgRoute}" style="width: 100%;height: 100%;">
             <figcaption>
-                <h2><span style="text-align: center;">${proj.projName}</span></h2>
-<%--                 <p> <fmt:formatDate value="${}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${}" pattern="yyyy-MM-dd"/> --%>
+                <h2 style="text-align: center;"><span style="text-align: center;font-family: noto sans, malgun gothic, AppleGothic, dotum;">${bookMark.projName}</span></h2>
+                <p style="color: white; text-align: center;"><fmt:formatDate value="${bookMark.projStrtDate}" pattern="yyyy-MM-dd"/> - <fmt:formatDate value="${bookMark.projEndDate}" pattern="yyyy-MM-dd"/></p>
             </figcaption>
           </figure>
 <%--         	<p style="position: absolute;">${bookMark.projName}</p> --%>

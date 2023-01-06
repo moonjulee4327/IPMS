@@ -91,16 +91,28 @@
  }
  </style>
 
-
+<script src="/resources/stack-admin-v4.0/stack-admin/app-assets/js/scripts/popover/popover.js"></script>
 <script>
 	var header = '${_csrf.headerName}';
 	var token = '${_csrf.token}';
+	
+	  $( function () {
+	    $( '[data-toggle="popover"]' ).popover()
+	  } );
 </script>
 
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <div class="app-content">
+		일감관리  &nbsp;<button type="button" data-toggle="popover" data-placement="right" data-container="body" 
+               data-original-title="문서함 이용 안내" data-content="팀원은 리더가 등록한 상위일감에 대하여 하위일감을 등록 할 수 있으며,상위일감은 프로젝트 리더만 등록 가능합니다. 하위일감 등록 시 미승인 일감으로 이동됩니다. 등록한 일감은 리더의 승인 후 등록한 상위일감의 하위로 이동됩니다.">
+               <i class="fa fa-question-circle"></i>
+               </button>
+		
+               
+               
+                 
 	<div class="content-overlay"></div>
 	<div class="content-wrapper">
 		<div class="content-header row"></div>
@@ -439,7 +451,7 @@
 											<button id="cpnbtn" class="btn btn-primary glow mr-1">
 												<i class="feather icon-play mr-50"></i><span>승인</span>
 											</button>
-											<button id="approbtn" type="reset" class="btn btn-danger mr-1">
+											<button id="approbtn" type="reset" class="btn btn-warning mr-1">
 												<i class="feather icon-trash-2 mr-50"></i> <span>반려</span>
 											</button>
 										</div>

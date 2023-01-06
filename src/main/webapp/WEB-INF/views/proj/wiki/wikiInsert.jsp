@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
@@ -11,34 +10,23 @@
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
  <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
- <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
  <style>
   .ck.ck-editor {
     max-width: 100%;
+    height: 500px;
   }
   .ck-editor__editable {
-    min-height: 500px;
+    min-height: 400px;
   }
   input {
   	max-width: 100%;
   }
   select {
-	max-width: 100%;
+	max-width: 98%;
 	}
 </style>
-<script>
-
-$(document).ready(function() {
-	//여기 아래 부분
-	 ClassicEditor.create( document.querySelector( '#editor' ), {
-		    language: "ko",
-		    height : 300
-		    
-		  } );
-});
-</script>
-
 
 <div class="card-body">
 	<h1>위키 등록</h1><br>
@@ -60,7 +48,7 @@ $(document).ready(function() {
 
 			<div class="form-group">
 				<label for="donationinput2">위키 내용</label><br>
-				<textarea id="editor" class="summernote" name="wikiCts"></textarea> 
+				<textarea id="wikiCts" class="summernote" name="wikiCts"></textarea> 
 			</div>
 
 <!-- 				<label for="donationinput2">파일 첨부</label><br> -->
@@ -74,11 +62,12 @@ $(document).ready(function() {
 		<input type="hidden" name="projId" value="${projId}">
 		<input type="hidden" name="memCode" value="${mvo.member.memCode}">
 		<div class="form-actions right">
-			<button type="reset" class="btn btn-warning mr-1" onclick="location.href = document.referrer;">
-				<i class="feather icon-x"></i> 뒤로가기
-			</button>
 			<button type="submit" class="btn btn-secondary">
-				<i class="fa fa-check-square-o"></i> 저장
+				<i class="fa fa-check-square-o"></i> 등록
+			</button>
+			
+			<button type="reset" class="btn btn-warning mr-1" onclick="location.href = document.referrer;">
+				<i class="feather icon-x"></i> 취소
 			</button>
 		</div>
 	</form>
@@ -86,5 +75,10 @@ $(document).ready(function() {
 </div>
 
 <script type="text/javascript">
+CKEDITOR.replace('wikiCts',
+		{
+			height:'350px'
+	
+		});
 		$('select').select2();
 </script>

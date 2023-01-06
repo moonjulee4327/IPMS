@@ -54,25 +54,26 @@
 								<!-- invoice logo and title -->
 										작성자 : <span>${list.writer }</span>
 								<div class="invoice-logo-title row py-2">
-									<div class="col-10 d-flex flex-column justify-content-center align-items-start">
+									<div id="title" class="col-9 d-flex flex-column justify-content-center align-items-start">
 										<h2 class="text-primary" style="font-family: 'MICEGothic Bold';">${list.issueTitle}</h2>
+										
 									</div>
 									
-										<div id="comnoncombtn" class="col-2" style=" display:none; float: right;">
-											<button style="width:80px;" id="comple" type="button" class="btn btn-outline-success">해결</button>
-											<button style="width:80px;" id="noncomple" type="button" class="btn btn-outline-danger">미해결</button>	
+										<div id="comnoncombtn" class="col-3" style=" display:none; float: right;">
+											<button style="width:80px; outline:none;" id="comple" type="button" class="btn btn-outline-success">해결</button>
+											<button style="width:80px; outline:none;" id="noncomple" type="button" class="btn btn-outline-danger">미해결</button>	
 										</div>
 									
 								</div>
 								<hr>
-								<div>일감 제목 : ${list.taskTitle}</div>
+								<div >일감 제목 : ${list.taskTitle}</div>
 								<br>
 								<!-- 몰라서 일단 만들어만 놓음.... 클릭하면 일감 이동..?? -->
 								<hr>
 								<div>
 								<!-- 파일경로 -->
 									<c:if test="${list.fileType eq 'image/png' || list.fileType eq 'image/jpeg' }">
-										<img alt="사진ㅋ" src="/resources${list.saveFileName}">
+										<img alt="사진ㅋ" src="/upload/file/uploadIs${list.saveFileName}">
 									</c:if>
 								</div>
 
@@ -97,14 +98,14 @@
 								</c:if>
 								<div style="float: right;">
 									<c:if test="${list.writer eq mvo.member.memName}">
-										<button type="button" class="btn btn-secondary">
+										<button type="button" class="btn btn-danger">
 											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
 										</button>
-										<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-secondary">
+										<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-warning">
 											<i class="feather icon-edit mr-25 common-size"></i>수정
 										</a>
 									</c:if>
-									<a href="/proj/${list.projId}/issueboard" class="btn btn-primary"><i
+									<a href="/proj/${list.projId}/issueboard" class="btn btn-secondary"><i
 										class="fa fa-reply-all mr-25 common-size"></i>목록</a>
 								</div>
 							</div>
@@ -151,6 +152,7 @@ var issueId = "${issueCd}";
 var gwriter = "${list.writer}";
 var memCode = "${mvo.member.memCode}";
 var writer= "${mvo.member.memName}";
+let title = document.querySelector("#title");
 console.log("mem: ",memCode);
 console.log("writer : " , writer);
 console.log(issueId);
@@ -158,44 +160,15 @@ console.log(issueId);
 let btncheck = "${list.issueStusCode}";
 if(btncheck == '해결'){
 	$("#comple").attr("class","btn btn-outline-success active");
+	$("#title").append("<p>[이슈 종료]</p>");
 }else{
 	$("#noncomple").attr("class","btn btn-outline-danger active");
+	$("#title").append("<p style='color:red;'>[이슈 진행중]</p>");
 }
 
 if(gwriter == writer){
 	$("#comnoncombtn").css("display","block");
 }
-
-// if( ){
-// 	alert("해결");
-// 	console.log("해결");
-// }else{
-// 	alert("미해결");
-// 	console.log("미해결");
-// }
-
-// $("#statuschange").on("change" , function(){
-// 	$.ajax({ 
-// 	    type : 'POST',
-// 	    url : '/proj/'+projId[4]+'/IssueHighCmtInsert',
-// 	    contentType : "application/json;  charset=utf-8",
-// 	    async : false,
-// 	    data :  JSON.stringify(data) ,
-// 	    beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
-// 	      xhr.setRequestHeader(header, token);
-// 	    },
-// 	    success : function(result) {
-// 	      location.reload();
-// 	  },
-// 	  error: function (jqXHR, textStatus, errorThrown)
-// 	  {
-// 	      alert("실패다");
-// 	        console.log(errorThrown,textStatus);
-// 	  }
-// 	});
-// })
-	
-
 
 </script>
 <script type="text/javascript" src="/resources/js/issueboard.js"></script>

@@ -5,7 +5,7 @@
 <div class="content-wrapper" style="">
 
 
-    <div class="card" style="width: 1200px">
+    <div class="card" style="width: 1000px">
         <div class="card-body">
         	<div class="row breadcrumbs-top" >
 		        <div class="breadcrumb-wrapper col-12">
@@ -22,7 +22,7 @@
                         <div class="col-4">
                             <div style="float: left;">
                                 <fieldset class="form-group position-relative">
-                                    <input type="text" class="form-control form-control-xl input-xl" id="iconLeft1" style="width: 300px;" placeholder="검색어를 입력하세요.">
+                                    <input type="text" class="form-control form-control-xl input-xl" id="iconLeft1" style="width: 242px;" placeholder="검색어를 입력하세요.">
                                 </fieldset>
                             </div>
                             <div style="float: right;">
@@ -39,10 +39,10 @@
                                     <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 95.7161px;" aria-label="Invoice#: activate to sort column ascending">
                                         <span class="align-middle">번호</span>
                                     </th>
-                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 181.966px;" aria-label="Customer: activate to sort column ascending">제목</th>
-                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px;" aria-label="Amount: activate to sort column ascending">작성자</th>
-                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px;" aria-label="Amount: activate to sort column ascending">답변 상태</th>
-                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 119.753px;" aria-label="Tags: activate to sort column ascending">등록 일자</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 181.966px; text-align: left;" >제목</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px; text-align: center;" >작성자</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 91.9922px; text-align: center;" >답변 상태</th>
+                                    <th class="sorting" tabindex="0" aria-controls="app-invoice-table" rowspan="1" colspan="1" style="width: 119.753px; text-align: center;" >등록 일자</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -55,13 +55,13 @@
                                         <td>
                                             <a href="/main/svcQaADetail?qnaNum=${svcQaA.qnaNum}">${svcQaA.qnaTitle}</a>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             ${svcQaA.writer}
                                         </td>
-                                        <td style="padding-left: 35px">
+                                        <td style="text-align: center;">
                                             ${svcQaA.qnaStatus}
                                         </td>
-                                        <td style="padding-left: 23px">
+                                        <td style="padding-left: 60px">
                                             <fmt:formatDate value="${svcQaA.qnaWriteDate}" pattern="yyyy-MM-dd"/> 
                                         </td>
                                     </tr>

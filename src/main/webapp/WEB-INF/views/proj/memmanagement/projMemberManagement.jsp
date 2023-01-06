@@ -27,7 +27,7 @@
 <script>
     function fn_delete(memCode, projId) {
         $.ajax({
-            url: "/proj/dropMemListProcessing",
+            url: "/proj/${projId}/dropMemListProcessing",
             type: "post",
             data: {"memCode": memCode, "projId": projId},
             dataType: "json",
@@ -51,7 +51,7 @@
 
     function fn_expulsionBtn(memCode, projId) {
         $.ajax({
-            url: "/proj/extractionParticipants",
+            url: "/proj/${projId}/extractionParticipants",
             type: "post",
             data: {"memCode": memCode, "projId": projId},
             dataType: "json",
@@ -77,7 +77,7 @@
         var msg = "${mvo.member.memName}님이 프로젝트에 초대 하였습니다.,";
         alert(msg);
         $.ajax({
-            url: "/proj/sendInvitation",
+            url: "/proj/${projId}/sendInvitation",
             type: "post",
             data: {"memCode": memCode, "projId": projId, "alrmCts": msg},
             dataType: "json",
@@ -86,16 +86,15 @@
             },
             success: function (division) {
                 if (division == 1) {
-                    alert("승인완료");
                     socket.send(msg);
-                } else {
-                    alert("실패");
-                    location.href = "redirect:/main/page";
+
                 }
                 setTimeout(function () {
                     location.reload();
                 });
-            }
+            }, error: function () {
+                alert("실패")
+            },
         });
     }
 
@@ -122,8 +121,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-5 ml-5">
-                    <div class="card text-center" style="height: 300px;  width:670px; ">
+                <div class="col-lg-5">
+                    <div class="card text-center" style="height: 300px;  width:500px; ">
                         <div class="card-content">
                             <!-- 							<div class="container-fluid" style="width: 100%; height: 100%"> -->
                             <div class="table-responsive">
@@ -132,8 +131,8 @@
                                     <thead>
                                     <tr>
                                         <th>번호</th>
-                                        <th>회원코드</th>
-                                        <th>프로젝트 아이디</th>
+                                        <th>회원이름</th>
+                                        <th>직책</th>
                                         <th>상태</th>
                                     </tr>
                                     </thead>
@@ -141,8 +140,8 @@
                                     <c:forEach var="item" items="${ProjectParticipantsMem}" varStatus="idx">
                                         <tr>
                                             <td class="text-truncate">${idx.count}</td>
-                                            <td class="text-truncate">${item.memCode}</td>
-                                            <td class="text-truncate">${item.projId}</td>
+                                            <td class="text-truncate">${item.memName}</td>
+                                            <td class="text-truncate"><span class="badge badge-secondary">팀원</span>
                                             <td class="text-truncate"><span class="badge badge-success">참여</span>
                                             </td>
                                         </tr>
@@ -157,7 +156,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5 offset-1">
-                    <div class="card" style="height: 300px; width:670px; ">
+                    <div class="card" style="height: 300px; width:530px; ">
                         <div class="card-content">
                             <!-- 							<div class="container-fluid"> -->
                             <div class="table-responsive">
@@ -165,10 +164,9 @@
                                        class="table table-hover mb-0 ps-container ps-theme-default">
                                     <thead>
                                     <tr>
-                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;번호</th>
-                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원코드</th>
-                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;프로젝트
-                                            아이디
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;번호</th>
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원이름</th>
+                                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;직책
                                         </th>
                                         <th>&nbsp;&nbsp;&nbsp;&nbsp;하차 승인</th>
                                     </tr>
@@ -177,8 +175,8 @@
                                     <c:forEach var="item" items="${dropMemList}" varStatus="idx">
                                         <tr>
                                             <td class="text-truncate">${idx.count}</td>
-                                            <td class="text-truncate">${item.memCode}</td>
-                                            <td class="text-truncate">${item.projId}</td>
+                                            <td class="text-truncate">${item.memName}</td>
+                                            <td class="text-truncate"><span class="badge badge-secondary">팀원</span>
                                             <td class="text-truncate">
                                                 <button class="badge badge-danger"
                                                         onclick="fn_delete('${item.memCode}','${item.projId}')">승인
@@ -229,18 +227,18 @@
                                         <table class="table table-hover mb-0 ps-container ps-theme">
                                             <thead>
                                             <tr>
-                                                <th>번호</th>
-                                                <th>회원코드</th>
-                                                <th>이름</th>
-                                                <th>초대</th>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;번호</th>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원이름</th>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;기술스텍</th>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;초대</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <c:forEach var="item" items="${projectInvitationList}" varStatus="idx">
                                             <tr>
                                                 <td class="text-truncate">${idx.count}</td>
-                                                <td class="text-truncate">${item.memCode}</td>
                                                 <td class="text-truncate">${item.memName}</td>
+                                                <td class="text-truncate">${item.techStackCode}</td>
                                                 <td class="text-truncate">
                                                     <button id="invitationBtn" class="badge badge-success"
                                                             onclick="fn_invitationBtn('${item.memCode}','${projId}')">초대
@@ -267,8 +265,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-5 ml-5">
-            <div class="card text-center" style="height: 300px; width:670px;">
+        <div class="col-lg-5">
+            <div class="card text-center" style="height: 300px; width:500px;margin-left: 20px;">
 
                 <div class="card-content">
                     <!-- 								<div class="container-fluid"> -->
@@ -301,25 +299,25 @@
         </div>
 
         <div class="col-lg-5 offset-1">
-            <div class="card" style="height: 300px; width:670px;">
+            <div class="card" style="height: 300px; width:530px;">
                 <div class="card-content">
                     <div class="container-fluid">
                         <div class="table-responsive">
                             <table id="" class="table table-hover mb-0 ps-container ps-theme-default">
                                 <thead>
                                 <tr>
-                                    <th>번호</th>
-                                    <th>회원코드</th>
-                                    <th>프로젝트 아이디</th>
-                                    <th>추방</th>
+                                    <th>&nbsp;&nbsp;&nbsp;번호</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;회원이름</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;직책</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;추방</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach var="item" items="${ProjectParticipantsMem}" varStatus="idx">
                                     <tr>
                                         <td class="text-truncate">${idx.count}</td>
-                                        <td class="text-truncate">${item.memCode}</td>
-                                        <td class="text-truncate">${item.projId}</td>
+                                        <td class="text-truncate">${item.memName}</td>
+                                        <td class="text-truncate"><span class="badge badge-secondary">팀원</span>
                                         <td class="text-truncate">
                                             <button class="badge badge-danger"
                                                     onclick="fn_expulsionBtn('${item.memCode}','${projId}')">추방

@@ -148,7 +148,7 @@
 									<ul class="pagination">
 										<c:if test="${pageVO.prev}">
 										<li class="paginate_button page-item previous"
-											id="DataTables_Table_0_previous"><a href="/proj/${projId}/freeboard?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}""
+											id="DataTables_Table_0_previous"><a href="/proj/${projId}/freeboard?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
 											tabindex="0" class="page-link">이전</a></li>
 										</c:if>
@@ -169,7 +169,7 @@
 										</c:forEach>
 										<c:if test="${pageVO.next}">
 										<li class="paginate_button page-item next"
-											id="DataTables_Table_0_previous"><a href="/proj/${projId}/freeboard?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}""
+											id="DataTables_Table_0_previous"><a href="/proj/${projId}/freeboard?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
 											tabindex="0" class="page-link">다음</a></li>
 										</c:if>

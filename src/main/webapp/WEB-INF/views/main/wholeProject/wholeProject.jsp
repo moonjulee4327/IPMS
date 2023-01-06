@@ -8,6 +8,44 @@
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/join.css">
+<script src="/resources/js/jquery-3.6.0.js"></script>
+<script>
+    function myFunction() {
+        let value = $("#startDate").val();
+        let year = value.substring(2, 4);
+        let month = value.substring(5, 7);
+        let day = value.substring(8, 10);
+        let inputDateVal = year + "/" + month + "/" + day;
+        console.log(inputDateVal);
+        $("#startDateVal").val(inputDateVal);
+    }
+
+    function myFunction2() {
+        let value = $("#endDate").val();
+        let year = value.substring(2, 4);
+        let month = value.substring(5, 7);
+        let day = value.substring(8, 10);
+        let inputDateVal2 = year + "/" + month + "/" + day;
+        console.log(inputDateVal2);
+        $("#endDateVal").val(inputDateVal2);
+    }
+
+
+    $(function () {
+        $(function () {
+            $("#testOption").change(function () {
+                let test = $("#testOption").val($(this).val());
+                if (test.val() == 'D') {
+                    $("#keyWordInput").css("display", "none");
+                    $("#startDate").css("display", "block");
+                    $("#endDate").css("display", "block");
+                }
+            });
+        });
+    })
+
+
+</script>
 <div class="app-content container center-layout mt-2" style="overflow: auto">
     <div class="content-overlay"></div>
     <div class="content-wrapper">
@@ -23,27 +61,32 @@
                     <!--Search Navbar-->
                     <div class="row">
                         <div class="col-sm-12 col-md-7"></div>
-
                         <div class="col-sm-12 col-md-5">
 
                             <div id="app-invoice-table_filter" class="dataTables_filter">
                                 <label style="float: right">
                                     <form id="searchForm" action="/main/wholeProject" method="get">
-                                        <select name="type">
+                                        <div class="row">
+                                        <select name="type" id="testOption">
                                             <option value="T">프로젝트 아이디</option>
                                             <option value="C">프로젝트 이름</option>
+                                            <option value="D">날짜</option>
                                         </select>
-                                        <input type="text" class="" name="keyword">
-                                        <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
-                                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                                        <input type="submit" class="btn btn-secondary" style="height: 30px;" value="검색">
+                                            <input type="text" id="keyWordInput" class="" name="keyword">
+                                            <input type="date" id="startDate" value="22/12/03" style="display: none" oninput="myFunction()"/>
+                                            <input type="date" id="endDate" style="display: none" oninput="myFunction2()"/>
+                                            <input type="text"  id="startDateVal" name="StrtDateKeyword" value="" style="display: none"/>
+                                            <input type="text" id="endDateVal" name="EndDateKeyword" value="" style="display: none"/>
+                                            <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
+                                            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+                                            <input type="submit" class="btn btn-secondary" style="height: 30px;" value="검색">
+                                        </div>
                                     </form>
-                            </label>
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <!--/ Search Navbar-->
-                    <!--Search Result-->
+
                     <div id="search-results" class="card-body">
                         <div class="my-gallery" itemscope="" itemtype="http://schema.org/ImageGallery"
                              data-pswp-uid="1">
@@ -51,7 +94,9 @@
                                 <div class="card-deck">
                                     <c:forEach var="item" items="${list}" varStatus="idx">
                                         <div class="grid-item" style="width:300px;margin-left:10px;">
-                                            <figure class="card card-img-top border-grey border-lighten" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                                            <figure class="card card-img-top border-grey border-lighten"
+                                                    itemprop="associatedMedia" itemscope
+                                                    itemtype="http://schema.org/ImageObject">
                                                 <a href="/main/projectDetail/${item.projId}" itemprop="contentUrl"
                                                    data-size="480x360"><img class="gallery-thumbnail card-img-top"
                                                                             src="/resources/upload/img/${item.projImgRoute}"

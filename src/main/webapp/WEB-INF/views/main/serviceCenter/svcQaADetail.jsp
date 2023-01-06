@@ -74,7 +74,7 @@
 <!-- 							</div> -->
 							<div style="float: right;">
 							<c:if test="${svcQaAVO.memCode eq mvo.member.memCode}">
-								<button type="button" id="qnaDelBtn" class="btn btn-secondary">
+								<button type="button" id="qnaDelBtn" class="btn btn-danger">
 									<i class="feather icon-trash-2 mr-25 common-size"></i>삭제
 								</button>
 								<a href="/main/svcQaAUpdateForm?qnaNum=${svcQaAVO.qnaNum}" id="cancelBtn" class="btn btn-secondary">

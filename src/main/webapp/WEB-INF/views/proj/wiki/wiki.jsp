@@ -3,9 +3,10 @@
    	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css" />
+<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
 <link rel="stylesheet" href="/resources/zTree/css/zTreeStyle/zTreeStyle.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="/resources/js/html2pdf.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
 <script
@@ -44,11 +45,14 @@
 			</c:forEach>
 			</c:if>
 			<c:if test="${wikiDetail ne null}">
+			<div id="pdf_canvas">
 			<h1>${wikiDetail.wikiTitle}</h1>
 			<hr>
-			<div style="font-size: x-large;">${wikiDetail.wikiCts}</div>
-			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/${projId}/updateWiki?wikiId=${wikiDetail.wikiId}">수정</a>
-			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="/proj/${projId}/wikiDelete?wikiId=${wikiDetail.wikiId}">삭제</a>
+			<div style="font-size: large;">${wikiDetail.wikiCts}</div>
+			</div>
+<!-- 			<a class="btn btn-icon btn-secondary mr-1 mb-1" href="javascript:fn_download()">PDF다운로드</a> -->
+			<a class="btn btn-warning" href="/proj/${projId}/updateWiki?wikiId=${wikiDetail.wikiId}">수정</a>
+			<a class="btn btn-danger" href="/proj/${projId}/wikiDelete?wikiId=${wikiDetail.wikiId}">삭제</a>
 			<hr>
 				<c:if test="${list ne null}">
 					<c:forEach items="${list}" var="wiki" varStatus="stat">			
@@ -126,7 +130,19 @@
 		location.href = "?wikiId="+$("#searchWikiId option:selected").val();
 	});
 
+// 	 function fn_download(){
+// 		 console.log("PDF 다운로드");
+// 			// Get the element.
+// 			var element = document.getElementById('pdf_canvas');
 
+// 			// Generate the PDF.
+// 			html2pdf().from(element).set({
+// 				margin: 1,
+// 				filename: '${wikiDetail.wikiTitle}.pdf',
+// 				html2canvas: { scale: 1 },
+// 				jsPDF: {orientation: 'portrait', unit: 'mm', format: 'a4', compressPDF: true}
+// 			}).save();
+// 	 }
 
 const folderArray =[
     { id : "1", name:"최상위1" },

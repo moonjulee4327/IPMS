@@ -37,7 +37,7 @@
 	<!-- BEGIN: Content-->
 	<section class="row all-contacts">
 		<div class="col-12">
-			<div class="card" style="width: 1300px;">
+			<div class="card" style="width: 1000px;">
 				<div class="card-content">
 					<div class="card-body">
 						<!-- Task List table -->
@@ -46,7 +46,7 @@
 							<br />
 							<br>
 							<div style="width:100%;">
-								<div class="bug-list-search" style="float: left;padding-bottom: 15px; width:80%;">
+								<div class="bug-list-search" style="float: left;padding-bottom: 15px; width:60%;">
 									<div class="bug-list-search-content">
 										<div class="sidebar-toggle d-block d-lg-none">
 											<i class="feather icon-menu font-large-1"></i>
@@ -63,10 +63,7 @@
 														<input type="search" id="search-contacts"
 														class="form-control" placeholder="Search">
 													</div>
-													<div class="col-3">
-														<input type="date" class="form-control" id="searchDate">
-													</div>
-													<div class="col-1">
+													<div class="col-2">
 														<button type="button" class="btn btn-secondary" id="searchBtn">검색</button>
 													</div>	
 												</div>
@@ -93,8 +90,7 @@
 								class="table table-white-space table-borderless row-grouping display no-wrap icheck table-middle text-center">
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
-										<th><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;전체 선택</th>
-										<th>프로젝트 번호</th>
+										<th><input type='checkbox' id="allCkbox" name="allCkbox">&nbsp;선택</th>
 										<th>프로젝트 명</th>
 										<th>프로젝트 생성자</th>
 										<th>진행 여부</th>
@@ -112,14 +108,13 @@
 										<tr>
 											<td><input type='checkbox' id="ckbox" name="ckbox"
 												data-projId="${ProjManaVO.projId}" value="${ProjManaVO.projId}"></td>
-											<td>${ProjManaVO.projId}</td>
 											<td><b><a href="javascript:f_projInfo('${ProjManaVO.projId}')" style="color: #455DBD;">${ProjManaVO.projName}</a></b></td>
 											<td>${ProjManaVO.memCode}</td>
 											<c:if test="${endDate < today && ProjManaVO.deleteWhth eq 'n'}">
 												<td><span class="badge badge-secondary">종료</span></td>
 											</c:if>
 											<c:if test="${endDate >= today && ProjManaVO.deleteWhth eq 'n'}">
-												<td><span class="badge badge-primary">진행중</span></td>
+												<td><span class="badge badge-primary" style="font-weight:bold;">진행중</span></td>
 											</c:if>
 											<c:if test="${ProjManaVO.deleteWhth eq 'y'}">
 												<td><span class="badge badge-danger">중단</span></td>
@@ -141,13 +136,13 @@
 											style="background-color: #546E7A; color: white;">복구</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
-										id="DataTables_Table_0_paginate" style="padding-left: 470px;">
+										id="DataTables_Table_0_paginate" style="padding-left: 400px;">
 										<ul class="pagination">
 										<c:if test="${pageVO.prev}">
 										<li class="paginate_button page-item previous"
 											id="DataTables_Table_0_previous"><a href="/main/projManagement?pageNum=${pageVO.startPage-5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
-											tabindex="0" class="page-link">이전</a></li>
+											tabindex="0" class="page-link" style="width:50px;">이전</a></li>
 										</c:if>
 										
 										<c:forEach var="num" begin="${pageVO.startPage}" end="${pageVO.endPage}">
@@ -169,7 +164,7 @@
 											id="DataTables_Table_0_previous"><a href="/main/projManagement?pageNum=${pageVO.startPage+5}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}"
 														
 											aria-controls="DataTables_Table_0" data-dt-idx="0"
-											tabindex="0" class="page-link">다음</a></li>
+											tabindex="0" class="page-link" style="width:50px;">다음</a></li>
 										</c:if>
 									</ul>
 									</div>

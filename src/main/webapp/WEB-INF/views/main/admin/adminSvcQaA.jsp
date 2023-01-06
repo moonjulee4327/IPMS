@@ -38,7 +38,7 @@
 	<!-- BEGIN: Content-->
 	<section class="row all-contacts">
 		<div class="col-12">
-			<div class="card" style="width: 1200px;">
+			<div class="card" style="width: 1000px;">
 				<div class="card-content">
 					<div class="card-body">
 						<div class="row breadcrumbs-top" >
@@ -77,7 +77,7 @@
 										<form action="#">
 											<div class="position-relative">
 												<input type="search" id="search-contacts"
-													class="form-control" placeholder="Search">
+													class="form-control" placeholder="검색어를 입력해주세요." style="width: 300px; float: right;">
 												<div class="form-control-position">
 													<i
 														class="fa fa-search text-size-base text-muted la-rotate-270"></i>
@@ -89,7 +89,16 @@
 							</div>
 							<table id="users-contacts"
 								class="table table-white-space table-borderless row-grouping display no-wrap icheck table-middle text-center"
-								style="width: 1115px;">
+								style="width: 945px;">
+								<colgroup>
+							    	<col width="5%" />
+							        <col width="5%" />
+							        <col width="50%" />
+							        <col width="10%" />
+							        <col width="10%" />
+							        <col width="15%" />
+							        <col width="15%" />
+					 		   </colgroup>
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
 										<th>선택</th>
@@ -119,10 +128,10 @@
                                         </td> 
                                         <td style=""> <!-- 답변 유무 -->
                                         	<c:if test="${adminSvcQaA.qnaStatus eq '응답중'}">
-                                            <span class="badge badge-warning">${adminSvcQaA.qnaStatus}</span>
+                                            <span class="badge badge-danger">${adminSvcQaA.qnaStatus}</span>
                                             </c:if>
                                         	<c:if test="${adminSvcQaA.qnaStatus eq '응답완료'}">
-                                            <span class="badge badge-success">${adminSvcQaA.qnaStatus}</span>
+                                            <span class="badge badge-secondary">${adminSvcQaA.qnaStatus}</span>
                                             </c:if>
                                             <!-- <span class="badge badge-success">${adminSvcQaA.qnaStatus}</span> -->
                                         </td>
@@ -139,13 +148,16 @@
 							</table>
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
-									<div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
+									<div style="float: left; padding-left:7px;">
+										<button type="button" class="btn btn-secondary btn-sm"
+											style="background-color: #546E7A; color: white;" id="chkDeleteBtn">삭제</button>
+									</div>
+									<div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate" style="padding-left: 400px;">
 										<ul class="pagination">
-		
 											<!-- 이전 버튼 시작 -->
 											<c:if test="${pageVO.prev }">
 											<li class="paginate_button page-item previous" id="app-invoice-table_previous">
-												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum - 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="0" tabindex="0" class="page-link" style="width:50px;">이전</a>
 											</li>
 											</c:if>
 											<!-- 이전 버튼 끝 -->
@@ -171,7 +183,7 @@
 											<!-- 다음 버튼 시작 -->
 											<c:if test="${pageVO.next }">
 											<li class="paginate_button page-item next" id="app-invoice-table_next">
-												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" class="page-link">Next</a>
+												<a href="/main/adminSvcQaA?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}" aria-controls="app-invoice-table" data-dt-idx="6" tabindex="0" style="width:50px;" class="page-link">다음</a>
 											</li>
 											</c:if>
 											<!-- 다음 버튼 끝 -->

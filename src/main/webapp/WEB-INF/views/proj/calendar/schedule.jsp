@@ -142,8 +142,9 @@ function stringFormat(p_val){
 	   	  }) // ajax end
 	   	  
 	  	let arrT = loadEvent2();
+	  	let arrT2 = loadEvent3();
 	   	  
-	   	return [...arr,...arrT];	// **spread operator(펼침 연산자!) ... 배열을 합쳐줍니당
+	   	return [...arr,...arrT,...arrT2];	// **spread operator(펼침 연산자!) ... 배열을 합쳐줍니당
 	}
 	
 	// 띄우기 - 일감(task) 리스트
@@ -198,11 +199,64 @@ function stringFormat(p_val){
 			  
 		return arr2;
 	}
+
+	// 띄우기 - 모든 상위 일감(task) 리스트
+	function loadEvent3() {
+		
+		console.log("상위 일감");
+		
+		  let arr3 = [];
+ 			
+			  $.ajax({
+				 type:"post",
+				 url: "/proj/${projId}/calList3",
+				 data:"{}",
+				 dataType: "json",
+				 contentType: "applecation/json; charset=utf-8",
+				 async: false,
+			 beforeSend : function(xhr) {   // 데이터 전송 전 헤더에 csrf값 설정
+                xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+		  	},
+		  	success:function(list){
+		  		
+		  		let changeC="";
+		  		let changeF="";
+		  		
+		  		for(var j=0;j<list.length;j++){
+		  			
+		  			// 상위/하위 일감 컬러 구분
+		  			if(list[j]['highTaskId']==null) {
+		  				changeC = '#8299D8'
+		  				changeF = '#FFFFFF';
+		  			} else {
+		  				changeC = '#CFE4F2'
+		  				changeF = '#135C94';
+		  			}
+		  			
+		  			arr3.push({
+		  				taskId:list[j]['taskId'],
+		  				highTaskId:list[j]['highTaskId'],
+		  				title:list[j]['taskTitle'],
+		  				taskCts:list[j]['taskCts'],
+		  				start:list[j]['taskStrtDate'],
+		  				end:list[j]['taskEndDate'],
+		  				taskPgres:list[j]['taskPgres'],
+		  				color: changeC,
+		  				textColor: changeF
+		  			})
+		  		}
+		  		
+		  		console.log("arr3 : " ,JSON.stringify(arr3));
+		  	}
+		});
+			  
+		return arr3;
+	}
 </script>
 </head>
 <body>
 		<div>
-			<button type="button" class="btn btn-secondary btn-round mr-1 mb-1" data-toggle="popover" data-placement="right" data-container="body" 
+			<button type="button" style="padding-bottom:30px; outline:none;" data-toggle="popover" data-placement="right" data-container="body" 
 			data-original-title="캘린더 이용 안내" data-content="개인의 프로젝트 상·하위 일감 및 일정을 확인할 수 있습니다. 프로젝트 일감은 조회만 가능합니다. 개인 일정은 시간 관리가 가능하며, 클릭 또는 드래그하여 날짜를 선택할 수 있습니다.">
 			<i class="fa fa-question-circle"></i></button>
 			<span class="fc-daygrid-event-dot" style="background-color: #8299D8; border-color: #8299D8; color: white;">상위 일감</span>
@@ -210,7 +264,7 @@ function stringFormat(p_val){
 			<span class="fc-daygrid-event-dot" style="background-color: rgb(2, 181, 184); border-color: rgb(2, 181, 184); color: white;">개인 일정</span>
 		</div>
 	<div class="row" id="calendar"
-		style="width: 1050px; margin: auto; background-color: white;"></div>
+		style="width: 1000px; margin: auto; background-color: white;"></div>
 
 	<!-- 일정 등록 모달 창 시작 -->
 	<!-- insertModal -->

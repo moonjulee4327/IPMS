@@ -72,10 +72,8 @@
 						<div class="form-body">
 							<div class="row">
 								<div class="col-4">
-									<img class="gallery-thumbnail card-img-top"
-										src="/resources/images/delivery-boy.png"
-										style="width: 170px; height: 170px; margin-left: 18px; margin-top: 40px;"
-										itemprop="thumbnail" alt="Image description">
+									<img src="/resources/upload/img/${data.memImgRoute}" 
+										style="width: 170px; height: 170px; margin-left: 18px; margin-top: 40px;">
 								</div>
 								<div class="col-8">
 									<h4 class="form-section"
@@ -117,28 +115,116 @@
 								<i class="feather icon-file" style="color: #455DBD;"></i>
 								포트폴리오
 							</h4>
+							<div>
+							<div style="height:250px; overflow: auto;">
+					            <ul class="nav nav-tabs mb-2" role="tablist">
+					                <li class="nav-item"><a class="nav-link d-flex align-items-center active" id="invite-tab" data-toggle="tab" href="#invite" aria-controls="invite" role="tab" aria-selected="true"> <i class="feather icon-user mr-25"></i><span class="d-none d-sm-block">참여중인 프로젝트</span>
+					                </a></li>
+					                <li class="nav-item"><a class="nav-link d-flex align-items-center" id="apply-tab" data-toggle="tab" href="#apply" aria-controls="apply" role="tab" aria-selected="false"> <i class="feather icon-info mr-25"></i><span class="d-none d-sm-block">완료한 프로젝트</span>
+					                </a></li>
+					            </ul>
+					            <div class="tab-content">
+					                <div class="tab-pane active" id="invite" aria-labelledby="invite-tab" role="tabpanel">
+					                    <!-- users edit account form start -->
+					                    <form novalidate="">
+					                        <div class="col-xl-8 col-lg-12">
+					                            <div class="card">
+					                                <div class="card-content">
+					                                    <div class="table-responsive">
+					                                        <div id="projectsApplied">
+					                                        	<table class="table mb-0">
+																    <colgroup>
+																    	<col width="60%" />
+																        <col width="40%" />
+																    </colgroup>
+					                                        	<thead>
+																	<tr>
+																		<th style="color: #0D47A1;">프로젝트 명</th>
+																		<th style="color: #0D47A1;">프로젝트 기간</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<!-- data : AdminMemVO
+																		data.projVOList : List<ProjVO>
+																	 -->
+																	<c:forEach var="data" items="${data.projVOList}">
+																	<c:if test="${data.projName eq null}">
+																		<tr>
+																		<td colspan='2' style="text-align:center;">아직 참여중인 프로젝트가 없습니다.</td>
+																		</tr>
+																	</c:if>
+																	<c:if test="${data.projEndDate > now}">
+																	<tr>
+																		<td>${data.projName}</td>
+																		<td><fmt:formatDate value='${data.projStrtDate}' pattern='yyyy-MM-dd'/> 
+																			~ <fmt:formatDate value='${data.projEndDate}' pattern='yyyy-MM-dd'/></td>
+																	</tr>
+																	</c:if>
+																	</c:forEach>
+																</tbody>
+					                                        	</table>
+					                                        </div>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </form>
+					
+					                </div>
+					                <div class="tab-pane" id="apply" aria-labelledby="apply-tab" role="tabpanel">
+					                    <form novalidate="">
+					                        <div class="col-xl-8 col-lg-12">
+					                            <div class="card">
+					                                <div class="card-content">
+					                                    <div class="table-responsive">
+					                                        <div id="projectsApplied">
+					                                        	<table class="table mb-0">
+					                                        		<colgroup>
+																    	<col width="60%" />
+																        <col width="40%" />
+																    </colgroup>
+					                                        	<thead>
+																	<tr>
+																		<th style="color: #0D47A1;">프로젝트 명</th>
+																		<th style="color: #0D47A1;">프로젝트 기간</th>
+																	</tr>
+																</thead>
+																<tbody>
+<%-- 																<jsp:useBean id="now" class="java.util.Date" /> --%>
+																<fmt:formatDate value="${now}" pattern="yyyy-MM-dd" var="today" />
+																	<c:forEach var="data2" items="${data.projVOList}">
+																		<c:if test="${data2.projName eq null}">
+																			<tr>
+																			<td colspan='2' style="text-align:center;">아직 완료한 프로젝트가 없습니다.</td>
+																			</tr>
+																		</c:if>
+																		<fmt:formatDate value='${data2.projEndDate}' var='endDate' pattern='yyyy-MM-dd'/>
+																		<c:if test="${data2.projEndDate < now}">
+																		<tr>
+																			<td>${data2.projName}</td>
+																			<td><fmt:formatDate value='${data2.projStrtDate}' pattern='yyyy-MM-dd'/> 
+																				~ ${endDate}</td>
+																		</tr>
+																		</c:if>	
+																	</c:forEach>
+																</tbody>
+					                                        	</table>
+					                                        </div>
+					                                    </div>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </form>
+					                    <!-- users edit Info form ends -->
+					                </div>
 
-							<div class="form-group">
-								<label for="userinput5">Email</label> <input
-									class="form-control border-secondary" type="email"
-									placeholder="email" id="userinput5">
-							</div>
-
-							<div class="form-group">
-								<label for="userinput5">Email</label> <input
-									class="form-control border-secondary" type="email"
-									placeholder="email" id="userinput5">
-							</div>
-
-							<div class="form-group">
-								<label for="userinput5">Email</label> <input
-									class="form-control border-secondary" type="email"
-									placeholder="email" id="userinput5">
+					            </div>
+ 						       </div>
 							</div>
 						</div>
-
-						<div class="form-actions right">
-							<button type="reset" class="btn btn-secondary" onclick="f_close()">닫기</button>
+						<br>
+						<div class="form-actions right" style="float:right; padding-bottom:20px; padding-right:5px;">
+							<button type="reset" class="btn btn-secondary" onclick="f_close()">닫기</button><br>
 						</div>
 					</form>
 

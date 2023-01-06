@@ -24,14 +24,14 @@
 
 <body>
 	<!-- BEGIN: Content-->
-	<div style="bottom: 30px;"
+	<div style="bottom: ;"
 		class="content-header-left col-md-12 col-10">
 		<h3 class="content-header-title mb-0" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">
 			<b>포트폴리오</b>
 		</h3>
 		<button type="button" style="width: 110px; margin-left: 1070px;" class="btn btn-secondary btn-block" onclick="savePDF()">PDF 다운로드</button>
 	</div>
-	<div class="content-body" style="width: 1200px;">
+	<div class="content-body" style="width: 1000px;">
 		<!-- users view start -->
 		<section class="users-view">
 			<!-- users view card data start -->

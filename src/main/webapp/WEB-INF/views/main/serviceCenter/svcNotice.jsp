@@ -11,12 +11,12 @@
 	}
 </style>
 
-    <div class="card" style="width: 1200px">
+    <div class="card" style="width: 1000px">
         <div class="card-body">
-        	<div class="row breadcrumbs-top" >
+        	<div class="row breadcrumbs-top" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">
 		        <div class="breadcrumb-wrapper col-12">
 		            <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px;">
-		                <li class="breadcrumb-item">공지사항</li>
+		                <li class="breadcrumb-item" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">공지사항</li>
 		            </ol>
 		        </div>
 		    </div>

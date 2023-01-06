@@ -45,7 +45,7 @@
 	<!-- BEGIN: Content-->
 	<section class="row all-contacts">
 		<div class="col-12">
-			<div class="card" style="width: 1200px;">
+			<div class="card" style="width: 1000px;">
 				<div class="card-content">
 					<div class="card-body">
 						<div class="row breadcrumbs-top" >
@@ -77,7 +77,7 @@
 					        </div>
 					    </div>
 						<!-- Task List table -->
-						<div class="table-responsive">
+						<div class="table">
 							<div>
 								<br>
 								<div class="bug-list-search" style="padding-bottom: 15px; width:1115px;">
@@ -112,7 +112,13 @@
 							</div>
 							<table id="users-contacts"
 								class="table table-white-space table-borderless row-grouping display no-wrap icheck table-middle text-center"
-								style="width: 1115px;">
+								style="width: 945px;">
+								<colgroup>
+							    	<col width="10%" />
+							        <col width="10%" />
+							        <col width="50%" />
+							        <col width="30%" />
+					 		   </colgroup>
 								<thead style="background: #3F4E89; color: white;">
 									<tr>
 										<th>선택</th>
@@ -128,7 +134,7 @@
 										<td>${stat.count}</td>
 										<td><b><a href="/main/adminSvcNoticeDetail?siteNtNum=${noticeList.siteNtNum}" style="color: #455DBD;">${noticeList.siteNtTitle}</a></b>
 										</td>
-										<td><span class="badge badge-success"><fmt:formatDate value="${noticeList.siteNtWriteDate}" pattern="yyyy-MM-dd" /></span></td>
+										<td><fmt:formatDate value="${noticeList.siteNtWriteDate}" pattern="yyyy-MM-dd" /></span></td>
 									</tr>
 								
 								</c:forEach>
@@ -136,8 +142,8 @@
 							</table>
 							<div class="row" style="padding-top: 20px; margin: auto;">
 								<div class="col-sm-12 col-md-7">
-									<div style="float: left;">
-										<button type="button" class="btn"
+									<div style="float: left; padding-left:7px;">
+										<button type="button" class="btn btn-secondary btn-sm"
 											style="background-color: #546E7A; color: white;" id="chkDeleteBtn">삭제</button>
 									</div>
 									<div class="dataTables_paginate paging_simple_numbers"
@@ -147,7 +153,7 @@
 											<li class="paginate_button page-item previous disabled"
 												id="DataTables_Table_0_previous"><a href="#"
 												aria-controls="DataTables_Table_0" data-dt-idx="0"
-												tabindex="0" class="page-link">Previous</a></li>
+												tabindex="0" class="page-link" style="width:50px;">이전</a></li>
 										</c:if>
 										 <c:forEach var = "num" begin = "${pageVO.startPage}" end = "${pageVO.endPage}">
 										 	<c:choose>
@@ -168,7 +174,7 @@
 			                                    <li class="paginate_button page-item next"
 													id="DataTables_Table_0_next"><a href="/main/adminSvcFaq?pageNum=${pageVO.pageNum + 1}&amount=${pageVO.amount}&keyword=${keyword}&category=${category}&searchDate=${date}"
 													aria-controls="DataTables_Table_0" data-dt-idx="7"
-													tabindex="0" class="page-link">Next</a></li>
+													tabindex="0" class="page-link" style="width:50px;">다음</a></li>
 		                                   
                                     	</c:if>
 											

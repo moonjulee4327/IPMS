@@ -72,10 +72,8 @@
 						<div class="form-body">
 							<div class="row">
 								<div class="col-4">
-									<img class="gallery-thumbnail card-img-top"
-										src="/resources/images/textImg.jpg"
-										style="width: 170px; height: 170px; margin-left: 5px; margin-top: 40px;"
-										itemprop="thumbnail" alt="Image description">
+									<img src="/resources/upload/img/${data.projImgRoute}"
+										style="width: 170px; height: 170px; margin-left: 5px; margin-top: 40px;">
 								</div>
 								<div class="col-8">
 									<h4 class="form-section"

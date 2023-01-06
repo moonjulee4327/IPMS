@@ -14,7 +14,7 @@
 <br>
 <div class="content-left ml-5" style="width: 12%">
 <div class="card-head">
-		<div class="form-group form-group-compose">
+		<div class="form-group form-group-compose" style="width: 200px">
             <!-- compose button  -->
             <a href="/main/pwAuth" class="btn btn-info btn-glow btn-block my-2 compose-btn" style="background-color: #00b5b8 !important">
                 <i class="fa fa-user-circle"></i>
@@ -25,13 +25,13 @@
 	<div class="media p-1">
 	    <div class="media-left pr-1"></div>
 	    <div class="media-body media-middle">
-	        <h5 class="media-heading" style="padding-left: 37px">${mvo.member.memName} </h5>
+	        <h5 class="media-heading" style="padding-left: 40px; font-family: noto sans, malgun gothic, AppleGothic, dotum;font-style: bold">${mvo.member.memName} 님</h5>
 	        <h4 class="media-heading" style="font-size: 15px"></h4>	        
 	    </div>
 	</div>
 </div>
 
-	<div class="sidebar-menu-list">
+	<div class="sidebar-menu-list" style="width: 200px">
 		<!-- sidebar menu  -->
 		<div class="list-group list-group-messages" >
 			<a href="/main/inforManagement" class="list-group-item" id="inbox-menu">

@@ -148,8 +148,8 @@
 												<span id="fnEdit${stat.index}">
 												<!-- 로그인한 회원과 댓글 작성자가 일치하면 수정,삭제 버튼 보이게 -->
 												<c:if test="${freeboardCmtVO.memCode eq mvo.member.memCode}">
-													<a style='font-size: 12px; text-decoration: underline;' 
-														onclick='fn_reCmt()' type='button' >댓글작성</a>
+<!-- 													<a style='font-size: 12px; text-decoration: underline;'  -->
+<!-- 														onclick='fn_reCmt()' type='button' >댓글작성</a> -->
 													<a style="color : red; font-size: 12px; text-decoration: underline;" 
 														onclick="fn_update('${freeboardCmtVO.projBdCmtId}','${stat.index}')" type="button" id="cmtModify">수정</a>
 													<a style="color : grey; font-size: 12px; text-decoration: underline;" 
@@ -258,7 +258,7 @@
 			let data = {"projBdId":projBdId,"writerCmt":writerCmt,"projBdCmtCts":projBdCmtCts};	
 			
 			$.ajax({
-				url:"/proj/insertFreeCmt",
+				url:"/proj/${projId}/insertFreeCmt",
 				contentType:"application/json;charset=utf-8",
 				data:JSON.stringify(data),
 				dataType:"json",
@@ -301,7 +301,7 @@
 		
 		// 아자작
 		$.ajax({
-			url:"/proj/deleteFreeCmt",
+			url:"/proj/${projId}/deleteFreeCmt",
 			contentType:"application/json;charset=utf-8",
 			data:JSON.stringify(data),
 			dataType:"json",
@@ -355,7 +355,7 @@
 		console.log("data: " + JSON.stringify(data));
 		
 		$.ajax({
-			url:"/proj/updateFreeCmt",
+			url:"/proj/${projId}/updateFreeCmt",
 			contentType:"application/json;charset=utf-8",
 			data:JSON.stringify(data),
 			dataType:"json",

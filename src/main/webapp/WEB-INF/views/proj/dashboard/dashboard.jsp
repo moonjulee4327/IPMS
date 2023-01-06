@@ -31,7 +31,7 @@ th{
 	
 }
 tr{
-	padding: 15px;
+	padding: 5px;
 }
 </style>
 <script
@@ -84,66 +84,19 @@ tr{
 							<div class="card-content">
 								<div class="table-responsive">
 									<table id="recent-orders"
-										class="table table-hover mb-0 ps-container ps-theme-default">
+										class="table table-hover mb-0 ps-container ps-theme-default"
+										style="table-layout: fixed;">
 										<thead>
 											<tr>
-												<th>일감 번호</th>
-												<th>일감 제목</th>
-												<th>담당자</th>
-												<th>상태</th>
-												<th>진척도</th>
+												<th style="width: 17%;">번호</th>
+												<th style="width: 35%">일감 제목</th>
+												<th style="width: 15%">상태</th>
+												<th style="width: 20%">진척도</th>
+												<th style="width: 20%">담당자</th>
 											</tr>
 										</thead>
 										<tbody id="task">
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-532521</td>
-												<td class="text-truncate">Doris R.</td>
-												<td class="text-truncate"><span
-													class="badge badge-warning">Overdue</span></td>
-												<td class="text-truncate">$ 5685.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-05521</td>
-												<td class="text-truncate">Andrew D.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 152.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-15521</td>
-												<td class="text-truncate">Megan S.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1450.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-32521</td>
-												<td class="text-truncate">Walter R.</td>
-												<td class="text-truncate"><span
-													class="badge badge-warning">Overdue</span></td>
-												<td class="text-truncate">$ 685.00</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -166,66 +119,18 @@ tr{
 							<div class="card-content">
 								<div class="table-responsive">
 									<table id="recent-orders"
-										class="table table-head-fixed table-hover mb-0 ps-container ps-theme-default">
+										class="table table-head-fixed table-hover mb-0 ps-container ps-theme-default"
+										style="table-layout: fixed;">
 										<thead>
 											<tr>
-												<th style="">이슈 번호</th>
-												<th style="">이슈 제목</th>
-												<th style="">담당자</th>
-												<th style="">등록일</th>
-												<th style="">상태</th>
+												<th style="width: 15%;">번호</th>
+												<th style="width: 35%">이슈 제목</th>
+												<th style="width: 15%">담당자</th>
+												<th style="width: 15%;text-align: center;">상태</th>
 											</tr>
 										</thead>
 										<tbody id="issue">
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-10521</td>
-												<td class="text-truncate">Elizabeth W.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1200.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-532521</td>
-												<td class="text-truncate">Doris R.</td>
-												<td class="text-truncate"><span
-													class="badge badge-warning">Overdue</span></td>
-												<td class="text-truncate">$ 5685.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-05521</td>
-												<td class="text-truncate">Andrew D.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 152.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-15521</td>
-												<td class="text-truncate">Megan S.</td>
-												<td class="text-truncate"><span
-													class="badge badge-success">Paid</span></td>
-												<td class="text-truncate">$ 1450.00</td>
-											</tr>
-											<tr>
-												<td class="text-truncate">PO-32521</td>
-												<td class="text-truncate">Walter R.</td>
-												<td class="text-truncate"><span
-													class="badge badge-warning">Overdue</span></td>
-												<td class="text-truncate">$ 685.00</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -258,31 +163,14 @@ tr{
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th scope="col" style="text-align: center;">공지사항 번호</th>
+												<th scope="col" style="text-align: center;">번호</th>
 												<th scope="col">제목</th>
 												<th scope="col">작성자</th>
 												<th scope="col">작성일</th>
 											</tr>
 										</thead>
 										<tbody id="notice">
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
-											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
-											<tr>
-												<th scope="row">3</th>
-												<td>Larry</td>
-												<td>the Bird</td>
-												<td>@twitter</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -310,31 +198,14 @@ tr{
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th scope="col" style="text-align: center;">게시판 번호</th>
+												<th scope="col" style="text-align: center;">번호</th>
 												<th scope="col">제목</th>
 												<th scope="col">작성자</th>
 												<th scope="col">작성일</th>
 											</tr>
 										</thead>
 										<tbody id="freeBoard">
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-												<td>@mdo</td>
-											</tr>
-											<tr>
-												<th scope="row">2</th>
-												<td>Jacob</td>
-												<td>Thornton</td>
-												<td>@fat</td>
-											</tr>
-											<tr>
-												<th scope="row">3</th>
-												<td>Larry</td>
-												<td>the Bird</td>
-												<td>@twitter</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -362,17 +233,13 @@ tr{
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th scope="col">ERD번호</th>
+												<th scope="col">번호</th>
 												<th scope="col">제목</th>
 												<th scope="col">작성자</th>
 											</tr>
 										</thead>
 										<tbody id="erd">
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -391,17 +258,13 @@ tr{
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th scope="col">위키 번호</th>
+												<th scope="col">번호</th>
 												<th scope="col">제목</th>
 												<th scope="col">작성자</th>
 											</tr>
 										</thead>
 										<tbody id="wiki">
-											<tr>
-												<th scope="row">1</th>
-												<td>Mark</td>
-												<td>Otto</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -449,47 +312,64 @@ tr{
 	        		str += "<div style='position: absolute;left: 50%;transform: translateX(-50%);'>등록된 일감이 없습니다.</div>";
 	        		str += "<br>"
 	        	}else{
+		        	var title = "";
 		        	for(let i=0;i<data.length;i++){
 		        		if(data[i].highTaskId == null){
+		        			if(data[i].taskTitle.length > 5){
+			        			title = data[i].taskTitle.substr(0,5)+"...";
+			        		}else{
+		        				title = data[i].taskTitle;			        			
+			        		}
 		        			str += `
 			        			<tr>
 									<td scope="row" align='center'>\${i+1}</td>
-									<td><span class="badge">상위</span>\${data[i].taskTitle}</td>
-									<td>\${data[i].memCode}</td>`
+									<td title="\${data[i].taskTitle}">[상위] \${title}</td>
+									`;
 							if(data[i].taskStusCode == 'danger'){
 							str +=	`<td><span class="badge badge-danger">높음</span></td>
 									<td>\${data[i].taskPgres}%</td>
-								</tr>`							
+									<td>\${data[i].memCode}</td>
+								</tr>`;						
 							}
 							if(data[i].taskStusCode == 'primary'){
 							str +=	`<td><span class="badge badge-primary">일반</span></td>
 									<td>\${data[i].taskPgres}%</td>
-								</tr>`							
+									<td>\${data[i].memCode}</td>
+								</tr>`;							
 							}
 							if(data[i].taskStusCode == 'secondary'){
 							str +=	`<td><span class="badge badge-secondary">낮음</span></td>
 									<td>\${data[i].taskPgres}%</td>
-								</tr>`							
+									<td>\${data[i].memCode}</td>
+								</tr>`;							
 							}
-		        		}else{		
+		        		}else{
+		        			if(data[i].taskTitle.length > 8){
+		        				title = data[i].taskTitle.substr(0,8)+"...";
+			        		}else{
+		        				title = data[i].taskTitle;			        			
+			        		}
 			        		str += `
 			        			<tr>
 									<td scope="row" align='center'>\${i+1}</td>
-									<td>\${data[i].taskTitle}</td>
-									<td>\${data[i].memCode}</td>`
+									<td title="\${data[i].taskTitle}">\${title}</td>
+									`
 							if(data[i].taskStusCode == 'danger'){
 							str +=	`<td><span class="badge badge-danger">높음</span></td>
 									<td>\${data[i].taskPgres}%</td>
+									<td>\${data[i].memCode}</td>
 								</tr>`							
 							}
 							if(data[i].taskStusCode == 'success'){
 							str +=	`<td><span class="badge badge-success">일반</span></td>
 									<td>\${data[i].taskPgres}%</td>
+									<td>\${data[i].memCode}</td>
 								</tr>`							
 							}
 							if(data[i].taskStusCode == 'primary'){
 							str +=	`<td><span class="badge badge-warning">낮음</span></td>
 									<td>\${data[i].taskPgres}%</td>
+									<td>\${data[i].memCode}</td>
 								</tr>`							
 							}
 		        		}
@@ -514,18 +394,24 @@ tr{
 	        		str += "<br>"
 	        	}else{
 		        	for(let i=0;i<data.length;i++){
+		        		var title ="";
+		        		if(data[i].issueTitle.length > 13){
+		        			title = data[i].issueTitle.substr(0,13)+"...";
+		        		}else{
+		        			title= data[i].issueTitle;
+		        		}
 		        		str += `
 		        			<tr>
 								<td scope="row" align='center'>\${i+1}</td>
-								<td><a href='/proj/${projId}/issueDetail?issueId=\${data[i].taskId}'>\${data[i].issueTitle}</a></td>
+								<td title="\${data[i].issueTitle}"><a href='/proj/${projId}/issueDetail?issueId=\${data[i].taskId}'>\${title}</a></td>
 								<td>\${data[i].writer}</td>
-								<td>\${moment(data[i].issueRgstDate).format("yyyy-MM-DD")}</td>`;
+								`;
 						if(data[i].issueStusCode =='해결'){							
-							str += 	`<td><span class="badge badge-success">\${data[i].issueStusCode}</span></td>
+							str += 	`<td style="text-align:center;"><span class="badge badge-success">\${data[i].issueStusCode}</span></td>
 									</tr>`
 						}		
 						if(data[i].issueStusCode =='미해결'){							
-							str += 	`<td><span class="badge badge-danger">\${data[i].issueStusCode}</span></td>
+							str += 	`<td style="text-align:center;"><span class="badge badge-danger">\${data[i].issueStusCode}</span></td>
 									</tr>`
 						}		
 		        	}
@@ -605,7 +491,7 @@ tr{
 		        	for(let i=0;i<data.length;i++){
 		        		str += `
 		        			<tr>
-								<th scope="row">\${i+1}</th>
+		        			<th scope="row">&nbsp;&nbsp;\${i+1}</th>
 								<td><a href='/proj/${projId}/erd?erdNum=\${data[i].erdNum}'>\${data[i].erdTitle}</a></td>
 								<td>\${data[i].writer}</td>
 							</tr>`
@@ -631,7 +517,7 @@ tr{
 		        	for(let i=0;i<data.length;i++){
 		        		str += `
 		        			<tr>
-								<th scope="row">\${i+1}</th>
+								<th scope="row">&nbsp;&nbsp;\${i+1}</th>
 								<td><a href='/proj/${projId}/wiki?wikiId=\${data[i].wikiId}'>\${data[i].wikiTitle}</a></td>
 								<td>\${data[i].memCode}</td>
 							</tr>`

@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <style>
 	.d-inline{
-		color: #00b5b8 !important;
+		color: #404e67 !important;
 	}
 </style>
 

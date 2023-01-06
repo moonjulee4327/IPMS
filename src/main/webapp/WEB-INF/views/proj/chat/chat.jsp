@@ -61,7 +61,9 @@
     </div>
 </div>
 <script type="text/javascript">
-	let roomNo = "${projId}"
+	let roomNo = "${projId}";
+	window.scrollTo(0, document.body.scrollHeight);
+
 	$("#sendBtn").click(function() {
 		sendMessage();
 		$('#message').val('')
@@ -71,8 +73,8 @@
 		$("#userIdSet").attr("hidden",true);
 		$("#userId").attr("hidden",true);
 	});
-	
-	let sock = new SockJS("http://192.168.142.7/echo/"+"?roomId="+roomNo);
+
+	let sock = new SockJS("http://192.168.42.61/echo/"+"?roomId="+roomNo);
 	sock.onmessage = onMessage;
 	sock.onclose = onClose;
 	sock.onOpen = onOpen;

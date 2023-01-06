@@ -103,23 +103,23 @@
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Age: activate to sort column ascending"
-											style="width: 100px;">진척도</th>
+											style="width: 80px;">진척도</th>
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Age: activate to sort column ascending"
-											style="width: 120px;">시작일</th>
+											style="width: 150px;">시작일</th>
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Age: activate to sort column ascending"
-											style="width: 120px;">종료일</th>
+											style="width: 150px;">종료일</th>
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Office: activate to sort column ascending"
-											style="width: 30px;">담당자</th>
+											style="width: 20px;">담당자</th>
 										<th class="sorting" tabindex="0"
 											aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
 											aria-label="Age: activate to sort column ascending"
-											style="width: 100px;">승인여부</th>
+											style="width: 20px;">승인여부</th>
 									</tr>
 							</thead>
 							<tbody id="taskList">
@@ -127,17 +127,19 @@
 								<tr>
 									<td>${stat.count}</td>
 									<td style="text-align: left;">
-										<a href="/proj/dashWorkDetail?taskId=${list.taskId}">${list.taskTitle}</a>
+										<a href="/proj/${list.projId}/dashWorkDetail?taskId=${list.taskId}">${list.taskTitle}</a>
 									</td>
-									<c:if test="${list.taskStusCode eq 'primary'}">
-									<td><span class="badge badge-warning">낮음</span></td>									
-									</c:if>
-									<c:if test="${list.taskStusCode eq 'danger'}">
-									<td><span class="badge badge-danger">높음</span></td>									
-									</c:if>
-									<c:if test="${list.taskStusCode eq 'success'}">
-									<td><span class="badge badge-success">일반</span></td>									
-									</c:if>
+									<td>
+										<c:if test="${list.taskStusCode eq 'primary'}">
+											<span class="badge badge-warning">낮음</span>									
+										</c:if>
+										<c:if test="${list.taskStusCode eq 'danger'}">
+											<span class="badge badge-danger">높음</span>									
+										</c:if>
+										<c:if test="${list.taskStusCode eq 'secondary'}">
+											<span class="badge badge-success">일반</span>									
+										</c:if>
+									</td>
 									<td>${list.taskPgres }%</td>
 									<td><fmt:formatDate value="${list.taskStrtDate}" pattern="yyyy-MM-dd" /></td>
 									<td><fmt:formatDate value="${list.taskEndDate}" pattern="yyyy-MM-dd" /></td>
@@ -156,7 +158,7 @@
                         <!-- 페이징 처리 버튼 시작 -->
                         <div class="col-sm-12 col-md-7">
                             <div class="dataTables_paginate paging_simple_numbers" id="app-invoice-table_paginate">
-                                <ul class="pagination"  style="text-align: center; float: right;">
+                                <ul class="pagination"  style="margin-right:96px; text-align: center; float: right;">
 
                                     <!-- 이전 버튼 시작 -->
                                     <c:if test="${pageVO.prev}">

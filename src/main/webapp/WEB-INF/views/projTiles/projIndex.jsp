@@ -118,7 +118,7 @@
 				<div id="justify-content" class="container">
 					<div id="chatOpen" class="justify-content-end"
 						style="float: right;">
-						<i class="fa fa-comment fa-2x" aria-hidden="true" style="font-size: 44px"></i>
+						<i class="fa fa-comment fa-2x" aria-hidden="true" style="font-size: 44px;color: #02b5b8;"></i>
 					</div>
 				</div>
 			</div>
@@ -137,9 +137,9 @@
 	<!-- chatbox 시작 -->
 	<script type="text/javascript">
 		$("#chatOpen").on("click",function(){
-			window.open("http://192.168.142.7/proj/${projId}/chat","_blank", "menubar=no, toolbar=no,resizable=no, location=no, width=600px,height=865px");
+			window.open("http://192.168.142.9/proj/${projId}/chat",
+					"_blank", "menubar=no, toolbar=no,resizable=no, location=no, width=550,height=700,left=300");
 		});
-	
 	</script>
 	<!-- chatbox 끝 -->
 	

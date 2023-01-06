@@ -5,13 +5,13 @@
 	<div class="row breadcrumbs-top" >
         <div class="breadcrumb-wrapper col-12">
             <ol class="breadcrumb" style="position: relative;margin-right: 15px; font-size: 25px;">
-                <li class="breadcrumb-item">자주 묻는 질문</li>
+                <li class="breadcrumb-item" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">자주 묻는 질문</li>
             </ol>
         </div>
     </div>
     <br>
 		<div id="accordion"
-			style="width: 1200px">
+			style="width: 1000px">
 			<c:forEach items="${list}" var="svcNoticeVO" varStatus="stat">
 			<div class="card">
 				<div class="card-header" id="headingOne">

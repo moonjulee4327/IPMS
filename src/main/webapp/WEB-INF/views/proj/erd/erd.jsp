@@ -11,27 +11,21 @@
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/css/plugins/forms/extended/form-extended.css">
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/extended/maxlength/bootstrap-maxlength.js"></script>
+<style>
+ #insert{
+ 	width:80px; 
+ }
+ #update{
+ 	width:80px; 
+ }
+ #delete{
+ 	width:80px; 
+ }
 
+</style>
 
 <body>
 	<div class="row">
-
-		<div class="col-1">
-			<button type="button"
-				class="btn btn-secondary square btn-min-width mr-1 mb-1"
-				style="float: left;" id="insert">새로 저장</button>
-		</div>
-		<div class="col-1">
-			<button type="button"
-				class="btn btn-secondary square btn-min-width mr-1 mb-1"
-				style="float: left;" id="update">수정</button>
-		</div>
-		<div class="col-1">
-			<button type="button"
-				class="btn btn-secondary square btn-min-width mr-1 mb-1"
-				style="float: left;" id="delete">삭제</button>
-		</div>
-		<div class="col-7"></div>
 		<div class="col-2">
 			<select class="custom-select block" id="customSelect" onchange="fn_change()">
 				<c:if test="${fn:length(listErdVer) != 0 }">
@@ -56,6 +50,24 @@
 				</c:if>
 			</select>
 		</div>
+		<div class="col-6"></div>
+		<div class="col-1" style="right: 30px;">
+			<button type="button"
+				class="btn btn-secondary btn-md square btn-min-width mr-1 mb-1"
+				  id="insert">새로 저장</button>
+		</div>
+		<div class="col-2">
+			<button type="button"
+				class="btn btn-warning btn-md square btn-min-width mr-1 mb-1"
+				style="float: center;" id="update">수정</button>
+		</div>
+		<div class="col-1">
+			<button type="button"
+				class="btn btn-danger btn-md square btn-min-width mr-1 mb-1"
+				style="float: right;" id="delete">삭제</button>
+		</div>
+		
+		
 
 	</div>
 	<div class="row">
@@ -97,7 +109,7 @@
 		let data = {"writer":"${mvo.member.memCode}","projId":"${projId}","erdTitle":erdTitle,"erdProjData":jsonDataInsert};
 
 		$.ajax({
-			url: "/proj/erdInsert",
+			url: "/proj/${projId}/erdInsert",
 			contentType:  "application/json;charset=utf-8",
 			data: JSON.stringify(data),
 			type: "post",
@@ -121,7 +133,7 @@
 //      },
 		
 		$.ajax({
-			url: "/proj/erdUpdate",
+			url: "/proj/${projId}/erdUpdate",
 			contentType:  "application/json;charset=utf-8",
 			
 			data: JSON.stringify(data),
@@ -149,7 +161,7 @@
 //      },
 		
 		$.ajax({
-			url: "/proj/erdDelete",
+			url: "/proj/${projId}/erdDelete",
 			contentType:  "application/json;charset=utf-8",
 			data: JSON.stringify(data),
 			type: "post",

@@ -60,8 +60,8 @@
 											<c:if test="${list.taskStusCode == 'danger' }">
 												<span style="margin-top:4px;" class="badge badge-danger">높음</span>
 											</c:if>
-											<c:if test="${list.taskStusCode == 'warning' }">
-												<span style="margin-top:4px;" class="badge badge-primary">낮음</span>
+											<c:if test="${list.taskStusCode == 'secondary' }">
+												<span style="margin-top:4px;" class="badge badge-success">일반</span>
 											</c:if>
 									</div><br/>
 								<div>진척도 : ${list.taskPgres}%</div>
@@ -76,18 +76,10 @@
 									</div>
 								</div>
 								<hr>
-<!-- 								<div style="float: right;"> -->
-<%-- 									<c:if test="${list.writer eq mvo.member.memName}"> --%>
-<!-- 										<button type="button" class="btn btn-secondary"> -->
-<!-- 											<i class="feather icon-trash-2 mr-25 common-size"></i>삭제 -->
-<!-- 										</button> -->
-<%-- 										<a href="/proj/${list.projId}/issueUpdate/?issueId=${list.issueId}" type="button" id="issueupbtn" class="btn btn-secondary"> --%>
-<!-- 											<i class="feather icon-edit mr-25 common-size"></i>수정 -->
-<!-- 										</a> -->
-<%-- 									</c:if> --%>
-<%-- 									<a href="/proj/${list.projId}/issueboard" class="btn btn-primary"><i --%>
-<!-- 										class="fa fa-reply-all mr-25 common-size"></i>목록</a> -->
-<!-- 								</div> -->
+								<div style="float: right;">
+										
+									<a href="/proj/${list.projId}/taskList" class="btn btn-primary"><i class="fa fa-reply-all mr-25 common-size"></i>목록</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -97,7 +89,7 @@
 								<form class="form-horizontal">
 									<div class="row">
 										<div class='col-sm-10'>
-											<input type="text" class="form-control" id="taskCmtCts" name="taskCmtCts" placeholder="댓글을 입력하세요..." />
+											<input type="text" class="form-control" id="taskCmtCts" name="taskCmtCts" placeholder="댓글을 입력하세요." />
 										</div>
 										<div class='col-sm-2'>
 											<button type="button" class="btn btn-secondary" style="width: 150px;" id="repAdd">댓글 등록</button>
@@ -122,7 +114,7 @@
 								                  <div style="padding-bottom: 5px;">
 								                      <div style="font-size:15px;"><i class="fa fa-user-o"></i>&nbsp;&nbsp;${icmtList.writer }</div>
 								                    <span class="username"> 
-								                      <span style="font-size: 8px; color: grey;">${icmtList.taskCmtWriteDate }</span>
+								                      <span style="font-size: 8px; color: grey;"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${icmtList.taskCmtWriteDate}"/></span>
 								                    </span>
 								                </div>
 								                <div id="modidiv${icmtList.taskCmtId}" style="display:flex;">
@@ -150,10 +142,10 @@
 						                                <div style="font-size:15px;">
 						                                 <i class="feather icon-corner-down-right"></i> ${icmtList.writer}
 						                                 <i class="feather icon-user"></i>  
-						                                 <span style="font-size: 8px; color: grey;">${icmtList.taskCmtWriteDate}</span> </div>
+						                                 <span style="font-size: 8px; color: grey;"><fmt:formatDate value="${icmtList.taskCmtWriteDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span> </div>
 						                              </div>
 						                              <div id="modidiv${icmtList.taskCmtId}" style="display:flex;">
-						                                <div style="display:flex;" id="taskCmtCts${icmtList.taskCmtId}">&nbsp;&nbsp;&nbsp;&nbsp;"${icmtList.taskCmtCts}" &nbsp;&nbsp;
+						                                <div style="display:flex;" id="taskCmtCts${icmtList.taskCmtId}">&nbsp;&nbsp;&nbsp;&nbsp;${icmtList.taskCmtCts} &nbsp;&nbsp;
 						                                </div>
 						                                &nbsp;&nbsp;&nbsp;&nbsp;<input style="width:400px;" type="hidden" id="repInput${icmtList.taskCmtId }" value="">
 						                                <a style=" color : red;font-size: 12px; text-decoration: underline;" id="cmtDelete${icmtList.taskCmtId }" onclick="fn_lowCmtdelete(${icmtList.taskCmtId })" type="button">삭제</a> &nbsp;

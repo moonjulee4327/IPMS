@@ -6,11 +6,13 @@
 <c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
 <c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<link rel="stylesheet" href="/resources/css/reset.css">
+<link rel="stylesheet" href="/resources/css/join.css">
 <link rel="stylesheet" type="text/css"
 	href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
 <script
 	src="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
  <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
  <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
  <style>
@@ -27,32 +29,20 @@
 	max-width: 100%;
 	}
 </style>
-<script>
-
-$(document).ready(function() {
-	//여기 아래 부분
-	 ClassicEditor.create( document.querySelector( '#editor' ), {
-		    language: "ko",
-		    height : 300
-		    
-		  } );
-});
-</script>
-
 
 <div class="card-body">
-	<h1>게시물 등록</h1><br>
+	<h3 style="font-family: noto sans, malgun gothic, AppleGothic, dotum; padding-bottom:30px;">게시물 등록</h3><br>
 	
 	<form class="form" style="max-width: 80%;" action="/main/adminNoticeInsert" method="post">
 	<div class="form-body">
 	<label for="donationinput1">게시물 분류</label><br>
-		<select name="ntCtgCode" style="width: 30%;">
+		<select name="ntCtgCode" style="width:30%;">
 				<option value="notice">공지사항</option>
 				<option value="faq">자주묻는 질문</option> 
 		</select>		
-			<div class="form-group">
+			<div class="form-group" style="padding-top:20px;">
 				<label for="donationinput1">게시물 제목</label> <input type="text"
-					id="donationinput1" class="form-control square" placeholder="게시물 제목"
+					id="donationinput1" class="form-control square" placeholder="제목을 입력하세요."
 					name="siteNtTitle">
 			</div>
 			<div class="form-group">
@@ -62,7 +52,7 @@ $(document).ready(function() {
 		</div>
 		<sec:csrfInput/>
 		<div class="form-actions right">
-			<button type="reset" class="btn btn-warning mr-1">
+			<button type="reset" class="btn btn-danger mr-1">
 				<i class="feather icon-x"></i> 취소
 			</button>
 			<button type="submit" class="btn btn-secondary">
@@ -78,5 +68,9 @@ $(document).ready(function() {
 			minimumResultsForSearch: Infinity
 		});
 	
-		
+		CKEDITOR.replace('siteNtCts',
+				{
+					height:'150px'
+			
+			});
 </script>
