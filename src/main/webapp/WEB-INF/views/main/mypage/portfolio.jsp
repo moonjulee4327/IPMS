@@ -29,7 +29,7 @@
 		<h3 class="content-header-title mb-0" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">
 			<b>포트폴리오</b>
 		</h3>
-		<button type="button" style="width: 110px; margin-left: 1070px;" class="btn btn-secondary btn-block" onclick="savePDF()">PDF 다운로드</button>
+		<button type="button" style="width: 110px; margin-left: 875px;" class="btn btn-secondary btn-block" onclick="savePDF()">PDF 다운로드</button>
 	</div>
 	<div class="content-body" style="width: 1000px;">
 		<!-- users view start -->
@@ -42,12 +42,6 @@
 							<div class="col-12 col-md-12">
 								<div>
 									<div class="media mb-2">
-										<a class="mr-1" href="#"> <img
-											src="/resources/stack-admin-v4.0/stack-admin/app-assets/images/portrait/small/avatar-s-26.png"
-											alt="users view avatar"
-											class="users-avatar-shadow rounded-circle" height="64"
-											width="64">
-										</a>
 										<div class="media-body pt-25"> 
 											<h4 class="media-heading" style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">
 												<!-- 회원 이름 -->
@@ -99,7 +93,7 @@
 									<div class="">
 										<div class="table-responsive">
 											<span class="badge badge-info"
-												style="height: 30px; font-size: 15px; margin-top: 30px; margin-bottom: 10px;">진행중인
+												style="height: 30px; font-size: 15px; margin-top: 30px; margin-bottom: 10px;">참여중인
 												프로젝트</span>
 											<table class="table mb-0">
 												<thead>

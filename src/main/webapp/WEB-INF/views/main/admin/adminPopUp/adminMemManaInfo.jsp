@@ -71,11 +71,11 @@
 					<form class="form">
 						<div class="form-body">
 							<div class="row">
-								<div class="col-4">
-									<img src="/resources/upload/img/${data.memImgRoute}" 
-										style="width: 170px; height: 170px; margin-left: 18px; margin-top: 40px;">
-								</div>
-								<div class="col-8">
+<!-- 								<div class="col-4"> -->
+<%-- 									<img src="/resources/upload/img/${data.memImgRoute}"  --%>
+<!-- 										style="width: 170px; height: 170px; margin-left: 18px; margin-top: 40px;"> -->
+<!-- 								</div> -->
+								<div class="col-12">
 									<h4 class="form-section"
 										style="font-family: noto sans, malgun gothic, AppleGothic, dotum; color: #455DBD;">
 										<i class="feather icon-user" style="color: #455DBD;"></i> 기본

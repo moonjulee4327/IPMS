@@ -66,7 +66,7 @@
 <!-- 										<input type="hidden" id="projBdId" name="projBdId" /> -->
 										<input type="hidden" id="writer" name="writer" value="<sec:authentication property='principal.member.memCode'/>" />
 										<input type="hidden" id="projId" name="projId" value="${projId}" />
-									<sec:authentication property="principal.member"/>
+<%-- 									<sec:authentication property="principal.member"/> --%>
 									<sec:csrfInput />
 								</form>
 							</div>

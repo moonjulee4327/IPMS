@@ -8,6 +8,9 @@
 <head>
 <link rel="stylesheet" href="/resources/css/reset.css">
 <link rel="stylesheet" href="/resources/css/join.css">
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 
 <!-- BEGIN: Page CSS-->
 <link rel="stylesheet" type="text/css"
@@ -41,6 +44,8 @@
 								<div class="card-header px-0">
 									<div class="row">
 										<div class="col-md-12 col-lg-7 col-xl-4 mb-50">
+											<input type="hidden" class="form-control" id="projId" name="projId" value="${data.projId}">
+											<input type="hidden" class="form-control" id="memCode" name="memCode" value="${data.memCode}" />
 											<span class="invoice-id font-weight-bold">No. </span> <span>${data.projNtNum}</span>
 											<input type="hidden" class="form-control" id="projNtNum" name="projNtNum" value="${data.projNtNum}" />
 										</div>
@@ -115,11 +120,12 @@ $(function() {
 	
 	$("#ntDel").on("click",function() {
 		
-		alert("삭제 눌렀엉");
+//		alert("삭제 눌렀엉");
 		
 		let projNtNum = $("#projNtNum").val(); // 공지 글 번호
+		let projId = $("#projId").val();
 		
-		let data = {"projNtNum":projNtNum};
+		let data = {"projNtNum":projNtNum,"projId":projId};
 		console.log("data: " + JSON.stringify(data));
 		
 		

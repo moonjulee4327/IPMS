@@ -46,11 +46,10 @@
                 <div class="card-body">
                     <h4 class="card-title"><a href="/proj/${item.projId}/dashboard">${item.projName}</a></h4>
                     <ul class="list-inline list-inline-pipe">
-                        <li>${item.projId}&nbsp; ||&nbsp; ${item.memName}</li>
+                        <li>&nbsp; ${item.memName}</li>
                         <br>
                     </ul>
                     <br>
-                    <h6 class="card-subtitle text-muted">Managing Director(${item.memEmail})</h6>
                 </div>
 
             </div>

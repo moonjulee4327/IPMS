@@ -117,7 +117,7 @@
                     </sec:authorize>
                     <sec:csrfInput/>
                     <div class="tit_section" style="margin-left: 400px;">
-                        <input type="submit" value="등록하기" class="btn_payment">
+                        <input type="submit" value="등록하기" class="btn btn-secondary" style="width: 280px;height: 50px;;">
                     </div>
 
                     </form>

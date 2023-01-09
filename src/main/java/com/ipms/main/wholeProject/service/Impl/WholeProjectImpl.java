@@ -65,6 +65,11 @@ public class WholeProjectImpl implements WholeProjectService {
     }
 
     @Override
+    public int getWholeProjectTotal(Criteria criteria) {
+        return this.projMapper.getWholeProjectTotal(criteria);
+    }
+
+    @Override
     public List<ProjVO> getListPage(Criteria criteria) {
         return this.projMapper.getListPage(criteria);
     }

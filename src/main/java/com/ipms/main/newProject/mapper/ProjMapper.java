@@ -16,6 +16,7 @@ public interface ProjMapper {
     public List<ProjVO>getListPage( );
     public List<ProjVO>getListPage(Criteria criteria);
     public int getWholeProjectTotal();
+    public int getWholeProjectTotal(Criteria criteria);
     public List<ProjVO>getProjId(String memEmail);
     public List<ProjVO> detailPage(String projId);
     public int projInsert(ProjVO projVO);

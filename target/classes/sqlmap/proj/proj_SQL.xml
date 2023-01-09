@@ -3,26 +3,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ipms.main.newProject.mapper.ProjMapper">
 
-<sql id="criteria">
-    <trim prefix="(" suffix=") AND " prefixOverrides="OR">
-        <foreach item='type' collection="typeArr">
-            <trim prefix="OR">
-                <choose>
-                    <when test="type == 'T'.toString()">
-                        proj_id like '%'||#{keyword}||'%'
-                    </when>
-                    <when test="type == 'C'.toString()">
-                        proj_name like '%'||#{keyword}||'%'
-                    </when>
-                    <when test="type == 'D'.toString()">
-                         PROJ_STRT_DATE BETWEEN TO_DATE(#{StrtDateKeyword}) and TO_DATE(#{EndDateKeyword})
-                    </when>
+<!--<sql id="criteria">-->
+<!--    <trim prefix="(" suffix=") AND " prefixOverrides="OR">-->
+<!--        <foreach item='type' collection="typeArr">-->
+<!--            <trim prefix="OR">-->
+<!--                <choose>-->
+<!--                    <when test="type == 'T'.toString()">-->
+<!--                        proj_id like '%'||#{keyword}||'%'-->
+<!--                    </when>-->
+<!--                    <when test="type == 'C'.toString()">-->
+<!--                        proj_name like '%'||#{keyword}||'%'-->
+<!--                    </when>-->
+<!--                    <when test="type == 'D'.toString()">-->
+<!--                         PROJ_STRT_DATE BETWEEN TO_DATE(#{StrtDateKeyword}) and TO_DATE(#{EndDateKeyword})-->
+<!--                    </when>-->
 
-                </choose>
-            </trim>
-        </foreach>
-    </trim>
-</sql>
+<!--                </choose>-->
+<!--            </trim>-->
+<!--        </foreach>-->
+<!--    </trim>-->
+<!--</sql>-->
+    <sql id="criteria">
+        <trim prefix="(" suffix=") AND">
+            <foreach collection="typeArr" item="type" separator="OR">
+                <if test="type=='T'.toString()">
+                    proj_id like '%'||#{keyword}||'%'
+                </if>
+                <if test="type=='C'.toString()">
+                    proj_name like '%'||#{keyword}||'%'
+                </if>
+                <if test="type=='D'.toString()">
+                    PROJ_STRT_DATE BETWEEN TO_DATE(#{StrtDateKeyword}) and TO_DATE(#{EndDateKeyword})
+                </if>
+            </foreach>
+        </trim>
+    </sql>
 
     <!--전체 프로젝트  com.ipms.main.newProject.mapper.ProjMapper.listProj-->
     <select id="listProj" resultType="com.ipms.main.newProject.vo.ProjMemVO">
@@ -52,7 +67,7 @@
                delete_whth
   from
       (
-      select /*+INDEX_DESC(tbl_board pk_board) */
+      select
         rownum rn, proj_id,
                mem_code,
                proj_name,
@@ -67,14 +82,16 @@
         proj
       where
   ]]>
-        <include refid="criteria">
-        </include>
+        <include refid="criteria">  </include>
+
         <![CDATA[
+
       rownum <= #{pageNum} * #{amount}
            AND proj_opn_whth='Y'
+             and proj_id <> 'P001'
       )
   where rn > (#{pageNum} -1) * #{amount}
-  order by proj_creatn_date desc
+  order by proj_creatn_date asc
   ]]>
     </select>
 
@@ -82,7 +99,8 @@
     <select id="getWholeProjectTotal" resultType="int" parameterType="com.ipms.commons.vo.Criteria">
         SELECT COUNT(proj_id)
         FROM proj
-        where proj_opn_whth='Y'
+        where    <include refid="criteria"></include>
+            proj_opn_whth='Y'
 
     </select>
 
@@ -189,7 +207,7 @@
 
 
     <select id="getDetailLeaderInfo" parameterType="string" resultType="com.ipms.main.login.vo.MemVO">
-        select * from mem where mem_code=#{memCode}
+        select MEM_NAME from PROJ P , MEM M where proj_id = #{projId} AND M.MEM_CODE = P.MEM_CODE
     </select>
 </mapper>
 

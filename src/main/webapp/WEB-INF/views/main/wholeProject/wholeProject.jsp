@@ -61,25 +61,25 @@
                     <!--Search Navbar-->
                     <div class="row">
                         <div class="col-sm-12 col-md-7"></div>
-                        <div class="col-sm-12 col-md-5">
+                        <div class="col-sm-12 col-md-5" >
 
                             <div id="app-invoice-table_filter" class="dataTables_filter">
                                 <label style="float: right">
                                     <form id="searchForm" action="/main/wholeProject" method="get">
-                                        <div class="row">
+                                        <div class="row" style="padding-right: 40px">
                                         <select name="type" id="testOption">
                                             <option value="T">프로젝트 아이디</option>
                                             <option value="C">프로젝트 이름</option>
                                             <option value="D">날짜</option>
                                         </select>
                                             <input type="text" id="keyWordInput" class="" name="keyword">
-                                            <input type="date" id="startDate" value="22/12/03" style="display: none" oninput="myFunction()"/>
-                                            <input type="date" id="endDate" style="display: none" oninput="myFunction2()"/>
+                                            <input type="date" id="startDate" value="22/12/03" style="display: none" oninput="myFunction()" required/>
+                                            <input type="date" id="endDate" style="display: none" oninput="myFunction2()" required/>
                                             <input type="text"  id="startDateVal" name="StrtDateKeyword" value="" style="display: none"/>
                                             <input type="text" id="endDateVal" name="EndDateKeyword" value="" style="display: none"/>
                                             <input type="hidden" name="pageNm" value="${pageMaker.cri.pageNum}">
                                             <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                                            <input type="submit" class="btn btn-secondary" style="height: 30px;" value="검색">
+                                            <input type="submit" class="btn btn-secondary" style="" value="검색">
                                         </div>
                                     </form>
                                 </label>
@@ -101,11 +101,11 @@
                                                    data-size="480x360"><img class="gallery-thumbnail card-img-top"
                                                                             src="/resources/upload/img/${item.projImgRoute}"
                                                                             itemprop="thumbnail"
-                                                                            alt="Image description">
+                                                                            alt="Image description" style="height: 300px">
                                                 </a>
                                                 <div class="card-body px-0">
                                                     <div style="text-align: center">
-                                                        <strong>${item.projName}</strong>(${item.projId})
+                                                        <strong>${item.projName}</strong>
                                                     </div>
                                                     </p>
                                                     <br/>

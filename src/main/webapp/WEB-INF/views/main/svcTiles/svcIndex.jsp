@@ -76,7 +76,7 @@
 <div class="drag-target"></div>
 
 <!-- mainFooter 시작 -->
-<tiles:insertAttribute name="svcFooter"/>
+<%-- <tiles:insertAttribute name="svcFooter"/> --%>
 <!-- mainFooter 끝 -->
 
 <!-- BEGIN: Vendor JS-->

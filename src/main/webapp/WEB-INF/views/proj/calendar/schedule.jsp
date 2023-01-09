@@ -107,7 +107,7 @@ function stringFormat(p_val){
 	// 띄우기 - 일정 리스트 
 	function loadEvent(){
 		
-		console.log("왔다");
+// 		console.log("왔다");
 		
 		  let arr = [];
 		  
@@ -150,7 +150,7 @@ function stringFormat(p_val){
 	// 띄우기 - 일감(task) 리스트
 	function loadEvent2() {
 		
-		console.log("일감 왔다");
+// 		console.log("일감 왔다");
 		
 		  let arr2 = [];
  			
@@ -203,7 +203,7 @@ function stringFormat(p_val){
 	// 띄우기 - 모든 상위 일감(task) 리스트
 	function loadEvent3() {
 		
-		console.log("상위 일감");
+// 		console.log("상위 일감");
 		
 		  let arr3 = [];
  			

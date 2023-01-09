@@ -94,7 +94,7 @@
 										<th>프로젝트 명</th>
 										<th>프로젝트 생성자</th>
 										<th>진행 여부</th>
-										<th>등록 일자</th>
+<!-- 										<th>등록 일자</th> -->
 										<th>시작 일자</th>
 										<th>종료 일자</th>
 									</tr>
@@ -120,7 +120,7 @@
 												<td><span class="badge badge-danger">중단</span></td>
 											</c:if>
 										
-											<td><fmt:formatDate value="${ProjManaVO.projCreatnDate}" pattern="yyyy-MM-dd" /></td>
+<%-- 											<td><fmt:formatDate value="${ProjManaVO.projCreatnDate}" pattern="yyyy-MM-dd" /></td> --%>
 											<td><fmt:formatDate value="${ProjManaVO.projStrtDate}" pattern="yyyy-MM-dd" /></td>
 											<td><fmt:formatDate value="${ProjManaVO.projEndDate}" pattern="yyyy-MM-dd" /></td>
 										</tr>

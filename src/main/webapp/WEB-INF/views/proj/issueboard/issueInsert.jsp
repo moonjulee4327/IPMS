@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="mvo" value="${SPRING_SECURITY_CONTEXT.authentication.principal}"/>
+<c:set var="auth" value="${SPRING_SECURITY_CONTEXT.authentication.authorities}"/>
 <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/classic/ckeditor.js"></script>
 <script type="text/javascript" src="/resources/js/jquery-3.6.0.js"></script>
@@ -27,6 +33,7 @@ taskId {
 <script>
 	var header = '${_csrf.headerName}';
 	var token = '${_csrf.token}';
+	var memCode = "${mvo.member.memCode}";
 </script>
 <body>
 	<!-- BEGIN: Content-->
@@ -110,6 +117,7 @@ taskId {
 </html>
 
 <script>
+
 CKEDITOR.replace('issueCts');
 $('select').select2();
 </script>

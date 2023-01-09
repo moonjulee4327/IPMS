@@ -238,9 +238,9 @@
 
 <body>
 
-<div class="card" style="width: 100%;height: 500px;margin-top: 100px;">
+<div class="card" style="width: 1050px;height: 500px;">
     <div class="card-content">
-        <div class="card-body" style="width: 100%;overflow:auto;">
+        <div class="card-body" style="width: 100%;">
             <ul class="nav nav-tabs mb-2" role="tablist">
                 <li class="nav-item"><a class="nav-link d-flex align-items-center active" id="invite-tab"
                                         data-toggle="tab" href="#invite" aria-controls="invite" role="tab"
@@ -263,7 +263,7 @@
                     <!-- users edit account form start -->
                     <form novalidate>
                         <div class="col-xl-8 col-lg-12">
-                            <div class="card" style="width: 1000px; overflow: auto">
+                            <div class="card" style="width: 1000px;">
                                 <div class="card-content">
                                     <div class="table-responsive">
                                         <div id="projectsApplied"></div>
@@ -277,7 +277,7 @@
                 <div class="tab-pane" id="apply" aria-labelledby="apply-tab" role="tabpanel">
                     <form novalidate>
                         <div class="col-xl-8 col-lg-12">
-                            <div class="card" style="width: 1000px;overflow: auto">
+                            <div class="card" style="width: 1000px;">
                                 <div class="card-content">
                                     <div class="table-responsive">
                                         <div id="memberWhoAppliedView"></div>

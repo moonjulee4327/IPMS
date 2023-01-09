@@ -181,7 +181,7 @@
 
             <!--로그인 -->
             <sec:authorize access="hasRole('ROLE_MEMBER')">
-                &nbsp;&nbsp;&nbsp;&nbsp;<strong>${mvo.member.memName}님</strong>&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;<strong style="font-family: noto sans, malgun gothic, AppleGothic, dotum;">${mvo.member.memName}님</strong>&nbsp;&nbsp;&nbsp;&nbsp;
                 <%--                <p style="font-size: large"> <sec:authentication property="principal.member.memName"/></p>--%>
                 <button type="button" id="myPage" class="btn btn-outline-secondary"><i class="fa fa-plug"></i>마이페이지
                 </button>

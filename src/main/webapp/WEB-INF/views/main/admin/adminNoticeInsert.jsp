@@ -52,11 +52,11 @@
 		</div>
 		<sec:csrfInput/>
 		<div class="form-actions right">
-			<button type="reset" class="btn btn-danger mr-1">
-				<i class="feather icon-x"></i> 취소
-			</button>
 			<button type="submit" class="btn btn-secondary">
 				<i class="fa fa-check-square-o"></i> 등록
+			</button>
+			<button type="reset" class="btn btn-danger mr-1">
+				<i class="feather icon-x"></i> 취소
 			</button>
 		</div>
 	</form>

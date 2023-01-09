@@ -79,7 +79,7 @@
     <div class="drag-target"></div>
 
 	<!-- projFooter 시작 -->
-	<tiles:insertAttribute name="mypageFooter"/>
+<%-- 	<tiles:insertAttribute name="mypageFooter"/> --%>
 	<!-- projFooter 끝 -->
 
 

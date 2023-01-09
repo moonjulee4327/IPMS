@@ -241,7 +241,7 @@
 		// 댓글 등록
 		$("#freeCmtAdd").on("click",function() {
 			
-			alert("댓글 등록 떠라");
+// 			alert("댓글 등록 떠라");
 			
 			let projBdId = $("#projBdId").val();						// 게시글 번호
  			let writerCmt = $("#writer0").val();						// 댓글 작성자
@@ -289,7 +289,7 @@
 	
 	function fn_delete(param){
 		
-		alert("삭제 눌렀엉");
+// 		alert("삭제 눌렀엉");
 		
 		console.log("this: ",param);
 		
@@ -345,7 +345,7 @@
 	// 수정 버튼
 	function fn_updateGo(param, idx) {
 		
-		alert("수정버튼");
+	//	alert("수정버튼");
 		
 		let projBdCmtCts = $("#projBdCmtCts"+idx).val();	
 		let projBdCmtId = param;
@@ -377,9 +377,11 @@
 		});	// ajax end
 	}
 	
-	function fn_reCmt(){
-		alert = "대댓 하잉";
-	}
+// 	function fn_reCmt(){
+// 		alert = "대댓 하잉";
+// 	}
+
+
 </script>
 
 

@@ -22,9 +22,6 @@
 
 </script>
 <head>
-
-    <title>마이페이지 - 개인 정보 관리(수정)</title>
-
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css"
           href="/resources/stack-admin-v4.0/stack-admin/app-assets/vendors/css/forms/selects/select2.min.css">
@@ -47,7 +44,7 @@
 <body>
 <input type="hidden" name="memCode" value="${mvo.member.memCode}"/>
 <!-- BEGIN: Content-->
-<div style="margin-top: 20px;" class="content-header-left col-md-6 col-12 mb-2">
+<div class="content-header-left col-md-6 col-12 mb-2">
     <h3 class="content-header-title mb-0"><b>개인 정보 관리</b></h3>
     <div class="row breadcrumbs-top">
         <div class="breadcrumb-wrapper col-12"></div>
@@ -117,12 +114,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
-
-                                            <select id="selectedBox" name="selectedBox" class="select2 form-control select2-hidden-accessible" multiple data-select2-id="12" tabindex="-1" aria-hidden="true"
-                                                    onchange="handleOnChange(this)">
+                                            <select id="selectedBox" name="selectedBox" class="select2 form-control select2-hidden-accessible" multiple data-select2-id="12" tabindex="-1" aria-hidden="true" onchange="handleOnChange(this)"
+                                                    disabled>
                                                 <optgroup label="보유한 기술 스택을 선택하세요.">
                                                     <c:forEach var="item" items="${list}" varStatus="idx">
                                                         <c:forEach var="tech" items="${techList}" varStatus="stat">

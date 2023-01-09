@@ -104,12 +104,12 @@
 										<td class="text-center">${adminMemListVO.memCode}</td>
 										<td>
 											<div class="media">
-												<div class="media-left pr-1">
-													<span class="avatar avatar-sm rounded-circle">
-<!-- 														<img src="/resources/images/delivery-boy.png" alt="avatar"> -->
-															<img src="/resources/upload/img/${adminMemListVO.memImgRoute}" class="img-responsive">
-													</span>
-												</div>
+<!-- 												<div class="media-left pr-1"> -->
+<!-- 													<span class="avatar avatar-sm rounded-circle"> -->
+<!-- <!-- 														<img src="/resources/images/delivery-boy.png" alt="avatar"> -->
+<%-- 															<img src="/resources/upload/img/${adminMemListVO.memImgRoute}" class="img-responsive"> --%>
+<!-- 													</span> -->
+<!-- 												</div> -->
 												<div class="media-body media-middle">
 													<b><a href="javascript:f_memInfo('${adminMemListVO.memCode}')" style="color: #455DBD;">${adminMemListVO.memName}</a></b>
 												</div>

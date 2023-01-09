@@ -20,10 +20,6 @@
         overflow: auto;
     }
 </style>
-<h3 class="text-uppercase">
-    <b>하차 신청 멤버</b>
-</h3>
-
 <script>
     function fn_delete(memCode, projId) {
         $.ajax({

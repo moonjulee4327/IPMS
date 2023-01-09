@@ -49,7 +49,9 @@ $("#sendbtn").on("click",function(){
   formData.append("taskId",$("#taskId").val());
   formData.append("issueCts",issueCts);
   formData.append("issueId",$("#taskId").val());
-
+  formData.append("issueId",$("#taskId").val());
+  formData.append("rgstId",memCode);
+  
 
   console.log("formData : " , formData);
   console.log("$(#itgrnAttachFileNum) : " , files );

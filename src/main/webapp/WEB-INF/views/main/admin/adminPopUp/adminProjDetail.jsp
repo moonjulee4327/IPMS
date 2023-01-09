@@ -72,7 +72,7 @@
 						<div class="form-body">
 							<div class="row">
 								<div class="col-4">
-									<img src="/resources/upload/img/${data.projImgRoute}"
+									<img src="/upload/file/upload/img/${data.projImgRoute}" class="img-responsive"
 										style="width: 170px; height: 170px; margin-left: 5px; margin-top: 40px;">
 								</div>
 								<div class="col-8">
@@ -132,7 +132,7 @@
 							</div>
 							<div class="form-group">
 								<label for="projSmry">프로젝트 개요</label> 
-								<div class="form-control border-secondary" id="projSmry" style="width:627px; height:130px; overflow: auto; background-color:#ECEFF1">${data.projSmry}</div>
+								<div class="form-control border-secondary" id="projSmry" style="width:687px; height:130px; overflow: auto; background-color:#ECEFF1">${data.projSmry}</div>
 							</div>
 								<div class="form-group">
 									<h4 class="form-section"

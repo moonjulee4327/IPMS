@@ -71,7 +71,7 @@
 										<input type="hidden" id="projBdId" name="projBdId" value="${data.projBdId}">
 										<input type="hidden" id="projId" name="projId" value="${projId}">
 										<input type="hidden" id="writer" name="writer" value="<sec:authentication property='principal.member.memCode'/>" />
-									<sec:authentication property="principal.member"/>
+<%-- 									<sec:authentication property="principal.member"/> --%>
 									<sec:csrfInput />
 								</form>
 							</div>
